@@ -106,9 +106,9 @@ import (
 	intertxkeeper "github.com/cosmos/interchain-accounts/x/inter-tx/keeper"
 	intertxtypes "github.com/cosmos/interchain-accounts/x/inter-tx/types"
 
-  cmpmodule "github.com/cosmos/interchain-accounts/x/cmp"
-  cmpmodulekeeper "github.com/cosmos/interchain-accounts/x/cmp/keeper"
-  cmpmoduletypes "github.com/cosmos/interchain-accounts/x/cmp/types"
+	cmpmodule "github.com/cosmos/interchain-accounts/x/cmp"
+	cmpmodulekeeper "github.com/cosmos/interchain-accounts/x/cmp/keeper"
+	cmpmoduletypes "github.com/cosmos/interchain-accounts/x/cmp/types"
 )
 
 const Name = "ica"

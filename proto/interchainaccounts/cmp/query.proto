@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "interchainaccounts/cmp/params.proto";
+import "interchainaccounts/cmp/account_address.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/cosmos/interchain-accounts/x/cmp/types";
@@ -15,7 +16,17 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/cosmos/interchain-accounts/cmp/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a AccountAddress by index.
+	rpc AccountAddress(QueryGetAccountAddressRequest) returns (QueryGetAccountAddressResponse) {
+		option (google.api.http).get = "/cosmos/interchain-accounts/cmp/account_address/{index}";
+	}
+
+	// Queries a list of AccountAddress items.
+	rpc AccountAddressAll(QueryAllAccountAddressRequest) returns (QueryAllAccountAddressResponse) {
+		option (google.api.http).get = "/cosmos/interchain-accounts/cmp/account_address";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +36,24 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetAccountAddressRequest {
+	  string index = 1;
+
+}
+
+message QueryGetAccountAddressResponse {
+	AccountAddress accountAddress = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllAccountAddressRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllAccountAddressResponse {
+	repeated AccountAddress accountAddress = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

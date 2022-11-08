@@ -22,6 +22,7 @@ require (
 )
 
 require (
+	cosmossdk.io/math v1.0.0-beta.3
 	github.com/cosmos/ibc-go/v6 v6.0.0-alpha1
 	github.com/golang/protobuf v1.5.2
 	google.golang.org/genproto v0.0.0-20221027153422-115e99e71e1c
@@ -34,7 +35,6 @@ require (
 	cloud.google.com/go/iam v0.6.0 // indirect
 	cloud.google.com/go/storage v1.27.0 // indirect
 	cosmossdk.io/errors v1.0.0-beta.7 // indirect
-	cosmossdk.io/math v1.0.0-beta.3 // indirect
 	filippo.io/edwards25519 v1.0.0-rc.1 // indirect
 	github.com/99designs/go-keychain v0.0.0-20191008050251-8e49817e8af4 // indirect
 	github.com/99designs/keyring v1.2.1 // indirect
