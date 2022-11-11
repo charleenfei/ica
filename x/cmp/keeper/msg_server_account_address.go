@@ -12,7 +12,7 @@ import (
 func (k msgServer) CreateAccountAddress(goCtx context.Context, msg *types.MsgCreateAccountAddress) (*types.MsgCreateAccountAddressResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+//		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	// Check if the value already exists
 	_, isFound := k.GetAccountAddress(
 		ctx,

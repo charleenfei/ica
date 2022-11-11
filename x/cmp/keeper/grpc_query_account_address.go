@@ -36,7 +36,7 @@ func (k Keeper) AccountAddressAll(c context.Context, req *types.QueryAllAccountA
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	accountAddresss = append(accountAddresss,
+/*	accountAddresss = append(accountAddresss,
 		types.AccountAddress {
 			Creator:   "cosmos_address",
 			Index:     "cosmos_address",
@@ -44,7 +44,7 @@ func (k Keeper) AccountAddressAll(c context.Context, req *types.QueryAllAccountA
 			Gender:    "Female",
 			BirthYear: 2001,
 		},
-	)
+	) */
 
 	return &types.QueryAllAccountAddressResponse{AccountAddress: accountAddresss, Pagination: pageRes}, nil
 }
