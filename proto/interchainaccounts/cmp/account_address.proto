@@ -1,0 +1,13 @@
+syntax = "proto3";
+package cosmos.interchainaccounts.cmp;
+
+option go_package = "github.com/cosmos/interchain-accounts/x/cmp/types";
+
+message AccountAddress {
+  string index = 1; 
+  string name = 2; 
+  string gender = 3; 
+  uint64 birthYear = 4; 
+  string creator = 5;
+}
+
