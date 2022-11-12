@@ -1,5 +1,7 @@
 #!/bin/bash
 
+LOG="tx.log"
+
 # Store the following account addresses within the current shell env
 export WALLET_1=$(icad keys show wallet1 -a --keyring-backend test --home ./data/test-1) && echo $WALLET_1
 export WALLET_2=$(icad keys show wallet2 -a --keyring-backend test --home ./data/test-1) && echo $WALLET_2
@@ -8,7 +10,8 @@ export WALLET_4=$(icad keys show wallet4 -a --keyring-backend test --home ./data
 
 # Register an interchain account on behalf of WALLET_1 where chain test-2 is the interchain accounts host
 printf "\n== Registering interchain account.. ==\n\n"
-icad tx intertx register --from $WALLET_1 --connection-id connection-0 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y 1>/dev/null 2>&1
+icad tx intertx register --from $WALLET_1 --connection-id connection-0 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y 1>$LOG 2>&1
+printf "\n==\n" >> $LOG
 
 #adjust sleep time to wait for relayer as needed
 sleep 10 
@@ -24,7 +27,8 @@ export ICA_ADDR=$(icad query intertx interchainaccounts connection-0 $WALLET_1 -
 icad q bank balances $ICA_ADDR --chain-id test-2 --node tcp://localhost:26657
 
 # Send funds to the interchain account.
-icad tx bank send $WALLET_3 $ICA_ADDR 10000stake --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657 --keyring-backend test -y 1>/dev/null 2>&1
+icad tx bank send $WALLET_3 $ICA_ADDR 10000stake --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657 --keyring-backend test -y 1>>$LOG 2>&1
+printf "\n==\n" >> $LOG
 sleep 3
 printf "\n== Interchain account funded ==\n\n"
 
@@ -46,7 +50,9 @@ icad tx intertx submit \
             \"amount\": \"1000\"
         }
     ]
-}" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y 1>/dev/null 2>&1
+}" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y 1>>$LOG 2>&1
+
+printf "\n==\n" >> $LOG
 
 # Wait until the relayer has relayed the packet, adjust as needed
 sleep 10
