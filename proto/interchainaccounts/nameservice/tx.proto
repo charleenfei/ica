@@ -10,6 +10,7 @@ service Msg {
       rpc BuyName(MsgBuyName) returns (MsgBuyNameResponse);
   rpc SetName(MsgSetName) returns (MsgSetNameResponse);
   rpc DeleteName(MsgDeleteName) returns (MsgDeleteNameResponse);
+  rpc SetMinprice(MsgSetMinprice) returns (MsgSetMinpriceResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -37,6 +38,14 @@ message MsgDeleteName {
 }
 
 message MsgDeleteNameResponse {
+}
+
+message MsgSetMinprice {
+  string creator = 1;
+  string price = 2;
+}
+
+message MsgSetMinpriceResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

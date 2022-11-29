@@ -4,6 +4,7 @@ package cosmos.interchainaccounts.nameservice;
 import "gogoproto/gogo.proto";
 import "interchainaccounts/nameservice/params.proto";
 import "interchainaccounts/nameservice/whois.proto";
+import "interchainaccounts/nameservice/testmin.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/cosmos/interchain-accounts/x/nameservice/types";
@@ -12,5 +13,6 @@ option go_package = "github.com/cosmos/interchain-accounts/x/nameservice/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   repeated Whois whoisList = 2 [(gogoproto.nullable) = false];
+  Testmin testmin = 3;
   // this line is used by starport scaffolding # genesis/proto/state
 }

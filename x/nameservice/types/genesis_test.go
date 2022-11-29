@@ -30,6 +30,10 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
+				Testmin: &types.Testmin{
+					Name:  "58",
+					Price: "68",
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,

@@ -36,6 +36,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgDeleteName int = 100
 
+	opWeightMsgSetMinprice = "op_weight_msg_set_minprice"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSetMinprice int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -101,6 +105,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgDeleteName,
 		nameservicesimulation.SimulateMsgDeleteName(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgSetMinprice int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSetMinprice, &weightMsgSetMinprice, nil,
+		func(_ *rand.Rand) {
+			weightMsgSetMinprice = defaultWeightMsgSetMinprice
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSetMinprice,
+		nameservicesimulation.SimulateMsgSetMinprice(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

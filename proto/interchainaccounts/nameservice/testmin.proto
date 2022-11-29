@@ -1,0 +1,10 @@
+syntax = "proto3";
+package cosmos.interchainaccounts.nameservice;
+
+option go_package = "github.com/cosmos/interchain-accounts/x/nameservice/types";
+
+message Testmin {
+  string name = 1; 
+  string price = 2; 
+  
+}

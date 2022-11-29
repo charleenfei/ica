@@ -22,6 +22,10 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		Testmin: &types.Testmin{
+			Name:  "85",
+			Price: "28",
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -34,5 +38,6 @@ func TestGenesis(t *testing.T) {
 	nullify.Fill(got)
 
 	require.ElementsMatch(t, genesisState.WhoisList, got.WhoisList)
+	require.Equal(t, genesisState.Testmin, got.Testmin)
 	// this line is used by starport scaffolding # genesis/test/assert
 }

@@ -12,6 +12,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.WhoisList {
 		k.SetWhois(ctx, elem)
 	}
+	// Set if defined
+	if genState.Testmin != nil {
+		k.SetTestmin(ctx, *genState.Testmin)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -22,6 +26,11 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	genesis.Params = k.GetParams(ctx)
 
 	genesis.WhoisList = k.GetAllWhois(ctx)
+	// Get all testmin
+	testmin, found := k.GetTestmin(ctx)
+	if found {
+		genesis.Testmin = &testmin
+	}
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis
