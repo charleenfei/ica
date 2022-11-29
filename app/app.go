@@ -102,13 +102,15 @@ import (
 	tmjson "github.com/tendermint/tendermint/libs/json"
 
 	// this line is used by starport scaffolding # stargate/app/moduleImport
-	intertx "github.com/cosmos/interchain-accounts/x/inter-tx"
-	intertxkeeper "github.com/cosmos/interchain-accounts/x/inter-tx/keeper"
-	intertxtypes "github.com/cosmos/interchain-accounts/x/inter-tx/types"
-
 	cmpmodule "github.com/cosmos/interchain-accounts/x/cmp"
 	cmpmodulekeeper "github.com/cosmos/interchain-accounts/x/cmp/keeper"
 	cmpmoduletypes "github.com/cosmos/interchain-accounts/x/cmp/types"
+	intertx "github.com/cosmos/interchain-accounts/x/inter-tx"
+	intertxkeeper "github.com/cosmos/interchain-accounts/x/inter-tx/keeper"
+	intertxtypes "github.com/cosmos/interchain-accounts/x/inter-tx/types"
+	"github.com/cosmos/interchain-accounts/x/nameservice"
+	nameservicekeeper "github.com/cosmos/interchain-accounts/x/nameservice/keeper"
+	nameservicetypes "github.com/cosmos/interchain-accounts/x/nameservice/types"
 )
 
 const Name = "ica"
@@ -144,6 +146,7 @@ var (
 		intertx.AppModuleBasic{},
 		ibcfee.AppModuleBasic{},
 		cmpmodule.AppModuleBasic{},
+		nameservice.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -218,8 +221,8 @@ type App struct {
 	TransferKeeper      ibctransferkeeper.Keeper
 	FeeGrantKeeper      feegrantkeeper.Keeper
 
-	CmpKeeper cmpmodulekeeper.Keeper
-
+	CmpKeeper         cmpmodulekeeper.Keeper
+	NameserviceKeeper nameservicekeeper.Keeper
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper           capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper      capabilitykeeper.ScopedKeeper
@@ -261,6 +264,7 @@ func New(
 		icahosttypes.StoreKey, capabilitytypes.StoreKey, intertxtypes.StoreKey,
 		ibcfeetypes.StoreKey,
 		cmpmoduletypes.StoreKey,
+		nameservicetypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -400,6 +404,14 @@ func New(
 		app.GetSubspace(cmpmoduletypes.ModuleName),
 	)
 	cmpModule := cmpmodule.NewAppModule(appCodec, app.CmpKeeper, app.AccountKeeper, app.BankKeeper)
+	app.NameserviceKeeper = *nameservicekeeper.NewKeeper(
+		appCodec,
+		keys[nameservicetypes.StoreKey],
+		keys[nameservicetypes.MemStoreKey],
+		app.GetSubspace(nameservicetypes.ModuleName),
+		app.BankKeeper,
+	)
+	nameserviceModule := nameservice.NewAppModule(appCodec, app.NameserviceKeeper, app.AccountKeeper, app.BankKeeper)
 
 	app.InterTxKeeper = intertxkeeper.NewKeeper(appCodec, keys[intertxtypes.StoreKey], app.ICAControllerKeeper, scopedInterTxKeeper)
 	interTxModule := intertx.NewAppModule(appCodec, app.InterTxKeeper)
@@ -461,6 +473,7 @@ func New(
 		icaModule,
 		interTxModule,
 		cmpModule,
+		nameserviceModule,
 		ibcfee.NewAppModule(app.IBCFeeKeeper),
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
@@ -474,7 +487,7 @@ func New(
 		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName, ibctransfertypes.ModuleName, authtypes.ModuleName,
 		banktypes.ModuleName, govtypes.ModuleName, crisistypes.ModuleName, genutiltypes.ModuleName, feegrant.ModuleName,
 		paramstypes.ModuleName, vestingtypes.ModuleName, icatypes.ModuleName, intertxtypes.ModuleName, ibcfeetypes.ModuleName,
-		cmpmoduletypes.ModuleName,
+		cmpmoduletypes.ModuleName, nameservicetypes.ModuleName,
 	)
 
 	app.mm.SetOrderEndBlockers(
@@ -482,7 +495,7 @@ func New(
 		capabilitytypes.ModuleName, authtypes.ModuleName, banktypes.ModuleName, distrtypes.ModuleName, slashingtypes.ModuleName,
 		minttypes.ModuleName, genutiltypes.ModuleName, evidencetypes.ModuleName, feegrant.ModuleName, paramstypes.ModuleName,
 		upgradetypes.ModuleName, vestingtypes.ModuleName, icatypes.ModuleName, intertxtypes.ModuleName, ibcfeetypes.ModuleName,
-		cmpmoduletypes.ModuleName,
+		cmpmoduletypes.ModuleName, nameservicetypes.ModuleName,
 	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
@@ -496,7 +509,7 @@ func New(
 		ibchost.ModuleName, genutiltypes.ModuleName, evidencetypes.ModuleName, ibctransfertypes.ModuleName,
 		icatypes.ModuleName, intertxtypes.ModuleName, feegrant.ModuleName, paramstypes.ModuleName, upgradetypes.ModuleName, vestingtypes.ModuleName,
 		ibcfeetypes.ModuleName,
-		cmpmoduletypes.ModuleName,
+		cmpmoduletypes.ModuleName, nameservicetypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
@@ -716,6 +729,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(icacontrollertypes.SubModuleName)
 	paramsKeeper.Subspace(icahosttypes.SubModuleName)
 	paramsKeeper.Subspace(cmpmoduletypes.ModuleName)
+	paramsKeeper.Subspace(nameservicetypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper

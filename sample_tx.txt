@@ -1,0 +1,14 @@
+icad tx nameservice buy-name foo 20stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y
+
+icad q nameservice list-whois
+
+icad tx intertx submit \
+"{
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgBuyName\",
+    \"creator\": \"$ICA_ADDR\",
+    \"name\":\"test_inter_chain_acount\",
+    \"bid\":\"10stake\"
+}" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
+
+
+icad tx intertx submit test_msg.json --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y

@@ -5,14 +5,14 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-//	sdkerrors "cosmossdk.io/errors"
+	//	sdkerrors "cosmossdk.io/errors"
 	"github.com/cosmos/interchain-accounts/x/cmp/types"
 )
 
 func (k msgServer) CreateAccountAddress(goCtx context.Context, msg *types.MsgCreateAccountAddress) (*types.MsgCreateAccountAddressResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-//		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
+	//		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	// Check if the value already exists
 	_, isFound := k.GetAccountAddress(
 		ctx,
@@ -22,7 +22,7 @@ func (k msgServer) CreateAccountAddress(goCtx context.Context, msg *types.MsgCre
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInvalidRequest, "index already set")
 	}
 
-	if msg.Creator!=msg.Index {
+	if msg.Creator != msg.Index {
 		return nil, sdkerrors.Wrap(types.ErrAddressDoesNotMatch, "address does not match")
 	}
 
