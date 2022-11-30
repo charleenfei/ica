@@ -1,3 +1,4 @@
+make install
 make init-golang-rly
 make start-golang-rly
 
@@ -8,7 +9,7 @@ export WALLET_3=$(icad keys show wallet3 -a --keyring-backend test --home ./data
 export WALLET_4=$(icad keys show wallet4 -a --keyring-backend test --home ./data/test-2) && echo $WALLET_4;
 
 #setup ICA account from controller chain (chain 1 id test-1)
-icad tx intertx register --from $WALLET_1 --connection-id connection-0 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
+icad tx intertx register --from $WALLET_1 --connection-id connection-0 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test --timeout-height 1000
 
 # Query the address of the interchain account
 icad query intertx interchainaccounts connection-0 $WALLET_1 --home ./data/test-1 --node tcp://localhost:16657
@@ -18,10 +19,10 @@ export ICA_ADDR=$(icad query intertx interchainaccounts connection-0 $WALLET_1 -
 
 # On host chain, setup default minimum price to accept order (100)
 icad tx nameservice set-minprice 100  --chain-id test-2 --home ./data/test-2 --keyring-backend test --from $WALLET_1
-icad q nameservice show-testmin
+icad q nameservice show-testmin --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
 
 # Show that there is no name registered
-icad q nameservice list-whois
+icad q nameservice list-whois --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
 
 # submit ICA tx to register a name domain under ICA address with bid = 200
 icad tx intertx submit \
@@ -33,12 +34,12 @@ icad tx intertx submit \
 }" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
 # show that it's confirmed on host chain
-icad q nameservice list-whois --chain-id test-2 --home ./data/test-2
+icad q nameservice list-whois --node tcp://localhost:26657
 
 
 # On host chain, Control the minimum price to accept order larger than 1000
 icad tx nameservice set-minprice 1000  --chain-id test-2 --home ./data/test-2 --keyring-backend test --from $WALLET_1
-icad q nameservice show-testmin
+icad q nameservice show-testmin --node tcp://localhost:26657
 
 # submit ICA tx to register a name domain under ICA address with bid = 500
 icad tx intertx submit \
@@ -50,7 +51,7 @@ icad tx intertx submit \
 }" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
 # show that it's rejected on host chain, only the old record is in the list
-icad q nameservice list-whois --chain-id test-2 --home ./data/test-2
+icad q nameservice list-whois --node tcp://localhost:26657
 
 
 
@@ -64,4 +65,4 @@ icad tx intertx submit \
 }" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
 # show that it's accepted on host chain, two records
-icad q nameservice list-whois --chain-id test-2 --home ./data/test-2
+icad q nameservice list-whois --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
