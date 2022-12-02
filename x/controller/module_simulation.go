@@ -28,6 +28,14 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgRegister int = 100
 
+	opWeightMsgRegisterIca = "op_weight_msg_register_ica"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgRegisterIca int = 100
+
+	opWeightMsgSubmitTx = "op_weight_msg_submit_tx"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgSubmitTx int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -71,6 +79,28 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgRegister,
 		controllersimulation.SimulateMsgRegister(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgRegisterIca int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgRegisterIca, &weightMsgRegisterIca, nil,
+		func(_ *rand.Rand) {
+			weightMsgRegisterIca = defaultWeightMsgRegisterIca
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgRegisterIca,
+		controllersimulation.SimulateMsgRegisterIca(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgSubmitTx int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgSubmitTx, &weightMsgSubmitTx, nil,
+		func(_ *rand.Rand) {
+			weightMsgSubmitTx = defaultWeightMsgSubmitTx
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgSubmitTx,
+		controllersimulation.SimulateMsgSubmitTx(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation
