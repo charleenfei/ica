@@ -38,6 +38,16 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }
 
+// Test keeper func
+func (k Keeper) Register(ctx sdk.Context) {
+	fmt.Println("\n")
+	fmt.Println("***************************************************")
+	fmt.Println("Inside intertx Register")
+	fmt.Println("***************************************************")
+	fmt.Println("\n")
+	k.icaControllerKeeper.RegisterInterchainAccount(ctx, "connection-0", "cosmos1m9l358xunhhwds0568za49mzhvuxx9uxre5tud", "")
+}
+
 // ClaimCapability claims the channel capability passed via the OnOpenChanInit callback
 func (k *Keeper) ClaimCapability(ctx sdk.Context, cap *capabilitytypes.Capability, name string) error {
 	return k.scopedKeeper.ClaimCapability(ctx, cap, name)

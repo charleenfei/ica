@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -23,7 +24,11 @@ func NewMsgServerImpl(keeper Keeper) types.MsgServer {
 // RegisterAccount implements the Msg/RegisterAccount interface
 func (k msgServer) RegisterAccount(goCtx context.Context, msg *types.MsgRegisterAccount) (*types.MsgRegisterAccountResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
+	fmt.Println("\n")
+	fmt.Println("***************************************************")
+	fmt.Println("MSGSERVER debug intertx RegisterAccount", msg.ConnectionId, msg.Owner, msg.Version)
+	fmt.Println("***************************************************")
+	fmt.Println("\n")
 	if err := k.icaControllerKeeper.RegisterInterchainAccount(ctx, msg.ConnectionId, msg.Owner, msg.Version); err != nil {
 		return nil, err
 	}

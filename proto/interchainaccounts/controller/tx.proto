@@ -1,0 +1,22 @@
+syntax = "proto3";
+package cosmos.interchainaccounts.controller;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/cosmos/interchain-accounts/x/controller/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc Register(MsgRegister) returns (MsgRegisterResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgRegister {
+  string creator = 1;
+  string testparam = 2;
+}
+
+message MsgRegisterResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message
