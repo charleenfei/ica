@@ -66,3 +66,15 @@ icad tx intertx submit \
 
 # show that it's accepted on host chain, two records
 icad q nameservice list-whois --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
+
+
+// Event sub
+ws://localhost:26657/websocket
+{
+   "jsonrpc": "2.0",
+   "method": "subscribe",
+   "id": 0,
+   "params": {
+      "query":"tm.event = 'Tx'"
+   }
+}

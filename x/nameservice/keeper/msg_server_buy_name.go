@@ -75,6 +75,14 @@ func (k msgServer) BuyName(goCtx context.Context, msg *types.MsgBuyName) (*types
 		Owner: buyer.String(),
 	}
 
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(types.CmpHostRequestEventType,
+			sdk.NewAttribute(types.CmpHostRequestEventId, msg.Name),
+			sdk.NewAttribute(types.CmpHostRequestEventCreator, buyer.String()),
+			sdk.NewAttribute(types.CmpHostRequestItem, msg.Name),
+			sdk.NewAttribute(types.CmpHostRequestBid, msg.Bid),
+		),
+	)
 	// Write whois information to the store
 	k.SetWhois(ctx, newWhois)
 	return &types.MsgBuyNameResponse{}, nil
