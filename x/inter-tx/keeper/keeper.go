@@ -53,7 +53,8 @@ func (k Keeper) Register(ctx sdk.Context, creator string, connectionId string, t
 func (k Keeper) SubmitTx(ctx sdk.Context, msg *types.MsgSubmitTx) error {
 	fmt.Println("\n")
 	fmt.Println("***************************************************")
-	fmt.Println("Inside intertx SubmitTx ", msg.Owner, msg.ConnectionId, msg.GetTxMsg())
+	fmt.Println("Inside intertx SubmitTx Keeper GoString ", msg.Owner, msg.ConnectionId, msg.Msg.GoString())
+	fmt.Println("Inside intertx SubmitTx Keeper ", msg.Owner, msg.ConnectionId, msg.GetTxMsg())
 	fmt.Println("***************************************************")
 	fmt.Println("\n")
 	portID, err := icatypes.NewControllerPortID(msg.Owner)

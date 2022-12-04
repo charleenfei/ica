@@ -37,6 +37,13 @@ func PackTxMsgAny(sdkMsg sdk.Msg) (*codectypes.Any, error) {
 	return any, nil
 }
 
+// UnpackInterfaces implements codectypes.UnpackInterfacesMessage
+func (msg MsgSubmitTx) UnpackInterfaces(unpacker codectypes.AnyUnpacker) error {
+	var sdkMsg sdk.Msg
+
+	return unpacker.UnpackAny(msg.Msg, &sdkMsg)
+}
+
 func (msg *MsgSubmitTx) Route() string {
 	return RouterKey
 }

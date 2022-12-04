@@ -13,10 +13,8 @@ func (k msgServer) RegisterIca(goCtx context.Context, msg *types.MsgRegisterIca)
 
 	fmt.Println("\n")
 	fmt.Println("-------------------------------------------")
-	fmt.Println("\n")
 	fmt.Println("Controller tx RegisterIca ", msg.Creator, msg.ConnectionId, msg.TimeoutHeight)
 	// k.intertxKeeper.Register(ctx, "cosmos1m9l358xunhhwds0568za49mzhvuxx9uxre5tud", "connection-0", "123")
-	fmt.Println("\n")
 	fmt.Println("-------------------------------------------")
 	fmt.Println("\n")
 

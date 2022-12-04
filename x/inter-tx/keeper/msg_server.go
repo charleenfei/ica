@@ -39,7 +39,6 @@ func (k msgServer) RegisterAccount(goCtx context.Context, msg *types.MsgRegister
 // SubmitTx implements the Msg/SubmitTx interface
 func (k msgServer) SubmitTx(goCtx context.Context, msg *types.MsgSubmitTx) (*types.MsgSubmitTxResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
 	portID, err := icatypes.NewControllerPortID(msg.Owner)
 	if err != nil {
 		return nil, err
@@ -49,7 +48,13 @@ func (k msgServer) SubmitTx(goCtx context.Context, msg *types.MsgSubmitTx) (*typ
 	if err != nil {
 		return nil, err
 	}
-
+	fmt.Println("\n")
+	fmt.Println("***************************************************")
+	fmt.Println("SubmitTx MsgServer goString", msg.Owner, msg.ConnectionId, msg.Msg.GoString())
+	fmt.Println("msg data ", data)
+	fmt.Println("Inside intertx SubmitTx MsgServer ", msg.Owner, msg.ConnectionId, msg.Msg.GetCachedValue())
+	fmt.Println("***************************************************")
+	fmt.Println("\n")
 	packetData := icatypes.InterchainAccountPacketData{
 		Type: icatypes.EXECUTE_TX,
 		Data: data,

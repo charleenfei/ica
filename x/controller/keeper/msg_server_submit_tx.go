@@ -19,9 +19,8 @@ func (k msgServer) SubmitTx(goCtx context.Context, msg *types.MsgSubmitTx) (*typ
 	}
 	fmt.Println("\n")
 	fmt.Println("-------------------------------------------")
-	fmt.Println("\n")
-	fmt.Println("Controller tx SubmitTx ", msgSubmit.Owner, msgSubmit.ConnectionId, msgSubmit.Msg.GoString())
-	fmt.Println("\n")
+	fmt.Println("Controller tx Msg_server SubmitTx goString ", msgSubmit.Owner, msgSubmit.ConnectionId, msgSubmit.Msg.GoString())
+	fmt.Println("Controller tx Msg_server SubmitTx ", msgSubmit.Owner, msgSubmit.ConnectionId, msgSubmit.GetTxMsg())
 	fmt.Println("-------------------------------------------")
 	fmt.Println("\n")
 
