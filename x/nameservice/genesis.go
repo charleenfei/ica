@@ -16,6 +16,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	if genState.Testmin != nil {
 		k.SetTestmin(ctx, *genState.Testmin)
 	}
+	// Set all the pendingBuy
+	for _, elem := range genState.PendingBuyList {
+		k.SetPendingBuy(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -31,6 +35,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 	if found {
 		genesis.Testmin = &testmin
 	}
+	genesis.PendingBuyList = k.GetAllPendingBuy(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

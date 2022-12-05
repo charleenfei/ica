@@ -34,6 +34,14 @@ func TestGenesisState_Validate(t *testing.T) {
 					Name:  "58",
 					Price: "68",
 				},
+				PendingBuyList: []types.PendingBuy{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -42,6 +50,20 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated whois",
 			genState: &types.GenesisState{
 				WhoisList: []types.Whois{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated pendingBuy",
+			genState: &types.GenesisState{
+				PendingBuyList: []types.PendingBuy{
 					{
 						Index: "0",
 					},

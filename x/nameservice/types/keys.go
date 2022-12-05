@@ -19,6 +19,7 @@ const (
 	CmpHostRequestEventId      = "request-id"       // which request if multiple requests happened
 	CmpHostRequestItem         = "request-item"     // Is it relevant to me?
 	CmpHostRequestBid          = "request-bid"      // Is it relevant to me?
+	CmpHostRequestMetaData     = "request-metadata" // Extra data for other purpose
 
 )
 

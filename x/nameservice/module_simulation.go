@@ -40,6 +40,14 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgSetMinprice int = 100
 
+	opWeightMsgCmpBuy = "op_weight_msg_cmp_buy"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCmpBuy int = 100
+
+	opWeightMsgCmpHostCallback = "op_weight_msg_cmp_host_callback"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCmpHostCallback int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -116,6 +124,28 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgSetMinprice,
 		nameservicesimulation.SimulateMsgSetMinprice(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCmpBuy int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCmpBuy, &weightMsgCmpBuy, nil,
+		func(_ *rand.Rand) {
+			weightMsgCmpBuy = defaultWeightMsgCmpBuy
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCmpBuy,
+		nameservicesimulation.SimulateMsgCmpBuy(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCmpHostCallback int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCmpHostCallback, &weightMsgCmpHostCallback, nil,
+		func(_ *rand.Rand) {
+			weightMsgCmpHostCallback = defaultWeightMsgCmpHostCallback
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCmpHostCallback,
+		nameservicesimulation.SimulateMsgCmpHostCallback(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

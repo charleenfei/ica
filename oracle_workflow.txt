@@ -17,55 +17,60 @@ icad query intertx interchainaccounts connection-0 $WALLET_1 --home ./data/test-
 # Store the interchain account address by parsing the query result: cosmos1hd0f4u7zgptymmrn55h3hy20jv2u0ctdpq23cpe8m9pas8kzd87smtf8al
 export ICA_ADDR=$(icad query intertx interchainaccounts connection-0 $WALLET_1 --home ./data/test-1 --node tcp://localhost:16657 -o json | jq -r '.interchain_account_address') && echo $ICA_ADDR
 
-# On host chain, setup default minimum price to accept order (100)
-icad tx nameservice set-minprice 100  --chain-id test-2 --home ./data/test-2 --keyring-backend test --from $WALLET_1
-icad q nameservice show-testmin --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
-
 # Show that there is no name registered
 icad q nameservice list-whois --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
+
+
 
 # submit ICA tx to register a name domain under ICA address with bid = 200
 icad tx intertx submit \
 "{
-    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgBuyName\",
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
     \"creator\": \"$ICA_ADDR\",
-    \"name\":\"inter_chain_acount_bid200\",
-    \"bid\":\"200\"
+    \"name\":\"test.com\",
+    \"bid\":\"200\",
+    \"metadata\":\"test_meta_data\"
 }" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# show that it's confirmed on host chain
+
+# show that it's pending on host chain
+icad q nameservice list-pending-buy --node tcp://localhost:26657
+# show that it's not confirmed on host chain
+icad q nameservice list-whois --node tcp://localhost:26657
+
+# Automatic oracle listen to event: to be implemented
+# Manual alternative
+# On host chain, use oracle to callback host module and say NO / reject the buy
+icad tx nameservice cmp-host-callback test.com:::$ICA_ADDR NO --chain-id test-2 --home ./data/test-2 --keyring-backend test --from $WALLET_2
+
+
+# show that it's cleared on host chain
+icad q nameservice list-pending-buy --node tcp://localhost:26657
 icad q nameservice list-whois --node tcp://localhost:26657
 
 
-# On host chain, Control the minimum price to accept order larger than 1000
-icad tx nameservice set-minprice 1000  --chain-id test-2 --home ./data/test-2 --keyring-backend test --from $WALLET_1
-icad q nameservice show-testmin --node tcp://localhost:26657
-
-# submit ICA tx to register a name domain under ICA address with bid = 500
+# submit the same ICA tx to register a name domain under ICA address with bid = 200
 icad tx intertx submit \
 "{
-    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgBuyName\",
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
     \"creator\": \"$ICA_ADDR\",
-    \"name\":\"inter_chain_acount_bid500\",
-    \"bid\":\"500\"
+    \"name\":\"test.com\",
+    \"bid\":\"200\",
+    \"metadata\":\"test_meta_data\"
 }" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# show that it's rejected on host chain, only the old record is in the list
+# show that it's pending on host chain
+icad q nameservice list-pending-buy --node tcp://localhost:26657
+# show that it's not confirmed on host chain
 icad q nameservice list-whois --node tcp://localhost:26657
 
+# On host chain, use oracle to callback host module and say NO / reject the buy
+icad tx nameservice cmp-host-callback test.com:::$ICA_ADDR YES --chain-id test-2 --home ./data/test-2 --keyring-backend test --from $WALLET_2
 
 
-# submit another ICA tx to register a name domain under ICA address with bid = 5000
-icad tx intertx submit \
-"{
-    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgBuyName\",
-    \"creator\": \"$ICA_ADDR\",
-    \"name\":\"inter_chain_acount_bid5000\",
-    \"bid\":\"5000\"
-}" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
-
-# show that it's accepted on host chain, two records
-icad q nameservice list-whois --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
+# show that it's accepted on host chain
+icad q nameservice list-pending-buy --node tcp://localhost:26657
+icad q nameservice list-whois --node tcp://localhost:26657
 
 
 // Event sub

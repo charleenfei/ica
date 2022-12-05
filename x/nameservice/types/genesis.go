@@ -10,8 +10,9 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		WhoisList: []Whois{},
-		Testmin:   nil,
+		WhoisList:      []Whois{},
+		Testmin:        nil,
+		PendingBuyList: []PendingBuy{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -29,6 +30,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for whois")
 		}
 		whoisIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in pendingBuy
+	pendingBuyIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.PendingBuyList {
+		index := string(PendingBuyKey(elem.Index))
+		if _, ok := pendingBuyIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for pendingBuy")
+		}
+		pendingBuyIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

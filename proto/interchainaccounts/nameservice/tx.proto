@@ -11,6 +11,8 @@ service Msg {
   rpc SetName(MsgSetName) returns (MsgSetNameResponse);
   rpc DeleteName(MsgDeleteName) returns (MsgDeleteNameResponse);
   rpc SetMinprice(MsgSetMinprice) returns (MsgSetMinpriceResponse);
+  rpc CmpBuy(MsgCmpBuy) returns (MsgCmpBuyResponse);
+  rpc CmpHostCallback(MsgCmpHostCallback) returns (MsgCmpHostCallbackResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -46,6 +48,25 @@ message MsgSetMinprice {
 }
 
 message MsgSetMinpriceResponse {
+}
+
+message MsgCmpBuy {
+  string creator = 1;
+  string name = 2;
+  string bid = 3;
+  string metadata = 4;
+}
+
+message MsgCmpBuyResponse {
+}
+
+message MsgCmpHostCallback {
+  string creator = 1;
+  string request = 2;
+  string result = 3;
+}
+
+message MsgCmpHostCallbackResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

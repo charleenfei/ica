@@ -7,6 +7,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "interchainaccounts/nameservice/params.proto";
 import "interchainaccounts/nameservice/whois.proto";
 import "interchainaccounts/nameservice/testmin.proto";
+import "interchainaccounts/nameservice/pending_buy.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/cosmos/interchain-accounts/x/nameservice/types";
@@ -31,6 +32,16 @@ service Query {
 	rpc Testmin(QueryGetTestminRequest) returns (QueryGetTestminResponse) {
 		option (google.api.http).get = "/cosmos/interchain-accounts/nameservice/testmin";
 	}
+// Queries a PendingBuy by index.
+	rpc PendingBuy(QueryGetPendingBuyRequest) returns (QueryGetPendingBuyResponse) {
+		option (google.api.http).get = "/cosmos/interchain-accounts/nameservice/pending_buy/{index}";
+	}
+
+	// Queries a list of PendingBuy items.
+	rpc PendingBuyAll(QueryAllPendingBuyRequest) returns (QueryAllPendingBuyResponse) {
+		option (google.api.http).get = "/cosmos/interchain-accounts/nameservice/pending_buy";
+	}
+
 // this line is used by starport scaffolding # 2
 }
 
@@ -66,4 +77,22 @@ message QueryGetTestminRequest {}
 message QueryGetTestminResponse {
 	Testmin Testmin = 1 [(gogoproto.nullable) = false];
 }
+message QueryGetPendingBuyRequest {
+	  string index = 1;
+
+}
+
+message QueryGetPendingBuyResponse {
+	PendingBuy pendingBuy = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllPendingBuyRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllPendingBuyResponse {
+	repeated PendingBuy pendingBuy = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
 // this line is used by starport scaffolding # 3
