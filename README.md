@@ -38,6 +38,21 @@ cd relayer && git checkout v2.0.0-rc4
 make install
 ```
 
+## For CMP Demo
+Follow the steps in [end_to_end_workflow.txt](https://github.com/sbip-sg/interchain-accounts-demo/blob/nameservice-end-to-end/end_to_end_workflow.txt)
+
+---
+
+### Document to be updated 
+
+---
+---
+---
+
+
+
+## For the original ICA demo
+
 3. Bootstrap two chains, configure the relayer and create an IBC connection (on top of clients that are created as well)
 ```bash
 # hermes
