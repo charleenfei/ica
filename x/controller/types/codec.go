@@ -11,6 +11,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgRegister{}, "controller/Register", nil)
 	cdc.RegisterConcrete(&MsgRegisterIca{}, "controller/RegisterIca", nil)
 	cdc.RegisterConcrete(&MsgSubmitTx{}, "controller/SubmitTx", nil)
+	cdc.RegisterConcrete(&MsgCmpControllerPush{}, "controller/CmpControllerPush", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -23,6 +24,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgSubmitTx{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCmpControllerPush{},
 	)
 	// this line is used by starport scaffolding # 3
 

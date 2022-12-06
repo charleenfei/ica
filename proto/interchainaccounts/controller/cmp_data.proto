@@ -1,0 +1,14 @@
+syntax = "proto3";
+package cosmos.interchainaccounts.controller;
+
+option go_package = "github.com/cosmos/interchain-accounts/x/controller/types";
+
+message CmpData {
+  string index = 1; 
+  string account = 2; 
+  string kyc = 3; 
+  string investorType = 4; 
+  string metadata = 5; 
+  
+}
+
