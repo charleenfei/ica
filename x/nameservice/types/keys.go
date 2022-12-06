@@ -15,7 +15,7 @@ const (
 
 	// For event emitting
 	CmpHostRequestEventType    = "cmp-host-request" // Indicates what event type to listen to
-	CmpHostRequestEventCreator = "creator"          // Subsidiary information
+	CmpHostRequestEventCreator = "request-creator"  // Subsidiary information
 	CmpHostRequestEventId      = "request-id"       // which request if multiple requests happened
 	CmpHostRequestItem         = "request-item"     // Is it relevant to me?
 	CmpHostRequestBid          = "request-bid"      // Is it relevant to me?

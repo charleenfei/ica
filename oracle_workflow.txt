@@ -2,11 +2,18 @@ make install
 make init-golang-rly
 make start-golang-rly
 
+# open new terminal
+# install pip package if not yet installed : pip3 install -r oracle/requirements.txt
+# start oracle service
+make start-oracle
+
+# open new terminal
 # Store the following account addresses within the current shell env
 export WALLET_1=$(icad keys show wallet1 -a --keyring-backend test --home ./data/test-1) && echo $WALLET_1;
 export WALLET_2=$(icad keys show wallet2 -a --keyring-backend test --home ./data/test-1) && echo $WALLET_2;
 export WALLET_3=$(icad keys show wallet3 -a --keyring-backend test --home ./data/test-2) && echo $WALLET_3;
 export WALLET_4=$(icad keys show wallet4 -a --keyring-backend test --home ./data/test-2) && echo $WALLET_4;
+
 
 #setup ICA account from controller chain (chain 1 id test-1)
 icad tx intertx register --from $WALLET_1 --connection-id connection-0 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test --timeout-height 1000
@@ -21,65 +28,81 @@ export ICA_ADDR=$(icad query intertx interchainaccounts connection-0 $WALLET_1 -
 icad q nameservice list-whois --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
 
 
-
-# submit ICA tx to register a name domain under ICA address with bid = 200
+# workflow 1 : banned domain cannot be bought
+# default configuration, ".country-x" domain is banned
+# submit ICA tx to register a name domain ".country-x" under ICA address with bid = 200
 icad tx intertx submit \
 "{
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
     \"creator\": \"$ICA_ADDR\",
-    \"name\":\"test.com\",
+    \"name\":\"testdomain.country-x\",
     \"bid\":\"200\",
     \"metadata\":\"test_meta_data\"
 }" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-
-# show that it's pending on host chain
-icad q nameservice list-pending-buy --node tcp://localhost:26657
-# show that it's not confirmed on host chain
+# show that it's blank on list-whois
 icad q nameservice list-whois --node tcp://localhost:26657
 
-# Automatic oracle listen to event: to be implemented
-# Manual alternative
-# On host chain, use oracle to callback host module and say NO / reject the buy
-icad tx nameservice cmp-host-callback test.com:::$ICA_ADDR NO --chain-id test-2 --home ./data/test-2 --keyring-backend test --from $WALLET_2
+# remove ".country-x" from the banned entries in the offchain file : cmp_config.json
+# the banned entries should become like this "banned": [".xyz", ".abc", ".region-y"],
 
-
-# show that it's cleared on host chain
-icad q nameservice list-pending-buy --node tcp://localhost:26657
-icad q nameservice list-whois --node tcp://localhost:26657
-
-
-# submit the same ICA tx to register a name domain under ICA address with bid = 200
+# submit ICA the same tx to register a name domain ".country-x" again, this time it is not banned
 icad tx intertx submit \
 "{
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
     \"creator\": \"$ICA_ADDR\",
-    \"name\":\"test.com\",
+    \"name\":\"testdomain.country-x\",
     \"bid\":\"200\",
     \"metadata\":\"test_meta_data\"
 }" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# show that it's pending on host chain
-icad q nameservice list-pending-buy --node tcp://localhost:26657
-# show that it's not confirmed on host chain
-icad q nameservice list-whois --node tcp://localhost:26657
-
-# On host chain, use oracle to callback host module and say NO / reject the buy
-icad tx nameservice cmp-host-callback test.com:::$ICA_ADDR YES --chain-id test-2 --home ./data/test-2 --keyring-backend test --from $WALLET_2
-
-
-# show that it's accepted on host chain
-icad q nameservice list-pending-buy --node tcp://localhost:26657
+# show that the name is bought
 icad q nameservice list-whois --node tcp://localhost:26657
 
 
-// Event sub
-ws://localhost:26657/websocket
-{
-   "jsonrpc": "2.0",
-   "method": "subscribe",
-   "id": 0,
-   "params": {
-      "query":"tm.event = 'Tx'"
-   }
-}
+# workflow 2 : Price control, certain domain has certain price range
+# example in the cmp_config.json  ".org": [10,20], meaning domain .org can be bought with price between 10 and 20
+
+# submit ICA the same tx to register a name domain ".org" with bid = 50, out side acceptable range
+icad tx intertx submit \
+"{
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
+    \"creator\": \"$ICA_ADDR\",
+    \"name\":\"testdomain.org\",
+    \"bid\":\"50\",
+    \"metadata\":\"test_meta_data\"
+}" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
+
+# show that it's not accepted, only the domain "testdomain.country-x" was registered
+icad q nameservice list-whois --node tcp://localhost:26657
+
+# Change the cmp_config.json  ".org": [10,200], meaning domain .org can be bought with price between 10 and 200
+# submit the same tx again, this time it should be accepted.
+icad tx intertx submit \
+"{
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
+    \"creator\": \"$ICA_ADDR\",
+    \"name\":\"testdomain.org\",
+    \"bid\":\"50\",
+    \"metadata\":\"test_meta_data\"
+}" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
+
+# show that it's accepted, two domain "testdomain.country-x" and "testdomain.org" were registered
+icad q nameservice list-whois --node tcp://localhost:26657
+
+# What will happens if oracle is offline. Tx will be in pending list and never be cleared
+# Close the oracle process `oracle/simple_oracle.py` earlier
+
+icad tx intertx submit \
+"{
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
+    \"creator\": \"$ICA_ADDR\",
+    \"name\":\"my_domain.com\",
+    \"bid\":\"50\",
+    \"metadata\":\"test_meta_data\"
+}" --connection-id connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
+
+# show that it's not accepted, only two domain "testdomain.country-x" and "testdomain.org" were registered
+icad q nameservice list-whois --node tcp://localhost:26657
+# show that there is a pending item waiting for cmp result: item "my_domain.com"
+icad q nameservice list-pending-buy --node tcp://localhost:26657
