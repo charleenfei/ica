@@ -26,16 +26,28 @@ func (k msgServer) CmpHostCallback(goCtx context.Context, msg *types.MsgCmpHostC
 	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Unauthorized action, only authorized oracle can callback")
 	// }
 
+	serverName := pendingBuy.Name
+
 	// Execute logic of the CMP protocol, yes/no
 	if msg.Result == "OK" || msg.Result == "YES" {
+/*		pendingSell, isFound := k.GetPendingSell(ctx, serverName)
+		if (isFound) {
+			oldOwner, ownerFound := k.GetWhois(ctx, serverName)
+			if (!ownerFound) {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Name is not registered but being sold")
+			} 
+		} else {
+		} */
+
 		// settle buy name domain
 		newWhois := types.Whois{
-			Index: pendingBuy.Name,
-			Name:  pendingBuy.Name,
+			Index: serverName,
+			Name:  serverName,
 			Value: "Test ICA value",
 			Price: pendingBuy.Price,
 			Owner: pendingBuy.Owner,
 		}
+
 		k.SetWhois(ctx, newWhois)
 	}
 
