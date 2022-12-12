@@ -27,13 +27,13 @@ func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.M
 
 	buyPrice, err := strconv.Atoi(msg.Bid)
 	if (err != nil) {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Buy price is not int")
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Buy price is not int: " + err.Error())
 	}
 
 	if (isFound) {
 		sellPrice, err := strconv.Atoi(pendingSell.Price)
 		if (err != nil) {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Sell price is not int")
+			return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Sell price is not int: " + err.Error())
 		}
 
 		if (buyPrice < sellPrice) {

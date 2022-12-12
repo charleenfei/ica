@@ -30,14 +30,32 @@ func (k msgServer) CmpHostCallback(goCtx context.Context, msg *types.MsgCmpHostC
 
 	// Execute logic of the CMP protocol, yes/no
 	if msg.Result == "OK" || msg.Result == "YES" {
-/*		pendingSell, isFound := k.GetPendingSell(ctx, serverName)
-		if (isFound) {
-			oldOwner, ownerFound := k.GetWhois(ctx, serverName)
+		_, sellerFound := k.GetPendingSell(ctx, serverName)
+		if (sellerFound) {
+			whois, ownerFound := k.GetWhois(ctx, serverName)
 			if (!ownerFound) {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Name is not registered but being sold")
-			} 
-		} else {
-		} */
+			}
+
+			oldOwner := whois.Owner
+
+			toAddr, err := sdk.AccAddressFromBech32(oldOwner)
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Invalid address: " + err.Error())
+			}
+
+			fromAddr, err := sdk.AccAddressFromBech32(pendingBuy.Owner)
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Invalid address: " + err.Error())
+			}
+
+			coins, err := sdk.ParseCoinsNormalized(pendingBuy.Price + "stakes")
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Cannot parse coins: " + err.Error())
+			}
+
+			k.bankKeeper.SendCoins(ctx, fromAddr, toAddr, coins)
+		}
 
 		// settle buy name domain
 		newWhois := types.Whois{
