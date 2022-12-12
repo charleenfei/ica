@@ -49,7 +49,7 @@ func (k msgServer) CmpHostCallback(goCtx context.Context, msg *types.MsgCmpHostC
 				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Invalid address: " + err.Error())
 			}
 
-			coins, err := sdk.ParseCoinsNormalized(pendingBuy.Price + "stakes")
+			coins, err := sdk.ParseCoinsNormalized(pendingBuy.Price + "stake")
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Cannot parse coins: " + err.Error())
 			}
