@@ -53,6 +53,7 @@ func (k msgServer) CmpHostCallback(goCtx context.Context, msg *types.MsgCmpHostC
 			}
 
 			k.bankKeeper.SendCoins(ctx, fromAddr, toAddr, coins)
+			k.RemovePendingSell(ctx, serverName)
 		}
 
 		// settle buy name domain
