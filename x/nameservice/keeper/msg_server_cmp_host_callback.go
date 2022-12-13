@@ -30,16 +30,14 @@ func (k msgServer) CmpHostCallback(goCtx context.Context, msg *types.MsgCmpHostC
 
 	// Execute logic of the CMP protocol, yes/no
 	if msg.Result == "OK" || msg.Result == "YES" {
-		_, sellerFound := k.GetPendingSell(ctx, serverName)
-		if (sellerFound) {
-			whois, ownerFound := k.GetWhois(ctx, serverName)
-			if (!ownerFound) {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Name is not registered but being sold")
+		whois, ownerFound := k.GetWhois(ctx, serverName)
+		if (ownerFound) {
+			_, isSelling := k.GetPendingSell(ctx, serverName)
+			if !isSelling {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Name owner is not selling")
 			}
 
-			oldOwner := whois.Owner
-
-			toAddr, err := sdk.AccAddressFromBech32(oldOwner)
+			toAddr, err := sdk.AccAddressFromBech32(whois.Owner)
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Invalid address: " + err.Error())
 			}
