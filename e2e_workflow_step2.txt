@@ -39,8 +39,6 @@ icad q bank balances $ICA_ADDR_2
 icad tx bank send $WALLET_3 $ICA_ADDR_2 10000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y
 icad q bank balances $ICA_ADDR_2
 
-icad q nameservice list-pending-sell
-
 # $WALLET_2 tries to buy the name from $WALLET_1. He can't with too low bid! (105 < 110)
 # Check with list-whois and tx log
 icad tx controller submit-tx "{
@@ -51,10 +49,7 @@ icad tx controller submit-tx "{
     \"metadata\":\"test\"
 }" connection-0 --from $WALLET_2 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-icad q nameservice list-pending-sell
-
 # $WALLET_2 can buy the name from $WALLET_1 with a bid of 140 (stake)
-
 icad tx controller submit-tx "{
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
     \"creator\": \"$ICA_ADDR_2\",
@@ -63,7 +58,7 @@ icad tx controller submit-tx "{
     \"metadata\":\"test\"
 }" connection-0 --from $WALLET_2 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# Check that the tx is successful
+# Check that the tx is successful, since he bids 140, it is the price (can be changed to sell price if needed)
 icad q nameservice list-pending-sell
 icad q nameservice list-whois
 icad q bank balances $ICA_ADDR
