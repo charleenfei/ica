@@ -120,11 +120,11 @@ proto-update-deps:
 ###                                Initialize                               ###
 ###############################################################################
 
-init-hermes: kill-dev install 
+init-hermes: kill-dev install
 	@echo "Initializing both blockchains..."
 	./network/init.sh
 	./network/start.sh
-	@echo "Initializing relayer..." 
+	@echo "Initializing relayer..."
 	./network/hermes/restore-keys.sh
 	./network/hermes/create-conn.sh
 
@@ -135,7 +135,7 @@ init-golang-rly: kill-dev install
 	@echo "Initializing relayer..."
 	./network/relayer/interchain-acc-config/rly-init.sh
 
-start: 
+start:
 	@echo "Starting up test network"
 	./network/start.sh
 
@@ -144,6 +144,9 @@ start-hermes:
 
 start-golang-rly:
 	./network/relayer/interchain-acc-config/rly-start.sh
+
+start-oracle:
+	./oracle/run_oracle.sh
 
 kill-dev:
 	@echo "Killing icad and removing previous data"

@@ -1,0 +1,59 @@
+syntax = "proto3";
+package cosmos.interchainaccounts.controller;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "interchainaccounts/controller/params.proto";
+import "interchainaccounts/controller/cmp_data.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/cosmos/interchain-accounts/x/controller/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // Parameters queries the parameters of the module.
+  rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
+    option (google.api.http).get = "/cosmos/interchain-accounts/controller/params";
+  }
+  // Queries a CmpData by index.
+	rpc CmpData(QueryGetCmpDataRequest) returns (QueryGetCmpDataResponse) {
+		option (google.api.http).get = "/cosmos/interchain-accounts/controller/cmp_data/{index}";
+	}
+
+	// Queries a list of CmpData items.
+	rpc CmpDataAll(QueryAllCmpDataRequest) returns (QueryAllCmpDataResponse) {
+		option (google.api.http).get = "/cosmos/interchain-accounts/controller/cmp_data";
+	}
+
+// this line is used by starport scaffolding # 2
+}
+
+// QueryParamsRequest is request type for the Query/Params RPC method.
+message QueryParamsRequest {}
+
+// QueryParamsResponse is response type for the Query/Params RPC method.
+message QueryParamsResponse {
+  // params holds all the parameters of this module.
+  Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetCmpDataRequest {
+	  string index = 1;
+
+}
+
+message QueryGetCmpDataResponse {
+	CmpData cmpData = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllCmpDataRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllCmpDataResponse {
+	repeated CmpData cmpData = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+// this line is used by starport scaffolding # 3

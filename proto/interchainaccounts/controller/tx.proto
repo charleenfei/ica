@@ -1,0 +1,54 @@
+syntax = "proto3";
+package cosmos.interchainaccounts.controller;
+import "google/protobuf/any.proto";
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/cosmos/interchain-accounts/x/controller/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc Register(MsgRegister) returns (MsgRegisterResponse);
+  rpc RegisterIca(MsgRegisterIca) returns (MsgRegisterIcaResponse);
+  rpc SubmitTx(MsgSubmitTx) returns (MsgSubmitTxResponse);
+  rpc CmpControllerPush(MsgCmpControllerPush) returns (MsgCmpControllerPushResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgRegister {
+  string creator = 1;
+  string testparam = 2;
+}
+
+message MsgRegisterResponse {
+}
+
+message MsgRegisterIca {
+  string creator = 1;
+  string connectionId = 2;
+  string timeoutHeight = 3;
+}
+
+message MsgRegisterIcaResponse {
+}
+
+message MsgSubmitTx {
+  string creator = 1;
+  string connectionId = 2;
+  google.protobuf.Any msg = 3;
+}
+
+message MsgSubmitTxResponse {
+}
+
+message MsgCmpControllerPush {
+  string creator = 1;
+  string account = 2;
+  string kyc = 3;
+  string investorType = 4;
+  string metadata = 5;
+}
+
+message MsgCmpControllerPushResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

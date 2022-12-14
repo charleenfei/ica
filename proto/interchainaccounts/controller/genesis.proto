@@ -1,0 +1,16 @@
+syntax = "proto3";
+package cosmos.interchainaccounts.controller;
+
+import "gogoproto/gogo.proto";
+import "interchainaccounts/controller/params.proto";
+import "interchainaccounts/controller/cmp_data.proto";
+// this line is used by starport scaffolding # genesis/proto/import
+
+option go_package = "github.com/cosmos/interchain-accounts/x/controller/types";
+
+// GenesisState defines the controller module's genesis state.
+message GenesisState {
+  Params params = 1 [(gogoproto.nullable) = false];
+  repeated CmpData cmpDataList = 2 [(gogoproto.nullable) = false];
+  // this line is used by starport scaffolding # genesis/proto/state
+}

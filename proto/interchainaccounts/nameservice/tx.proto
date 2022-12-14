@@ -1,0 +1,72 @@
+syntax = "proto3";
+package cosmos.interchainaccounts.nameservice;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/cosmos/interchain-accounts/x/nameservice/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc BuyName(MsgBuyName) returns (MsgBuyNameResponse);
+  rpc SetName(MsgSetName) returns (MsgSetNameResponse);
+  rpc DeleteName(MsgDeleteName) returns (MsgDeleteNameResponse);
+  rpc SetMinprice(MsgSetMinprice) returns (MsgSetMinpriceResponse);
+  rpc CmpBuy(MsgCmpBuy) returns (MsgCmpBuyResponse);
+  rpc CmpHostCallback(MsgCmpHostCallback) returns (MsgCmpHostCallbackResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgBuyName {
+  string creator = 1;
+  string name = 2;
+  string bid = 3;
+}
+
+message MsgBuyNameResponse {
+}
+
+message MsgSetName {
+  string creator = 1;
+  string name = 2;
+  string value = 3;
+}
+
+message MsgSetNameResponse {
+}
+
+message MsgDeleteName {
+  string creator = 1;
+  string name = 2;
+}
+
+message MsgDeleteNameResponse {
+}
+
+message MsgSetMinprice {
+  string creator = 1;
+  string price = 2;
+}
+
+message MsgSetMinpriceResponse {
+}
+
+message MsgCmpBuy {
+  string creator = 1;
+  string name = 2;
+  string bid = 3;
+  string metadata = 4;
+}
+
+message MsgCmpBuyResponse {
+}
+
+message MsgCmpHostCallback {
+  string creator = 1;
+  string request = 2;
+  string result = 3;
+}
+
+message MsgCmpHostCallbackResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

@@ -1,0 +1,15 @@
+syntax = "proto3";
+package cosmos.interchainaccounts.nameservice;
+
+option go_package = "github.com/cosmos/interchain-accounts/x/nameservice/types";
+
+message PendingBuy {
+  string index = 1; 
+  string name = 2; 
+  string value = 3; 
+  string price = 4; 
+  string owner = 5; 
+  string metadata = 6; 
+  
+}
+

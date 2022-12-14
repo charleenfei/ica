@@ -1,0 +1,6 @@
+{
+    "@type":"/cosmos.interchainaccounts.nameservice.MsgBuyName",
+    "creator": "cosmos178vng4w7xhnygtr8f9xwe5frwys8qfxcnjav6r8zqd43w2ncctkq0gqhl0",
+    "name":"test_inter_chain_acount",
+    "bid":"10stake",
+}

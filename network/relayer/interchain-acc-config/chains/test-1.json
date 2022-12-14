@@ -11,10 +11,10 @@
     "gas-adjustment": 1.5,
     "gas-prices": "0.025stake",
     "debug": true,
-    "timeout": "10s",
+    "timeout": "30s",
     "output-format": "json",
     "sign-mode": "direct",
-    "trusting-period": "330h",
+    "trusting-period": "3300h",
     "gas":900000
   }
 }

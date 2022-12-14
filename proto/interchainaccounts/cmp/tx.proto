@@ -1,0 +1,43 @@
+syntax = "proto3";
+package cosmos.interchainaccounts.cmp;
+
+import "interchainaccounts/cmp/account_address.proto";
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/cosmos/interchain-accounts/x/cmp/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc CreateAccountAddress(MsgCreateAccountAddress) returns (MsgCreateAccountAddressResponse);
+  rpc UpdateAccountAddress(MsgUpdateAccountAddress) returns (MsgUpdateAccountAddressResponse);
+  rpc DeleteAccountAddress(MsgDeleteAccountAddress) returns (MsgDeleteAccountAddressResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgCreateAccountAddress {
+  string creator = 1;
+  string index = 2;
+
+  string name = 3;
+  string gender = 4;
+  uint64 birthYear = 5;
+}
+message MsgCreateAccountAddressResponse {}
+
+message MsgUpdateAccountAddress {
+  string creator = 1;
+  string index = 2;
+
+  string name = 3;
+  string gender = 4;
+  uint64 birthYear = 5;
+}
+message MsgUpdateAccountAddressResponse {}
+
+message MsgDeleteAccountAddress {
+  string creator = 1;
+  string index = 2;
+}
+message MsgDeleteAccountAddressResponse {}
+
+// this line is used by starport scaffolding # proto/tx/message
