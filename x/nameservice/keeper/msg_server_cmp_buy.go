@@ -23,21 +23,31 @@ func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.M
 		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "The same pending buy already exists")
 	}
 
-	pendingSell, isFound := k.GetPendingSell(ctx, msg.Name)
-
 	buyPrice, err := strconv.Atoi(msg.Bid)
-	if (err != nil) {
+	if err != nil {
 		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Buy price is not int: " + err.Error())
 	}
 
-	if (isFound) {
+	pendingSell, isFound := k.GetPendingSell(ctx, msg.Name)
+
+	if isFound {
 		sellPrice, err := strconv.Atoi(pendingSell.Price)
-		if (err != nil) {
+		if err != nil {
 			return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Sell price is not int: " + err.Error())
 		}
 
-		if (buyPrice < sellPrice) {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFee, "Bid price is too low")
+		if buyPrice != sellPrice {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFee, "Bid price does not match sell price")
+		}
+
+		coins, err := sdk.ParseCoinsNormalized(pendingSell.Price + "stake")
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Cannot parse sell price: " + err.Error())
+		}
+
+		err = k.bankKeeper.SendCoinsFromAccountToModule(ctx, buyer, types.ModuleName, coins)
+		if err != nil {
+			return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Could not send coins from buyer to module")
 		}
 	}
 
@@ -49,6 +59,7 @@ func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.M
 		Owner:    buyer.String(),
 		Metadata: msg.Metadata,
 	}
+
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.CmpHostRequestEventType,

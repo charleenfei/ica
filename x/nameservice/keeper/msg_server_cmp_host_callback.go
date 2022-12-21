@@ -32,7 +32,7 @@ func (k msgServer) CmpHostCallback(goCtx context.Context, msg *types.MsgCmpHostC
 	if msg.Result == "OK" || msg.Result == "YES" {
 		whois, ownerFound := k.GetWhois(ctx, serverName)
 		if (ownerFound) {
-			_, isSelling := k.GetPendingSell(ctx, serverName)
+			pendingSell, isSelling := k.GetPendingSell(ctx, serverName)
 			if !isSelling {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Name owner is not selling")
 			}
@@ -42,17 +42,16 @@ func (k msgServer) CmpHostCallback(goCtx context.Context, msg *types.MsgCmpHostC
 				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Invalid address: " + err.Error())
 			}
 
-			fromAddr, err := sdk.AccAddressFromBech32(pendingBuy.Owner)
-			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Invalid address: " + err.Error())
-			}
-
-			coins, err := sdk.ParseCoinsNormalized(pendingBuy.Price + "stake")
+			coins, err := sdk.ParseCoinsNormalized(pendingSell.Price + "stake")
 			if err != nil {
 				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Cannot parse coins: " + err.Error())
 			}
 
-			k.bankKeeper.SendCoins(ctx, fromAddr, toAddr, coins)
+			err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, toAddr, coins)
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Could not send coins from module to seller: " + err.Error())
+			}
+
 			k.RemovePendingSell(ctx, serverName)
 		}
 
