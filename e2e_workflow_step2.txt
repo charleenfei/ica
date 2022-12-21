@@ -1,5 +1,18 @@
 # After list-whois shows test.controller.com belongs to $ICA_ADDR
 # workflow B1: 
+
+# Create an interchain account for $WALLET_2
+icad tx intertx register --from $WALLET_2 --connection-id connection-0 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test
+export ICA_ADDR_2=$(icad query intertx interchainaccounts connection-0 $WALLET_2 --home ./data/test-1 --node tcp://localhost:16657 -o json | jq -r '.interchain_account_address') && echo $ICA_ADDR_2
+
+# Fund the interchain accounts
+icad q bank balances $ICA_ADDR
+icad tx bank send $WALLET_3 $ICA_ADDR 10000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y
+icad q bank balances $ICA_ADDR
+icad q bank balances $ICA_ADDR_2
+icad tx bank send $WALLET_3 $ICA_ADDR_2 10000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y
+icad q bank balances $ICA_ADDR_2
+
 # $WALLET_1 puts the name up for sale. It will show up in command "icad q nameservice list-pending-sell"
 icad tx controller submit-tx "{
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpSell\",
@@ -18,9 +31,10 @@ icad tx controller submit-tx "{
     \"metadata\":\"test_meta_data\"
 }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# Create an interchain account for $WALLET_2
-icad tx intertx register --from $WALLET_2 --connection-id connection-0 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test
-export ICA_ADDR_2=$(icad query intertx interchainaccounts connection-0 $WALLET_2 --home ./data/test-1 --node tcp://localhost:16657 -o json | jq -r '.interchain_account_address') && echo $ICA_ADDR_2
+# Submit KYC info for WALLET_2
+# If you don't do this, WALLET_2 won't be able to send interchain transactions
+icad tx controller cmp-controller-push $WALLET_2 true retail test_meta_data --from $WALLET_2 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
+icad q controller list-cmp-data --node tcp://localhost:16657
 
 # Optional test: $WALLET_2 can also buy a name if he wants
 icad tx controller submit-tx "{
@@ -31,25 +45,8 @@ icad tx controller submit-tx "{
     \"metadata\":\"test\"
 }" connection-0 --from $WALLET_2 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# Fund the interchain accounts
-icad q bank balances $ICA_ADDR
-icad tx bank send $WALLET_3 $ICA_ADDR 10000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y
-icad q bank balances $ICA_ADDR
-icad q bank balances $ICA_ADDR_2
-icad tx bank send $WALLET_3 $ICA_ADDR_2 10000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y
-icad q bank balances $ICA_ADDR_2
-
-# $WALLET_2 tries to buy the name from $WALLET_1. He can't with too low bid! (105 < 110)
+# $WALLET_2 tries to buy the name from $WALLET_1. He can't with the wrong bid! (140 != 110)
 # Check with list-whois and tx log
-icad tx controller submit-tx "{
-    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
-    \"creator\": \"$ICA_ADDR_2\",
-    \"name\":\"testcontroller.com\",
-    \"bid\":\"105\",
-    \"metadata\":\"test\"
-}" connection-0 --from $WALLET_2 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
-
-# $WALLET_2 can buy the name from $WALLET_1 with a bid of 140 (stake)
 icad tx controller submit-tx "{
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
     \"creator\": \"$ICA_ADDR_2\",
@@ -58,8 +55,18 @@ icad tx controller submit-tx "{
     \"metadata\":\"test\"
 }" connection-0 --from $WALLET_2 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# Check that the tx is successful, since he bids 140, it is the price (can be changed to sell price if needed)
+# $WALLET_2 can buy the name from $WALLET_1 with the correct bid of 110 (stake)
+icad tx controller submit-tx "{
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
+    \"creator\": \"$ICA_ADDR_2\",
+    \"name\":\"testcontroller.com\",
+    \"bid\":\"110\",
+    \"metadata\":\"test\"
+}" connection-0 --from $WALLET_2 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
+
+# Check that the tx is successful
 icad q nameservice list-pending-sell
+icad q nameservice list-pending-buy
 icad q nameservice list-whois
 icad q bank balances $ICA_ADDR
 icad q bank balances $ICA_ADDR_2
