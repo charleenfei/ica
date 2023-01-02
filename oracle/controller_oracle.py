@@ -2,13 +2,13 @@
 The reference request / response model:
 https://docs.chain.link/architecture-overview/architecture-request-model
 
-This oracle service will listen on cosmos blockchain websocket for events with CmpHostEventPrefix
+This oracle service will listen on cosmos blockchain websocket for events with CmpControllerEventPrefix
 When there is interesting events (CMP related), the oracle service will:
     1. Parse these event and read an off-chain json file in CMP_CONFIG_FILE
     2. Call check_cmp_logic() to check the request info against the off-chain cmp config -> OK/REJECT:
         - Proof of concept cmp logic : Banned list + price range for item categories (domain names)
         - Change of the CMP_CONFIG_FILE will take effect for all subsequent transactions
-    3. The return YES/NO reply is submitted to the blockchain with host_cmp_callback()
+    3. The return YES/NO reply is submitted to the blockchain with controller_cmp_callback()
 """
 import websocket
 # from threading import Thread
@@ -22,17 +22,15 @@ from shlex import quote
 
 # file path for configuring CMP logic
 CMP_CONFIG_FILE = "oracle/cmp_config.json"
-
+CONTROLLER_NODE = "tcp://localhost:16657"
 # For websocket subscription of events
 ws_params = {"jsonrpc": "2.0", "method": "subscribe", "id": 0, "params": {"query": "tm.event = 'Tx'"}}
 
 # from module's keys.go, string constants of the cmp events and attributes
-CmpHostEventPrefix = "cmp--request"
-CmpHostCreator = "cmp-host-request.request-creator"
-CmpHostId = "cmp-host-request.request-id"
-CmpHostItem = "cmp-host-request.request-item"
-CmpHostBid = "cmp-host-request.request-bid"
-CmpHostMetaData = "cmp-host-request.request-metadata"
+CmpControllerEventPrefix = "cmp-controller-request"
+CmpControllerCreator = CmpControllerEventPrefix+".request-creator"
+CmpControllerId = CmpControllerEventPrefix+".request-id"
+CmpControllerMetaData = CmpControllerEventPrefix+".request-metadata"
 
 # when ws receive message, logic of parsing events is here
 def on_message(ws, message):
@@ -42,13 +40,12 @@ def on_message(ws, message):
     if "result" in message and "events" in message["result"]:
         cmp_event = {}
         for event, event_attribute in message["result"]["events"].items():
-            if CmpHostEventPrefix in event:
+            if CmpControllerEventPrefix in event:
                 cmp_event[event] = event_attribute[0]
                 print(event, event_attribute[0])
             if "tx.hash" in event:
                 print(event, event_attribute[0])
-        if CmpHostId in cmp_event:
-
+        if CmpControllerId in cmp_event:
             # cmp event exist, process logic
             execute_cmp_logic(cmp_event)
     print("*" * 80 + "\n\n")
@@ -60,47 +57,36 @@ def execute_cmp_logic(cmp_event):
     try:
         config = json.load(open(config_path, "r"))
         print(f"Loaded config")
-        pprint.pprint(config, indent=2)
+        pprint.pprint(config.get("user_info"), indent=2)
         if check_cmp_logic(cmp_event, config):
-            host_cmp_callback(cmp_event[CmpHostId], "OK")
+            controller_cmp_callback(cmp_event[CmpControllerId], "OK")
             return
     except Exception as err:
         print("Failed to load config and execute CMP logic: ", err)
-        print("Send NO to host-cmp-module")
+        print("Send NO to controller module")
         pass
-    host_cmp_callback(cmp_event[CmpHostId], "REJECT")
+    controller_cmp_callback(cmp_event[CmpControllerId], "REJECT")
     # Send NO when cannot load config
 
 # check the cmp event against the config, return True/False
 def check_cmp_logic(cmp_event, cmp_config) -> bool:
-    domain_name = "." + cmp_event[CmpHostItem].split(".")[-1]
-    bid = int(cmp_event[CmpHostBid])
-    print(f"Checking Domain {domain_name}, bid {bid}")
+    # domain_name = "." + cmp_event[CmpHostItem].split(".")[-1]
+    user_info = cmp_config.get("user_info").get(cmp_event[CmpControllerCreator])
+    print(f"Checking User {user_info}")
     # check banned / sanction
-    if "banned" in cmp_config:
-        if "." + domain_name.split(".")[-1] in cmp_config["banned"]:
-            print(f"Domain {domain_name} is banned")
-            return False
-
-    # check price range
-    price_range = cmp_config["price_range"]["default"]
-    if domain_name in cmp_config["price_range"]:
-        price_range = cmp_config["price_range"][domain_name]
-
-    if bid < price_range[0] or bid > price_range[1]:
+    if user_info.get("kyc"):
+        return True
+    else:
+        print("User is not verified yet, KYC required")
         return False
 
-    # Optional: extra logic with metadata
-    # meta_data = cmp_event[CmpHostMetaData]
-
-    return True
 
 # get tx command template for submitting the callback to the blockchain
 def get_tx_command(request_id, decision, chain_id, chain_home, oracle_wallet):
     # print(" build tx command ", request_id, decision, chain_id, chain_home, oracle_wallet)
     return (
         f"icad tx controller cmp-controller-callback {request_id} {decision} "
-        f"--chain-id {chain_id} --home {chain_home} --keyring-backend test --from {oracle_wallet} -y"
+        f"--chain-id {chain_id} --home {chain_home} --keyring-backend test --from {oracle_wallet} --node {CONTROLLER_NODE} -y"
     )
 
 # utility to run arbitrary command

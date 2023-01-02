@@ -11,6 +11,7 @@ service Msg {
   rpc RegisterIca(MsgRegisterIca) returns (MsgRegisterIcaResponse);
   rpc SubmitTx(MsgSubmitTx) returns (MsgSubmitTxResponse);
   rpc CmpControllerPush(MsgCmpControllerPush) returns (MsgCmpControllerPushResponse);
+  rpc CmpControllerCallback(MsgCmpControllerCallback) returns (MsgCmpControllerCallbackResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -49,6 +50,15 @@ message MsgCmpControllerPush {
 }
 
 message MsgCmpControllerPushResponse {
+}
+
+message MsgCmpControllerCallback {
+  string creator = 1;
+  string request = 2;
+  string result = 3;
+}
+
+message MsgCmpControllerCallbackResponse {
 }
 
 // this line is used by starport scaffolding # proto/tx/message

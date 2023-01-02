@@ -146,7 +146,7 @@ start-golang-rly:
 	./network/relayer/interchain-acc-config/rly-start.sh
 
 start-oracle:
-	./oracle/run_oracle.sh
+	./oracle/run_oracles.sh
 
 kill-dev:
 	@echo "Killing icad and removing previous data"

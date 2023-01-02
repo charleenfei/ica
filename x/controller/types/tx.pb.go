@@ -420,6 +420,102 @@ func (m *MsgCmpControllerPushResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_MsgCmpControllerPushResponse proto.InternalMessageInfo
 
+type MsgCmpControllerCallback struct {
+	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
+	Request string `protobuf:"bytes,2,opt,name=request,proto3" json:"request,omitempty"`
+	Result  string `protobuf:"bytes,3,opt,name=result,proto3" json:"result,omitempty"`
+}
+
+func (m *MsgCmpControllerCallback) Reset()         { *m = MsgCmpControllerCallback{} }
+func (m *MsgCmpControllerCallback) String() string { return proto.CompactTextString(m) }
+func (*MsgCmpControllerCallback) ProtoMessage()    {}
+func (*MsgCmpControllerCallback) Descriptor() ([]byte, []int) {
+	return fileDescriptor_059aeed03be825ae, []int{8}
+}
+func (m *MsgCmpControllerCallback) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCmpControllerCallback) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCmpControllerCallback.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCmpControllerCallback) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCmpControllerCallback.Merge(m, src)
+}
+func (m *MsgCmpControllerCallback) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCmpControllerCallback) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCmpControllerCallback.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCmpControllerCallback proto.InternalMessageInfo
+
+func (m *MsgCmpControllerCallback) GetCreator() string {
+	if m != nil {
+		return m.Creator
+	}
+	return ""
+}
+
+func (m *MsgCmpControllerCallback) GetRequest() string {
+	if m != nil {
+		return m.Request
+	}
+	return ""
+}
+
+func (m *MsgCmpControllerCallback) GetResult() string {
+	if m != nil {
+		return m.Result
+	}
+	return ""
+}
+
+type MsgCmpControllerCallbackResponse struct {
+}
+
+func (m *MsgCmpControllerCallbackResponse) Reset()         { *m = MsgCmpControllerCallbackResponse{} }
+func (m *MsgCmpControllerCallbackResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgCmpControllerCallbackResponse) ProtoMessage()    {}
+func (*MsgCmpControllerCallbackResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_059aeed03be825ae, []int{9}
+}
+func (m *MsgCmpControllerCallbackResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *MsgCmpControllerCallbackResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_MsgCmpControllerCallbackResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *MsgCmpControllerCallbackResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgCmpControllerCallbackResponse.Merge(m, src)
+}
+func (m *MsgCmpControllerCallbackResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *MsgCmpControllerCallbackResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgCmpControllerCallbackResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_MsgCmpControllerCallbackResponse proto.InternalMessageInfo
+
 func init() {
 	proto.RegisterType((*MsgRegister)(nil), "cosmos.interchainaccounts.controller.MsgRegister")
 	proto.RegisterType((*MsgRegisterResponse)(nil), "cosmos.interchainaccounts.controller.MsgRegisterResponse")
@@ -429,6 +525,8 @@ func init() {
 	proto.RegisterType((*MsgSubmitTxResponse)(nil), "cosmos.interchainaccounts.controller.MsgSubmitTxResponse")
 	proto.RegisterType((*MsgCmpControllerPush)(nil), "cosmos.interchainaccounts.controller.MsgCmpControllerPush")
 	proto.RegisterType((*MsgCmpControllerPushResponse)(nil), "cosmos.interchainaccounts.controller.MsgCmpControllerPushResponse")
+	proto.RegisterType((*MsgCmpControllerCallback)(nil), "cosmos.interchainaccounts.controller.MsgCmpControllerCallback")
+	proto.RegisterType((*MsgCmpControllerCallbackResponse)(nil), "cosmos.interchainaccounts.controller.MsgCmpControllerCallbackResponse")
 }
 
 func init() {
@@ -436,38 +534,42 @@ func init() {
 }
 
 var fileDescriptor_059aeed03be825ae = []byte{
-	// 487 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x54, 0x41, 0x6f, 0xd3, 0x4c,
-	0x10, 0x8d, 0xbf, 0xf4, 0xa3, 0xe9, 0x04, 0x10, 0x98, 0x82, 0x8c, 0x55, 0x59, 0xc8, 0xaa, 0x2a,
-	0x2e, 0xac, 0x45, 0xe1, 0x00, 0x88, 0x0b, 0xad, 0x90, 0xc8, 0x21, 0x12, 0x32, 0x3d, 0x71, 0xdb,
-	0x6c, 0x97, 0xcd, 0x8a, 0x78, 0xd7, 0xda, 0x1d, 0x23, 0xfb, 0xc8, 0x3f, 0x40, 0xea, 0x95, 0x1f,
-	0xc4, 0xb1, 0x47, 0x8e, 0x28, 0xf9, 0x23, 0x28, 0x8e, 0xed, 0x38, 0x04, 0x55, 0x49, 0xb9, 0x79,
-	0x67, 0xe7, 0xcd, 0x7b, 0x33, 0xf3, 0xbc, 0x70, 0x24, 0x15, 0x72, 0xc3, 0xc6, 0x54, 0x2a, 0xca,
-	0x98, 0xce, 0x14, 0xda, 0x88, 0x69, 0x85, 0x46, 0x4f, 0x26, 0xdc, 0x44, 0x98, 0x93, 0xd4, 0x68,
-	0xd4, 0xee, 0x21, 0xd3, 0x36, 0xd1, 0x96, 0xac, 0xa7, 0x93, 0x65, 0xba, 0xff, 0x50, 0x68, 0x2d,
-	0x26, 0x3c, 0x2a, 0x31, 0xa3, 0xec, 0x53, 0x44, 0x55, 0xb1, 0x28, 0x10, 0xbe, 0x85, 0xfe, 0xd0,
-	0x8a, 0x98, 0x0b, 0x69, 0x91, 0x1b, 0xd7, 0x83, 0x5d, 0x66, 0x38, 0x45, 0x6d, 0x3c, 0xe7, 0x91,
-	0xf3, 0x78, 0x2f, 0xae, 0x8f, 0xee, 0x01, 0xec, 0x21, 0xb7, 0x98, 0x52, 0x43, 0x13, 0xef, 0xbf,
-	0xf2, 0x6e, 0x19, 0x08, 0xef, 0xc3, 0xbd, 0x56, 0x99, 0x98, 0xdb, 0x54, 0x2b, 0xcb, 0x43, 0x84,
-	0xdb, 0xad, 0xf0, 0x80, 0xd1, 0x2b, 0x08, 0x42, 0xb8, 0xc9, 0xb4, 0x52, 0x9c, 0xa1, 0xd4, 0x6a,
-	0x70, 0x5e, 0x71, 0xac, 0xc4, 0xdc, 0x43, 0xb8, 0x85, 0x32, 0xe1, 0x3a, 0xc3, 0x77, 0x5c, 0x8a,
-	0x31, 0x7a, 0xdd, 0x32, 0x69, 0x35, 0x18, 0x7a, 0xf0, 0x60, 0x95, 0xb5, 0xd1, 0x63, 0xcb, 0x6e,
-	0x3f, 0x64, 0xa3, 0x44, 0xe2, 0x59, 0xfe, 0x8f, 0x62, 0x8e, 0xa0, 0x9b, 0x58, 0x51, 0x4a, 0xe8,
-	0x1f, 0xef, 0x93, 0xc5, 0x8c, 0x49, 0x3d, 0x63, 0xf2, 0x46, 0x15, 0xf1, 0x3c, 0xa1, 0x9a, 0x4d,
-	0x4d, 0xda, 0x68, 0xf9, 0xee, 0xc0, 0xfe, 0xd0, 0x8a, 0xd3, 0x24, 0x3d, 0x6d, 0x36, 0xf5, 0x3e,
-	0xb3, 0xe3, 0x2b, 0x54, 0x79, 0xb0, 0x5b, 0xad, 0xb7, 0x12, 0x54, 0x1f, 0xdd, 0x3b, 0xd0, 0xfd,
-	0x5c, 0xb0, 0x6a, 0x1c, 0xf3, 0xcf, 0x79, 0x07, 0x52, 0x7d, 0xe1, 0x16, 0xb5, 0x39, 0x2b, 0x52,
-	0xee, 0xed, 0x2c, 0x3a, 0x68, 0xc7, 0x5c, 0x1f, 0x7a, 0x09, 0x47, 0x7a, 0x4e, 0x91, 0x7a, 0xff,
-	0x97, 0xf7, 0xcd, 0x39, 0x0c, 0xe0, 0xe0, 0x6f, 0xea, 0x6a, 0xf9, 0xc7, 0x17, 0x3b, 0xd0, 0x1d,
-	0x5a, 0xe1, 0xe6, 0xd0, 0x6b, 0xdc, 0xf3, 0x94, 0x6c, 0x62, 0x47, 0xd2, 0x5a, 0x8e, 0xff, 0x72,
-	0x6b, 0x48, 0xad, 0xc0, 0xfd, 0xea, 0x40, 0xbf, 0x6d, 0xad, 0xe7, 0x5b, 0x97, 0x1a, 0x30, 0xea,
-	0xbf, 0xbe, 0x0e, 0xaa, 0xd1, 0x90, 0x43, 0xaf, 0x71, 0xd3, 0xe6, 0xdd, 0xd7, 0x90, 0x2d, 0xba,
-	0xff, 0xd3, 0x3e, 0xee, 0x85, 0x03, 0x77, 0xd7, 0xbd, 0xf3, 0x6a, 0xe3, 0x82, 0x6b, 0x58, 0xff,
-	0xe4, 0xfa, 0xd8, 0x5a, 0xd5, 0x49, 0xfc, 0x63, 0x1a, 0x38, 0x97, 0xd3, 0xc0, 0xf9, 0x35, 0x0d,
-	0x9c, 0x6f, 0xb3, 0xa0, 0x73, 0x39, 0x0b, 0x3a, 0x3f, 0x67, 0x41, 0xe7, 0xe3, 0x0b, 0x21, 0x71,
-	0x9c, 0x8d, 0x08, 0xd3, 0x49, 0xb4, 0xe0, 0x89, 0x96, 0x3c, 0x4f, 0x9a, 0x47, 0x2e, 0x5f, 0x79,
-	0xe6, 0x8a, 0x94, 0xdb, 0xd1, 0x8d, 0xf2, 0x97, 0x7a, 0xf6, 0x3b, 0x00, 0x00, 0xff, 0xff, 0x00,
-	0xe2, 0x48, 0x31, 0x14, 0x05, 0x00, 0x00,
+	// 549 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x55, 0xc1, 0x6e, 0xd3, 0x4c,
+	0x10, 0x8e, 0xff, 0xfc, 0x6d, 0xd3, 0x09, 0x20, 0x58, 0xda, 0xca, 0x58, 0x95, 0x55, 0x59, 0x55,
+	0xc5, 0x05, 0x5b, 0x14, 0x0e, 0x80, 0x10, 0x12, 0x8d, 0x40, 0xe4, 0x10, 0x09, 0x85, 0x9e, 0xb8,
+	0x6d, 0xb6, 0x5b, 0xc7, 0xaa, 0xbd, 0x6b, 0x76, 0xd7, 0x28, 0x3e, 0xf2, 0x06, 0x48, 0x5c, 0x91,
+	0x78, 0x0a, 0xde, 0x81, 0x63, 0x8f, 0x1c, 0x51, 0xf2, 0x22, 0x28, 0x8e, 0x77, 0xe3, 0x34, 0x25,
+	0x4a, 0xd2, 0x5b, 0x66, 0x76, 0xbe, 0x99, 0xef, 0x9b, 0xfd, 0xe2, 0x85, 0xa3, 0x88, 0x29, 0x2a,
+	0x48, 0x1f, 0x47, 0x0c, 0x13, 0xc2, 0x33, 0xa6, 0x64, 0x40, 0x38, 0x53, 0x82, 0xc7, 0x31, 0x15,
+	0x81, 0x1a, 0xf8, 0xa9, 0xe0, 0x8a, 0xa3, 0x43, 0xc2, 0x65, 0xc2, 0xa5, 0x3f, 0x5f, 0xee, 0x4f,
+	0xcb, 0x9d, 0x07, 0x21, 0xe7, 0x61, 0x4c, 0x83, 0x02, 0xd3, 0xcb, 0xce, 0x03, 0xcc, 0xf2, 0x49,
+	0x03, 0xef, 0x0d, 0x34, 0x3b, 0x32, 0xec, 0xd2, 0x30, 0x92, 0x8a, 0x0a, 0x64, 0xc3, 0x16, 0x11,
+	0x14, 0x2b, 0x2e, 0x6c, 0xeb, 0xc0, 0x7a, 0xb8, 0xdd, 0xd5, 0x21, 0xda, 0x87, 0x6d, 0x45, 0xa5,
+	0x4a, 0xb1, 0xc0, 0x89, 0xfd, 0x5f, 0x71, 0x36, 0x4d, 0x78, 0xbb, 0x70, 0xbf, 0xd2, 0xa6, 0x4b,
+	0x65, 0xca, 0x99, 0xa4, 0x9e, 0x82, 0x3b, 0x95, 0x74, 0x9b, 0xe0, 0x05, 0x03, 0x3c, 0xb8, 0x45,
+	0x38, 0x63, 0x94, 0xa8, 0x88, 0xb3, 0xf6, 0x59, 0x39, 0x63, 0x26, 0x87, 0x0e, 0xe1, 0xb6, 0x8a,
+	0x12, 0xca, 0x33, 0xf5, 0x8e, 0x46, 0x61, 0x5f, 0xd9, 0xf5, 0xa2, 0x68, 0x36, 0xe9, 0xd9, 0xb0,
+	0x37, 0x3b, 0xd5, 0xf0, 0x91, 0x85, 0xda, 0x0f, 0x59, 0x2f, 0x89, 0xd4, 0xe9, 0xe0, 0x86, 0x64,
+	0x8e, 0xa0, 0x9e, 0xc8, 0xb0, 0xa0, 0xd0, 0x3c, 0xde, 0xf1, 0x27, 0x3b, 0xf6, 0xf5, 0x8e, 0xfd,
+	0xd7, 0x2c, 0xef, 0x8e, 0x0b, 0xca, 0xdd, 0xe8, 0xa1, 0x86, 0xcb, 0x77, 0x0b, 0x76, 0x3a, 0x32,
+	0x6c, 0x25, 0x69, 0xcb, 0xdc, 0xd4, 0xfb, 0x4c, 0xf6, 0x17, 0xb0, 0xb2, 0x61, 0xab, 0xbc, 0xde,
+	0x92, 0x90, 0x0e, 0xd1, 0x5d, 0xa8, 0x5f, 0xe4, 0xa4, 0x5c, 0xc7, 0xf8, 0xe7, 0x58, 0x41, 0xc4,
+	0x3e, 0x53, 0xa9, 0xb8, 0x38, 0xcd, 0x53, 0x6a, 0xff, 0x3f, 0x51, 0x50, 0xcd, 0x21, 0x07, 0x1a,
+	0x09, 0x55, 0xf8, 0x0c, 0x2b, 0x6c, 0x6f, 0x14, 0xe7, 0x26, 0xf6, 0x5c, 0xd8, 0xbf, 0x8e, 0x9d,
+	0xa1, 0x7f, 0x0e, 0xf6, 0xd5, 0xf3, 0x16, 0x8e, 0xe3, 0x1e, 0x26, 0x17, 0x8b, 0x15, 0x08, 0xfa,
+	0x29, 0xa3, 0xd2, 0x28, 0x28, 0x43, 0xb4, 0x07, 0x9b, 0x82, 0xca, 0x2c, 0xd6, 0x77, 0x5a, 0x46,
+	0x9e, 0x07, 0x07, 0xff, 0x9a, 0xa3, 0xb9, 0x1c, 0xff, 0xdc, 0x80, 0x7a, 0x47, 0x86, 0x68, 0x00,
+	0x0d, 0xe3, 0xe4, 0xc7, 0xfe, 0x32, 0x7f, 0x0d, 0xbf, 0x62, 0x14, 0xe7, 0xf9, 0xca, 0x10, 0xcd,
+	0x00, 0x7d, 0xb1, 0xa0, 0x59, 0xb5, 0xf9, 0xd3, 0x95, 0x5b, 0xb5, 0x09, 0x76, 0x5e, 0xae, 0x83,
+	0x32, 0x1c, 0x06, 0xd0, 0x30, 0xce, 0x5e, 0x5e, 0xbd, 0x86, 0xac, 0xa0, 0xfe, 0xaa, 0x95, 0xd1,
+	0x37, 0x0b, 0xee, 0xcd, 0xfb, 0xf8, 0xc5, 0xd2, 0x0d, 0xe7, 0xb0, 0xce, 0xc9, 0xfa, 0x58, 0xc3,
+	0xea, 0x87, 0x05, 0xbb, 0xd7, 0xfb, 0xf3, 0xd5, 0x7a, 0xdd, 0x35, 0xde, 0x79, 0x7b, 0x33, 0xbc,
+	0x66, 0x78, 0xd2, 0xfd, 0x35, 0x74, 0xad, 0xcb, 0xa1, 0x6b, 0xfd, 0x19, 0xba, 0xd6, 0xd7, 0x91,
+	0x5b, 0xbb, 0x1c, 0xb9, 0xb5, 0xdf, 0x23, 0xb7, 0xf6, 0xf1, 0x59, 0x18, 0xa9, 0x7e, 0xd6, 0xf3,
+	0x09, 0x4f, 0x82, 0xc9, 0xac, 0x60, 0x3a, 0xeb, 0x91, 0x79, 0x12, 0x06, 0x33, 0x8f, 0x42, 0x9e,
+	0x52, 0xd9, 0xdb, 0x2c, 0x3e, 0x40, 0x4f, 0xfe, 0x06, 0x00, 0x00, 0xff, 0xff, 0x76, 0x21, 0xae,
+	0xbc, 0x42, 0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -486,6 +588,7 @@ type MsgClient interface {
 	RegisterIca(ctx context.Context, in *MsgRegisterIca, opts ...grpc.CallOption) (*MsgRegisterIcaResponse, error)
 	SubmitTx(ctx context.Context, in *MsgSubmitTx, opts ...grpc.CallOption) (*MsgSubmitTxResponse, error)
 	CmpControllerPush(ctx context.Context, in *MsgCmpControllerPush, opts ...grpc.CallOption) (*MsgCmpControllerPushResponse, error)
+	CmpControllerCallback(ctx context.Context, in *MsgCmpControllerCallback, opts ...grpc.CallOption) (*MsgCmpControllerCallbackResponse, error)
 }
 
 type msgClient struct {
@@ -532,12 +635,22 @@ func (c *msgClient) CmpControllerPush(ctx context.Context, in *MsgCmpControllerP
 	return out, nil
 }
 
+func (c *msgClient) CmpControllerCallback(ctx context.Context, in *MsgCmpControllerCallback, opts ...grpc.CallOption) (*MsgCmpControllerCallbackResponse, error) {
+	out := new(MsgCmpControllerCallbackResponse)
+	err := c.cc.Invoke(ctx, "/cosmos.interchainaccounts.controller.Msg/CmpControllerCallback", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	Register(context.Context, *MsgRegister) (*MsgRegisterResponse, error)
 	RegisterIca(context.Context, *MsgRegisterIca) (*MsgRegisterIcaResponse, error)
 	SubmitTx(context.Context, *MsgSubmitTx) (*MsgSubmitTxResponse, error)
 	CmpControllerPush(context.Context, *MsgCmpControllerPush) (*MsgCmpControllerPushResponse, error)
+	CmpControllerCallback(context.Context, *MsgCmpControllerCallback) (*MsgCmpControllerCallbackResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
@@ -555,6 +668,9 @@ func (*UnimplementedMsgServer) SubmitTx(ctx context.Context, req *MsgSubmitTx) (
 }
 func (*UnimplementedMsgServer) CmpControllerPush(ctx context.Context, req *MsgCmpControllerPush) (*MsgCmpControllerPushResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CmpControllerPush not implemented")
+}
+func (*UnimplementedMsgServer) CmpControllerCallback(ctx context.Context, req *MsgCmpControllerCallback) (*MsgCmpControllerCallbackResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CmpControllerCallback not implemented")
 }
 
 func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
@@ -633,6 +749,24 @@ func _Msg_CmpControllerPush_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_CmpControllerCallback_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgCmpControllerCallback)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).CmpControllerCallback(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cosmos.interchainaccounts.controller.Msg/CmpControllerCallback",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).CmpControllerCallback(ctx, req.(*MsgCmpControllerCallback))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Msg_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "cosmos.interchainaccounts.controller.Msg",
 	HandlerType: (*MsgServer)(nil),
@@ -652,6 +786,10 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CmpControllerPush",
 			Handler:    _Msg_CmpControllerPush_Handler,
+		},
+		{
+			MethodName: "CmpControllerCallback",
+			Handler:    _Msg_CmpControllerCallback_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -938,6 +1076,73 @@ func (m *MsgCmpControllerPushResponse) MarshalToSizedBuffer(dAtA []byte) (int, e
 	return len(dAtA) - i, nil
 }
 
+func (m *MsgCmpControllerCallback) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCmpControllerCallback) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCmpControllerCallback) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Result) > 0 {
+		i -= len(m.Result)
+		copy(dAtA[i:], m.Result)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Result)))
+		i--
+		dAtA[i] = 0x1a
+	}
+	if len(m.Request) > 0 {
+		i -= len(m.Request)
+		copy(dAtA[i:], m.Request)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Request)))
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.Creator) > 0 {
+		i -= len(m.Creator)
+		copy(dAtA[i:], m.Creator)
+		i = encodeVarintTx(dAtA, i, uint64(len(m.Creator)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *MsgCmpControllerCallbackResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *MsgCmpControllerCallbackResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *MsgCmpControllerCallbackResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	offset -= sovTx(v)
 	base := offset
@@ -1065,6 +1270,36 @@ func (m *MsgCmpControllerPush) Size() (n int) {
 }
 
 func (m *MsgCmpControllerPushResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	return n
+}
+
+func (m *MsgCmpControllerCallback) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Creator)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Request)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	l = len(m.Result)
+	if l > 0 {
+		n += 1 + l + sovTx(uint64(l))
+	}
+	return n
+}
+
+func (m *MsgCmpControllerCallbackResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1876,6 +2111,202 @@ func (m *MsgCmpControllerPushResponse) Unmarshal(dAtA []byte) error {
 		}
 		if fieldNum <= 0 {
 			return fmt.Errorf("proto: MsgCmpControllerPushResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCmpControllerCallback) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCmpControllerCallback: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCmpControllerCallback: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Creator", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Creator = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Request", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Request = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		case 3:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Result", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowTx
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthTx
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthTx
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Result = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipTx(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthTx
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *MsgCmpControllerCallbackResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowTx
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: MsgCmpControllerCallbackResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: MsgCmpControllerCallbackResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:
