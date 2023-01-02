@@ -27,7 +27,7 @@ CMP_CONFIG_FILE = "oracle/cmp_config.json"
 ws_params = {"jsonrpc": "2.0", "method": "subscribe", "id": 0, "params": {"query": "tm.event = 'Tx'"}}
 
 # from module's keys.go, string constants of the cmp events and attributes
-CmpHostEventPrefix = "cmp-host-request"
+CmpHostEventPrefix = "cmp--request"
 CmpHostCreator = "cmp-host-request.request-creator"
 CmpHostId = "cmp-host-request.request-id"
 CmpHostItem = "cmp-host-request.request-item"
@@ -99,7 +99,7 @@ def check_cmp_logic(cmp_event, cmp_config) -> bool:
 def get_tx_command(request_id, decision, chain_id, chain_home, oracle_wallet):
     # print(" build tx command ", request_id, decision, chain_id, chain_home, oracle_wallet)
     return (
-        f"icad tx nameservice cmp-host-callback {request_id} {decision} "
+        f"icad tx controller cmp-controller-callback {request_id} {decision} "
         f"--chain-id {chain_id} --home {chain_home} --keyring-backend test --from {oracle_wallet} -y"
     )
 
@@ -108,15 +108,15 @@ def run_sh(command):
     return check_output(command, shell=True, universal_newlines=True, env=os.environ).strip()
 
 # construct command and callback to the host_cmp module handler on blockchain
-def host_cmp_callback(request_id, decision):
+def controller_cmp_callback(request_id, decision):
     tx_command = get_tx_command(
         request_id,
         decision,
-        os.environ.get("CMP_HOST_CHAIN_ID") or "test-2",
-        os.environ.get("CMP_HOST_CHAIN_HOME") or os.getcwd() + "/data/test-2",
+        os.environ.get("CMP_CONTROLLER_CHAIN_ID") or "test-1",
+        os.environ.get("CMP_CONTROLLER_CHAIN_HOME") or os.getcwd() + "/data/test-1",
         os.environ.get("CMP_ORACLE_WALLET") or os.environ.get("WALLET_1"),
     )
-    print(f"Host cmp callback:")
+    print(f"Controller cmp callback:")
     print(f"\n  Request_id {request_id}")
     print(f"\n  Decision {decision}")
     print(f"\n  Command: {tx_command}")
@@ -134,11 +134,14 @@ def on_close(ws, close_status_code, close_msg):
 def on_open(ws):
     ws.send(json.dumps(ws_params))
 
+# Clear pending requests from blockchain
+def clear_pending_buy():
+    ...
 
 if __name__ == "__main__":
     websocket.enableTrace(True)
     if len(sys.argv) < 2:
-        host = "ws://localhost:26657/websocket"
+        host = "ws://localhost:16657/websocket"
     else:
         host = sys.argv[1]
     ws = websocket.WebSocketApp(host, on_message=on_message, on_error=on_error, on_close=on_close)

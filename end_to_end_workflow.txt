@@ -142,3 +142,4 @@ icad tx controller submit-tx \
 icad q nameservice list-whois --node tcp://localhost:26657
 # show that there is a pending item waiting for cmp result: item "my_domain.com"
 icad q nameservice list-pending-buy --node tcp://localhost:26657
+

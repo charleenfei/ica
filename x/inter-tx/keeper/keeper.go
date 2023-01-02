@@ -71,11 +71,34 @@ func (k Keeper) SubmitTx(ctx sdk.Context, msg *types.MsgSubmitTx) error {
 		Type: icatypes.EXECUTE_TX,
 		Data: data,
 	}
-
+	fmt.Println("packetData ", packetData)
+	fmt.Println("***************************************************")
+	fmt.Println("\n")
 	// timeoutTimestamp set to max value with the unsigned bit shifted to sastisfy hermes timestamp conversion
 	// it is the responsibility of the auth module developer to ensure an appropriate timeout timestamp
 	timeoutTimestamp := ctx.BlockTime().Add(time.Minute).UnixNano()
 	_, err = k.icaControllerKeeper.SendTx(ctx, nil, msg.ConnectionId, portID, packetData, uint64(timeoutTimestamp))
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
+func (k Keeper) SubmitRawTx(ctx sdk.Context, owner string, connectionID string, packetData icatypes.InterchainAccountPacketData) error {
+	fmt.Println("\n")
+	fmt.Println("***************************************************")
+	fmt.Println("Inside intertx SubmitTx Keeper ", owner, connectionID, packetData)
+	fmt.Println("***************************************************")
+	fmt.Println("\n")
+	portID, err := icatypes.NewControllerPortID(owner)
+	if err != nil {
+		return err
+	}
+	// timeoutTimestamp set to max value with the unsigned bit shifted to sastisfy hermes timestamp conversion
+	// it is the responsibility of the auth module developer to ensure an appropriate timeout timestamp
+	timeoutTimestamp := ctx.BlockTime().Add(time.Minute).UnixNano()
+	_, err = k.icaControllerKeeper.SendTx(ctx, nil, connectionID, portID, packetData, uint64(timeoutTimestamp))
 	if err != nil {
 		return err
 	}

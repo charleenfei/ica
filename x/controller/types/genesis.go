@@ -10,7 +10,8 @@ const DefaultIndex uint64 = 1
 // DefaultGenesis returns the default genesis state
 func DefaultGenesis() *GenesisState {
 	return &GenesisState{
-		CmpDataList: []CmpData{},
+		CmpDataList:              []CmpData{},
+		CmpControllerRequestList: []CmpControllerRequest{},
 		// this line is used by starport scaffolding # genesis/types/default
 		Params: DefaultParams(),
 	}
@@ -28,6 +29,16 @@ func (gs GenesisState) Validate() error {
 			return fmt.Errorf("duplicated index for cmpData")
 		}
 		cmpDataIndexMap[index] = struct{}{}
+	}
+	// Check for duplicated index in cmpControllerRequest
+	cmpControllerRequestIndexMap := make(map[string]struct{})
+
+	for _, elem := range gs.CmpControllerRequestList {
+		index := string(CmpControllerRequestKey(elem.Index))
+		if _, ok := cmpControllerRequestIndexMap[index]; ok {
+			return fmt.Errorf("duplicated index for cmpControllerRequest")
+		}
+		cmpControllerRequestIndexMap[index] = struct{}{}
 	}
 	// this line is used by starport scaffolding # genesis/types/validate
 

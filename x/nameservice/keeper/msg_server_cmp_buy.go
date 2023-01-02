@@ -25,7 +25,7 @@ func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.M
 
 	buyPrice, err := strconv.Atoi(msg.Bid)
 	if err != nil {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Buy price is not int: " + err.Error())
+		return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Buy price is not int: "+err.Error())
 	}
 
 	pendingSell, isFound := k.GetPendingSell(ctx, msg.Name)
@@ -33,7 +33,7 @@ func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.M
 	if isFound {
 		sellPrice, err := strconv.Atoi(pendingSell.Price)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Sell price is not int: " + err.Error())
+			return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Sell price is not int: "+err.Error())
 		}
 
 		if buyPrice != sellPrice {
@@ -42,7 +42,7 @@ func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.M
 
 		coins, err := sdk.ParseCoinsNormalized(pendingSell.Price + "stake")
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Cannot parse sell price: " + err.Error())
+			return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Cannot parse sell price: "+err.Error())
 		}
 
 		err = k.bankKeeper.SendCoinsFromAccountToModule(ctx, buyer, types.ModuleName, coins)
@@ -59,7 +59,6 @@ func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.M
 		Owner:    buyer.String(),
 		Metadata: msg.Metadata,
 	}
-
 
 	ctx.EventManager().EmitEvent(
 		sdk.NewEvent(types.CmpHostRequestEventType,

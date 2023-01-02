@@ -30,6 +30,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						Index: "1",
 					},
 				},
+				CmpControllerRequestList: []types.CmpControllerRequest{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -38,6 +46,20 @@ func TestGenesisState_Validate(t *testing.T) {
 			desc: "duplicated cmpData",
 			genState: &types.GenesisState{
 				CmpDataList: []types.CmpData{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated cmpControllerRequest",
+			genState: &types.GenesisState{
+				CmpControllerRequestList: []types.CmpControllerRequest{
 					{
 						Index: "0",
 					},
