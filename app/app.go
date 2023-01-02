@@ -166,6 +166,7 @@ var (
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
 		icatypes.ModuleName:            nil,
 		ibcfeetypes.ModuleName:         nil,
+		nameservicetypes.ModuleName:    nil,
 	}
 
 	// module accounts that are allowed to receive tokens

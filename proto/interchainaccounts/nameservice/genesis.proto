@@ -6,6 +6,7 @@ import "interchainaccounts/nameservice/params.proto";
 import "interchainaccounts/nameservice/whois.proto";
 import "interchainaccounts/nameservice/testmin.proto";
 import "interchainaccounts/nameservice/pending_buy.proto";
+import "interchainaccounts/nameservice/pending_sell.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/cosmos/interchain-accounts/x/nameservice/types";
@@ -16,5 +17,6 @@ message GenesisState {
   repeated Whois whoisList = 2 [(gogoproto.nullable) = false];
   Testmin testmin = 3;
   repeated PendingBuy pendingBuyList = 4 [(gogoproto.nullable) = false];
+  repeated PendingSell pendingSellList = 5 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

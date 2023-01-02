@@ -14,6 +14,7 @@ func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgSetMinprice{}, "nameservice/SetMinprice", nil)
 	cdc.RegisterConcrete(&MsgCmpBuy{}, "nameservice/CmpBuy", nil)
 	cdc.RegisterConcrete(&MsgCmpHostCallback{}, "nameservice/CmpHostCallback", nil)
+	cdc.RegisterConcrete(&MsgCmpSell{}, "nameservice/CmpSell", nil)
 	// this line is used by starport scaffolding # 2
 }
 
@@ -35,6 +36,9 @@ func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	)
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgCmpHostCallback{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCmpSell{},
 	)
 	// this line is used by starport scaffolding # 3
 

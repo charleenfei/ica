@@ -26,16 +26,44 @@ func (k msgServer) CmpHostCallback(goCtx context.Context, msg *types.MsgCmpHostC
 	// 	return nil, sdkerrors.Wrap(sdkerrors.ErrUnauthorized, "Unauthorized action, only authorized oracle can callback")
 	// }
 
+	serverName := pendingBuy.Name
+
 	// Execute logic of the CMP protocol, yes/no
 	if msg.Result == "OK" || msg.Result == "YES" {
+		whois, ownerFound := k.GetWhois(ctx, serverName)
+		if (ownerFound) {
+			pendingSell, isSelling := k.GetPendingSell(ctx, serverName)
+			if !isSelling {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Name owner is not selling")
+			}
+
+			toAddr, err := sdk.AccAddressFromBech32(whois.Owner)
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Invalid address: " + err.Error())
+			}
+
+			coins, err := sdk.ParseCoinsNormalized(pendingSell.Price + "stake")
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Cannot parse coins: " + err.Error())
+			}
+
+			err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, toAddr, coins)
+			if err != nil {
+				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Could not send coins from module to seller: " + err.Error())
+			}
+
+			k.RemovePendingSell(ctx, serverName)
+		}
+
 		// settle buy name domain
 		newWhois := types.Whois{
-			Index: pendingBuy.Name,
-			Name:  pendingBuy.Name,
+			Index: serverName,
+			Name:  serverName,
 			Value: "Test ICA value",
 			Price: pendingBuy.Price,
 			Owner: pendingBuy.Owner,
 		}
+
 		k.SetWhois(ctx, newWhois)
 	}
 

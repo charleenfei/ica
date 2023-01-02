@@ -20,6 +20,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.PendingBuyList {
 		k.SetPendingBuy(ctx, elem)
 	}
+	// Set all the pendingSell
+	for _, elem := range genState.PendingSellList {
+		k.SetPendingSell(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -36,6 +40,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 		genesis.Testmin = &testmin
 	}
 	genesis.PendingBuyList = k.GetAllPendingBuy(ctx)
+	genesis.PendingSellList = k.GetAllPendingSell(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis

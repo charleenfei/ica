@@ -34,6 +34,14 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		PendingSellList: []types.PendingSell{
+			{
+				Name: "0",
+			},
+			{
+				Name: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -48,5 +56,6 @@ func TestGenesis(t *testing.T) {
 	require.ElementsMatch(t, genesisState.WhoisList, got.WhoisList)
 	require.Equal(t, genesisState.Testmin, got.Testmin)
 	require.ElementsMatch(t, genesisState.PendingBuyList, got.PendingBuyList)
+	require.ElementsMatch(t, genesisState.PendingSellList, got.PendingSellList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }
