@@ -17,7 +17,7 @@ export WALLET_4=$(icad keys show wallet4 -a --keyring-backend test --home ./data
 
 #setup ICA account from controller chain (chain 1 id test-1)
 #if it doesn't work, just restart relayer
-icad tx intertx register --from $WALLET_1 --connection-id connection-0 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test --timeout-height 1000
+icad tx intertx register --from $WALLET_1 --connection-id connection-0 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test --timeout-height 1000 -y
 
 # Query the address of the interchain account
 icad query intertx interchainaccounts connection-0 $WALLET_1 --home ./data/test-1 --node tcp://localhost:16657
@@ -143,3 +143,10 @@ icad q nameservice list-whois --node tcp://localhost:26657
 # show that there is a pending item waiting for cmp result: item "my_domain.com"
 icad q nameservice list-pending-buy --node tcp://localhost:26657
 
+
+icad tx controller submit-tx \
+"{
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgQueryCmpStatus\",
+    \"creator\": \"$ICA_ADDR\",
+    \"request\":\"my_test_request\"
+}" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y

@@ -52,6 +52,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCmpSell int = 100
 
+	opWeightMsgQueryCmpStatus = "op_weight_msg_query_cmp_status"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgQueryCmpStatus int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -161,6 +165,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCmpSell,
 		nameservicesimulation.SimulateMsgCmpSell(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgQueryCmpStatus int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgQueryCmpStatus, &weightMsgQueryCmpStatus, nil,
+		func(_ *rand.Rand) {
+			weightMsgQueryCmpStatus = defaultWeightMsgQueryCmpStatus
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgQueryCmpStatus,
+		nameservicesimulation.SimulateMsgQueryCmpStatus(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

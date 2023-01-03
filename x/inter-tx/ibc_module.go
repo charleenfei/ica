@@ -1,6 +1,8 @@
 package inter_tx
 
 import (
+	"fmt"
+
 	proto "github.com/gogo/protobuf/proto"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -8,11 +10,11 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
-	"github.com/cosmos/interchain-accounts/x/inter-tx/keeper"
-
 	channeltypes "github.com/cosmos/ibc-go/v6/modules/core/04-channel/types"
 	porttypes "github.com/cosmos/ibc-go/v6/modules/core/05-port/types"
 	ibcexported "github.com/cosmos/ibc-go/v6/modules/core/exported"
+	"github.com/cosmos/interchain-accounts/x/inter-tx/keeper"
+	nameservicetypes "github.com/cosmos/interchain-accounts/x/nameservice/types"
 )
 
 var _ porttypes.IBCModule = IBCModule{}
@@ -111,6 +113,10 @@ func (im IBCModule) OnAcknowledgementPacket(
 	acknowledgement []byte,
 	relayer sdk.AccAddress,
 ) error {
+	fmt.Println("\n")
+	fmt.Println("************************************")
+	fmt.Println("OnAcknowledgementPacket")
+
 	var ack channeltypes.Acknowledgement
 	if err := channeltypes.SubModuleCdc.UnmarshalJSON(acknowledgement, &ack); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal ICS-27 packet acknowledgement: %v", err)
@@ -120,7 +126,16 @@ func (im IBCModule) OnAcknowledgementPacket(
 	if err := proto.Unmarshal(ack.GetResult(), &txMsgData); err != nil {
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal ICS-27 tx message data: %v", err)
 	}
-
+	if len(txMsgData.MsgResponses) > 0 {
+		msgResponseData := txMsgData.MsgResponses[0]
+		msgResponse := &nameservicetypes.MsgQueryCmpStatusResponse{}
+		if err := proto.Unmarshal(msgResponseData.Value, msgResponse); err != nil {
+			return nil
+		}
+		fmt.Println("msgResponse as string ", msgResponse.Result)
+		fmt.Println("\n")
+		fmt.Println("************************************")
+	}
 	switch len(txMsgData.Data) {
 	case 0:
 		for _, msgResp := range txMsgData.GetMsgResponses() {

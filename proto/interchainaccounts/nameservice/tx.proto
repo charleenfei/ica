@@ -14,6 +14,7 @@ service Msg {
   rpc CmpBuy(MsgCmpBuy) returns (MsgCmpBuyResponse);
   rpc CmpHostCallback(MsgCmpHostCallback) returns (MsgCmpHostCallbackResponse);
   rpc CmpSell(MsgCmpSell) returns (MsgCmpSellResponse);
+  rpc QueryCmpStatus(MsgQueryCmpStatus) returns (MsgQueryCmpStatusResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
@@ -78,6 +79,15 @@ message MsgCmpSell {
 }
 
 message MsgCmpSellResponse {
+}
+
+message MsgQueryCmpStatus {
+  string creator = 1;
+  string request = 2;
+}
+
+message MsgQueryCmpStatusResponse {
+  string result = 1;
 }
 
 // this line is used by starport scaffolding # proto/tx/message
