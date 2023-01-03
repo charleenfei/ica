@@ -19,6 +19,13 @@
             "region":"region-y",
             "investor_type":"institutional",
             "kyc":true
+        },
+        "cosmos1d84j42rnfgq60sjxpzj4pgfu35mew34dpp3g0h":{
+            "name":"Oracle Wallet",
+            "country":"oracle",
+            "region":"oracle",
+            "investor_type":"oracle",
+            "kyc":true
         }
     }
 }

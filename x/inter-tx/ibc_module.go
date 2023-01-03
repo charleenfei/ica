@@ -13,6 +13,7 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v6/modules/core/04-channel/types"
 	porttypes "github.com/cosmos/ibc-go/v6/modules/core/05-port/types"
 	ibcexported "github.com/cosmos/ibc-go/v6/modules/core/exported"
+	controllertypes "github.com/cosmos/interchain-accounts/x/controller/types"
 	"github.com/cosmos/interchain-accounts/x/inter-tx/keeper"
 	nameservicetypes "github.com/cosmos/interchain-accounts/x/nameservice/types"
 )
@@ -132,9 +133,16 @@ func (im IBCModule) OnAcknowledgementPacket(
 		if err := proto.Unmarshal(msgResponseData.Value, msgResponse); err != nil {
 			return nil
 		}
-		fmt.Println("msgResponse as string ", msgResponse.Result)
+		fmt.Println("msgResponse as string ", msgResponse)
 		fmt.Println("\n")
 		fmt.Println("************************************")
+		//emit event CmpResultRequest
+
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(controllertypes.CmpResultRequestEventType,
+				sdk.NewAttribute(controllertypes.CmpResultRequestData, msgResponse.Result),
+			),
+		)
 	}
 	switch len(txMsgData.Data) {
 	case 0:

@@ -104,7 +104,7 @@ def check_cmp_logic(cmp_event, cmp_config):
 def get_tx_command(request_id, decision, chain_id, chain_home, oracle_wallet):
     # print(" build tx command ", request_id, decision, chain_id, chain_home, oracle_wallet)
     return (
-        f"icad tx nameservice cmp-host-callback {request_id} {decision} "
+        f"icad tx nameservice cmp-host-callback {request_id} '{decision}' "
         f"--chain-id {chain_id} --home {chain_home} --keyring-backend test --from {oracle_wallet} -y"
     )
 

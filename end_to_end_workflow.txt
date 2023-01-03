@@ -36,7 +36,7 @@ icad tx controller submit-tx \
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
     \"creator\": \"$ICA_ADDR\",
     \"name\":\"testcontroller.com\",
-    \"bid\":\"150\",
+    \"bid\":\"1500\",
     \"metadata\":\"test_meta_data\"
 }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
@@ -44,13 +44,22 @@ icad tx controller submit-tx \
 # Check the List item on Hostchain, It shoule be empty
 icad q nameservice list-whois --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
 
-# cmp data on controller chain is still blank, reject all crosschain tx
-icad q controller list-cmp-data --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657
+# Change cmp_config.json to set WALLET_1 kyc = true
 
-# Simulate offchain process submits KYC info from offchain source for WALLET_1
-icad tx controller cmp-controller-push $WALLET_1 true retail test_meta_data --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
-icad q controller list-cmp-data --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657
-# Submit the same Tx again, this time it should work
+icad tx controller submit-tx \
+"{
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
+    \"creator\": \"$ICA_ADDR\",
+    \"name\":\"testcontroller.com\",
+    \"bid\":\"1500\",
+    \"metadata\":\"test_meta_data\"
+}" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
+
+python3 scripts/query_status.py -r "testcontroller.com:::$ICA_ADDR" -w $WALLET_1 -ica $ICA_ADDR
+This time it shows another message
+Query result:  REJECT::Bid 1500 is out of price range 100 -> 200 for domain .com
+
+# Change either the transaction or offchain json file.
 icad tx controller submit-tx \
 "{
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
@@ -60,10 +69,10 @@ icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# Show that there is only one name registered "testcontroller.com" (from the controller chain test)
-icad q nameservice list-whois --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
+python3 scripts/query_status.py -r "testcontroller.com:::$ICA_ADDR" -w $WALLET_1 -ica $ICA_ADDR
+This time it shows success message
 
-
+-------------------------------
 # workflow 1 : banned domain cannot be bought
 # default configuration, ".country-x" domain is banned
 # submit ICA tx to register a name domain ".country-x" under ICA address with bid = 200
@@ -149,4 +158,13 @@ icad tx controller submit-tx \
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgQueryCmpStatus\",
     \"creator\": \"$ICA_ADDR\",
     \"request\":\"testcontroller.com:::cosmos1cpxwdxfhl9rj9etvaaxtqzrjxs48xn3rkarm35mnk5y2gfsutcjs4elegg\"
+}" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
+
+
+
+icad tx controller submit-tx \
+"{
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgQueryCmpStatus\",
+    \"creator\": \"cosmos1ejps98g4rqrdnqqddfuwxy9dv8wz6za3q66c9vz0krq4g84ueecqn79lus\",
+    \"request\":\"test_request\"
 }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y

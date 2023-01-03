@@ -18,6 +18,11 @@ const (
 	CmpControllerRequestEventCreator = "request-creator"        // Subsidiary information
 	CmpControllerRequestEventId      = "request-id"             // which request if multiple requests happened
 	CmpControllerRequestMetaData     = "request-metadata"       // Extra data for other purpose
+
+	// for event querying result of cmp request
+	CmpResultRequestEventType = "cmp-result-request"
+	CmpResultRequestId        = "request-id"
+	CmpResultRequestData      = "request-data"
 )
 
 func KeyPrefix(p string) []byte {

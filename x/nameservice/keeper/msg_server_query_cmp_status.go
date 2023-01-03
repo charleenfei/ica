@@ -15,14 +15,15 @@ func (k msgServer) QueryCmpStatus(goCtx context.Context, msg *types.MsgQueryCmpS
 	// get the cmpHostResult from store
 	cmpHostResult, found := k.GetCmpHostResult(ctx, msg.Request)
 	// create new response message
+	var prefixString = msg.Request + "::::"
 	var response types.MsgQueryCmpStatusResponse
 	if found {
 		response = types.MsgQueryCmpStatusResponse{
-			Result: cmpHostResult.Result,
+			Result: prefixString + cmpHostResult.Result,
 		}
 	} else {
 		response = types.MsgQueryCmpStatusResponse{
-			Result: "CMP record Not Found for Request Id: " + msg.Request,
+			Result: prefixString + "CMP record Not Found for Request Id: " + msg.Request,
 		}
 	}
 	return &response, nil
