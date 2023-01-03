@@ -50,6 +50,14 @@ func TestGenesisState_Validate(t *testing.T) {
 						Name: "1",
 					},
 				},
+				CmpHostResultList: []types.CmpHostResult{
+					{
+						Index: "0",
+					},
+					{
+						Index: "1",
+					},
+				},
 				// this line is used by starport scaffolding # types/genesis/validField
 			},
 			valid: true,
@@ -91,6 +99,20 @@ func TestGenesisState_Validate(t *testing.T) {
 					},
 					{
 						Name: "0",
+					},
+				},
+			},
+			valid: false,
+		},
+		{
+			desc: "duplicated cmpHostResult",
+			genState: &types.GenesisState{
+				CmpHostResultList: []types.CmpHostResult{
+					{
+						Index: "0",
+					},
+					{
+						Index: "0",
 					},
 				},
 			},

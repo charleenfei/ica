@@ -44,7 +44,7 @@ def on_message(ws, message):
                 cmp_event[event] = event_attribute[0]
                 print(event, event_attribute[0])
             if "tx.hash" in event:
-                print(event, event_attribute[0])
+                print("Controller Chain: ",event, event_attribute[0])
         if CmpControllerId in cmp_event:
             # cmp event exist, process logic
             execute_cmp_logic(cmp_event)
@@ -105,7 +105,7 @@ def controller_cmp_callback(request_id, decision):
     print(f"Controller cmp callback:")
     print(f"\n  Request_id {request_id}")
     print(f"\n  Decision {decision}")
-    print(f"\n  Command: {tx_command}")
+    # print(f"\n  Command: {tx_command}")
     run_sh(tx_command)
 
 

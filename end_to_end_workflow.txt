@@ -148,5 +148,5 @@ icad tx controller submit-tx \
 "{
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgQueryCmpStatus\",
     \"creator\": \"$ICA_ADDR\",
-    \"request\":\"my_test_request\"
+    \"request\":\"testcontroller.com:::cosmos1cpxwdxfhl9rj9etvaaxtqzrjxs48xn3rkarm35mnk5y2gfsutcjs4elegg\"
 }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y

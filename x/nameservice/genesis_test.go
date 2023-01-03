@@ -42,6 +42,14 @@ func TestGenesis(t *testing.T) {
 				Name: "1",
 			},
 		},
+		CmpHostResultList: []types.CmpHostResult{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -57,5 +65,6 @@ func TestGenesis(t *testing.T) {
 	require.Equal(t, genesisState.Testmin, got.Testmin)
 	require.ElementsMatch(t, genesisState.PendingBuyList, got.PendingBuyList)
 	require.ElementsMatch(t, genesisState.PendingSellList, got.PendingSellList)
+	require.ElementsMatch(t, genesisState.CmpHostResultList, got.CmpHostResultList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }
