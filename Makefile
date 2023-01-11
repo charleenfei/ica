@@ -153,6 +153,10 @@ kill-dev:
 	-@rm -rf ./data
 	-@killall icad 2>/dev/null
 
+###############################################################################
+###                                Docker                                   ###
+###############################################################################
+
 docker-build:
 	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml build 
 
