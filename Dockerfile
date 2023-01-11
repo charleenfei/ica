@@ -1,18 +1,12 @@
 FROM golang:1.18 as builder
+ARG arch=x86_64
 
 ENV GOPATH=""
 ENV GOMODULE="on"
 
-COPY go.mod .
-COPY go.sum .
+COPY . .
 
 RUN go mod download
-
-ADD app app
-ADD cmd cmd
-ADD x x
-
-COPY Makefile .
 RUN make build
 
 FROM ubuntu:20.04

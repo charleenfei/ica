@@ -152,3 +152,11 @@ kill-dev:
 	@echo "Killing icad and removing previous data"
 	-@rm -rf ./data
 	-@killall icad 2>/dev/null
+
+docker-build:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml build 
+
+docker-reset:
+	# docker-compose stop
+	rm -rf storage
+	docker system prune -f
