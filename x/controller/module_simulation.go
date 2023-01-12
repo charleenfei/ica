@@ -40,6 +40,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgCmpControllerPush int = 100
 
+	opWeightMsgCmpControllerCallback = "op_weight_msg_cmp_controller_callback"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCmpControllerCallback int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -116,6 +120,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgCmpControllerPush,
 		controllersimulation.SimulateMsgCmpControllerPush(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCmpControllerCallback int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCmpControllerCallback, &weightMsgCmpControllerCallback, nil,
+		func(_ *rand.Rand) {
+			weightMsgCmpControllerCallback = defaultWeightMsgCmpControllerCallback
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCmpControllerCallback,
+		controllersimulation.SimulateMsgCmpControllerCallback(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

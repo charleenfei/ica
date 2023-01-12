@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "interchainaccounts/controller/params.proto";
 import "interchainaccounts/controller/cmp_data.proto";
+import "interchainaccounts/controller/cmp_controller_request.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/cosmos/interchain-accounts/x/controller/types";
@@ -24,6 +25,16 @@ service Query {
 	// Queries a list of CmpData items.
 	rpc CmpDataAll(QueryAllCmpDataRequest) returns (QueryAllCmpDataResponse) {
 		option (google.api.http).get = "/cosmos/interchain-accounts/controller/cmp_data";
+	}
+
+// Queries a CmpControllerRequest by index.
+	rpc CmpControllerRequest(QueryGetCmpControllerRequestRequest) returns (QueryGetCmpControllerRequestResponse) {
+		option (google.api.http).get = "/cosmos/interchain-accounts/controller/cmp_controller_request/{index}";
+	}
+
+	// Queries a list of CmpControllerRequest items.
+	rpc CmpControllerRequestAll(QueryAllCmpControllerRequestRequest) returns (QueryAllCmpControllerRequestResponse) {
+		option (google.api.http).get = "/cosmos/interchain-accounts/controller/cmp_controller_request";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -53,6 +64,24 @@ message QueryAllCmpDataRequest {
 
 message QueryAllCmpDataResponse {
 	repeated CmpData cmpData = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetCmpControllerRequestRequest {
+	  string index = 1;
+
+}
+
+message QueryGetCmpControllerRequestResponse {
+	CmpControllerRequest cmpControllerRequest = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllCmpControllerRequestRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllCmpControllerRequestResponse {
+	repeated CmpControllerRequest cmpControllerRequest = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

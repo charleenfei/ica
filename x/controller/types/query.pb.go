@@ -297,6 +297,190 @@ func (m *QueryAllCmpDataResponse) GetPagination() *query.PageResponse {
 	return nil
 }
 
+type QueryGetCmpControllerRequestRequest struct {
+	Index string `protobuf:"bytes,1,opt,name=index,proto3" json:"index,omitempty"`
+}
+
+func (m *QueryGetCmpControllerRequestRequest) Reset()         { *m = QueryGetCmpControllerRequestRequest{} }
+func (m *QueryGetCmpControllerRequestRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetCmpControllerRequestRequest) ProtoMessage()    {}
+func (*QueryGetCmpControllerRequestRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ba3663865de3fd85, []int{6}
+}
+func (m *QueryGetCmpControllerRequestRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetCmpControllerRequestRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetCmpControllerRequestRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetCmpControllerRequestRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetCmpControllerRequestRequest.Merge(m, src)
+}
+func (m *QueryGetCmpControllerRequestRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetCmpControllerRequestRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetCmpControllerRequestRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetCmpControllerRequestRequest proto.InternalMessageInfo
+
+func (m *QueryGetCmpControllerRequestRequest) GetIndex() string {
+	if m != nil {
+		return m.Index
+	}
+	return ""
+}
+
+type QueryGetCmpControllerRequestResponse struct {
+	CmpControllerRequest CmpControllerRequest `protobuf:"bytes,1,opt,name=cmpControllerRequest,proto3" json:"cmpControllerRequest"`
+}
+
+func (m *QueryGetCmpControllerRequestResponse) Reset()         { *m = QueryGetCmpControllerRequestResponse{} }
+func (m *QueryGetCmpControllerRequestResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetCmpControllerRequestResponse) ProtoMessage()    {}
+func (*QueryGetCmpControllerRequestResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ba3663865de3fd85, []int{7}
+}
+func (m *QueryGetCmpControllerRequestResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetCmpControllerRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetCmpControllerRequestResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetCmpControllerRequestResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetCmpControllerRequestResponse.Merge(m, src)
+}
+func (m *QueryGetCmpControllerRequestResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetCmpControllerRequestResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetCmpControllerRequestResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetCmpControllerRequestResponse proto.InternalMessageInfo
+
+func (m *QueryGetCmpControllerRequestResponse) GetCmpControllerRequest() CmpControllerRequest {
+	if m != nil {
+		return m.CmpControllerRequest
+	}
+	return CmpControllerRequest{}
+}
+
+type QueryAllCmpControllerRequestRequest struct {
+	Pagination *query.PageRequest `protobuf:"bytes,1,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllCmpControllerRequestRequest) Reset()         { *m = QueryAllCmpControllerRequestRequest{} }
+func (m *QueryAllCmpControllerRequestRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryAllCmpControllerRequestRequest) ProtoMessage()    {}
+func (*QueryAllCmpControllerRequestRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ba3663865de3fd85, []int{8}
+}
+func (m *QueryAllCmpControllerRequestRequest) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllCmpControllerRequestRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllCmpControllerRequestRequest.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllCmpControllerRequestRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllCmpControllerRequestRequest.Merge(m, src)
+}
+func (m *QueryAllCmpControllerRequestRequest) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllCmpControllerRequestRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllCmpControllerRequestRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllCmpControllerRequestRequest proto.InternalMessageInfo
+
+func (m *QueryAllCmpControllerRequestRequest) GetPagination() *query.PageRequest {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
+type QueryAllCmpControllerRequestResponse struct {
+	CmpControllerRequest []CmpControllerRequest `protobuf:"bytes,1,rep,name=cmpControllerRequest,proto3" json:"cmpControllerRequest"`
+	Pagination           *query.PageResponse    `protobuf:"bytes,2,opt,name=pagination,proto3" json:"pagination,omitempty"`
+}
+
+func (m *QueryAllCmpControllerRequestResponse) Reset()         { *m = QueryAllCmpControllerRequestResponse{} }
+func (m *QueryAllCmpControllerRequestResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryAllCmpControllerRequestResponse) ProtoMessage()    {}
+func (*QueryAllCmpControllerRequestResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_ba3663865de3fd85, []int{9}
+}
+func (m *QueryAllCmpControllerRequestResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryAllCmpControllerRequestResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryAllCmpControllerRequestResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryAllCmpControllerRequestResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryAllCmpControllerRequestResponse.Merge(m, src)
+}
+func (m *QueryAllCmpControllerRequestResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryAllCmpControllerRequestResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryAllCmpControllerRequestResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryAllCmpControllerRequestResponse proto.InternalMessageInfo
+
+func (m *QueryAllCmpControllerRequestResponse) GetCmpControllerRequest() []CmpControllerRequest {
+	if m != nil {
+		return m.CmpControllerRequest
+	}
+	return nil
+}
+
+func (m *QueryAllCmpControllerRequestResponse) GetPagination() *query.PageResponse {
+	if m != nil {
+		return m.Pagination
+	}
+	return nil
+}
+
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "cosmos.interchainaccounts.controller.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "cosmos.interchainaccounts.controller.QueryParamsResponse")
@@ -304,6 +488,10 @@ func init() {
 	proto.RegisterType((*QueryGetCmpDataResponse)(nil), "cosmos.interchainaccounts.controller.QueryGetCmpDataResponse")
 	proto.RegisterType((*QueryAllCmpDataRequest)(nil), "cosmos.interchainaccounts.controller.QueryAllCmpDataRequest")
 	proto.RegisterType((*QueryAllCmpDataResponse)(nil), "cosmos.interchainaccounts.controller.QueryAllCmpDataResponse")
+	proto.RegisterType((*QueryGetCmpControllerRequestRequest)(nil), "cosmos.interchainaccounts.controller.QueryGetCmpControllerRequestRequest")
+	proto.RegisterType((*QueryGetCmpControllerRequestResponse)(nil), "cosmos.interchainaccounts.controller.QueryGetCmpControllerRequestResponse")
+	proto.RegisterType((*QueryAllCmpControllerRequestRequest)(nil), "cosmos.interchainaccounts.controller.QueryAllCmpControllerRequestRequest")
+	proto.RegisterType((*QueryAllCmpControllerRequestResponse)(nil), "cosmos.interchainaccounts.controller.QueryAllCmpControllerRequestResponse")
 }
 
 func init() {
@@ -311,40 +499,48 @@ func init() {
 }
 
 var fileDescriptor_ba3663865de3fd85 = []byte{
-	// 517 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x94, 0xdf, 0x6a, 0x13, 0x41,
-	0x14, 0xc6, 0x33, 0xb5, 0x4d, 0x71, 0xbc, 0x1b, 0x83, 0x4a, 0x90, 0x55, 0x16, 0xf1, 0x1f, 0xcd,
-	0x0c, 0xa9, 0x48, 0x5b, 0x50, 0xa4, 0x55, 0x2c, 0x08, 0x42, 0xdd, 0x4b, 0x6f, 0x74, 0xb2, 0x1d,
-	0x36, 0x0b, 0xbb, 0x33, 0xd3, 0x9d, 0x89, 0xb4, 0x88, 0x37, 0x3e, 0x81, 0xe0, 0x93, 0x08, 0x3e,
-	0x81, 0x37, 0xf6, 0x46, 0x28, 0x78, 0xe3, 0x95, 0x48, 0xe2, 0x83, 0x48, 0x66, 0xce, 0x92, 0xd4,
-	0xd5, 0x98, 0x8d, 0x77, 0xc9, 0xe6, 0x7c, 0xdf, 0xf7, 0x3b, 0x7b, 0xce, 0x09, 0xbe, 0x95, 0x4a,
-	0x2b, 0x8a, 0xb8, 0xcf, 0x53, 0xc9, 0xe3, 0x58, 0x0d, 0xa4, 0x35, 0x2c, 0x56, 0xd2, 0x16, 0x2a,
-	0xcb, 0x44, 0xc1, 0x0e, 0x06, 0xa2, 0x38, 0xa2, 0xba, 0x50, 0x56, 0x91, 0x6b, 0xb1, 0x32, 0xb9,
-	0x32, 0xb4, 0xaa, 0xa0, 0x13, 0x45, 0xbb, 0x95, 0xa8, 0x44, 0x39, 0x01, 0x1b, 0x7f, 0xf2, 0xda,
-	0xf6, 0xe5, 0x44, 0xa9, 0x24, 0x13, 0x8c, 0xeb, 0x94, 0x71, 0x29, 0x95, 0xe5, 0x36, 0x55, 0xd2,
-	0xc0, 0xaf, 0xb7, 0xbd, 0x33, 0xeb, 0x71, 0x23, 0x7c, 0x24, 0x7b, 0xd5, 0xed, 0x09, 0xcb, 0xbb,
-	0x4c, 0xf3, 0x24, 0x95, 0xae, 0xb8, 0xac, 0x9d, 0x0d, 0xac, 0x79, 0xc1, 0xf3, 0xd2, 0x77, 0x6d,
-	0x76, 0x6d, 0x9c, 0xeb, 0x17, 0xfb, 0xdc, 0x72, 0x5f, 0x1d, 0xb6, 0x30, 0x79, 0x36, 0xce, 0xde,
-	0x73, 0x16, 0x91, 0x38, 0x18, 0x08, 0x63, 0x43, 0x8e, 0xcf, 0x9f, 0x7a, 0x6a, 0xb4, 0x92, 0x46,
-	0x90, 0x27, 0xb8, 0xe9, 0xa3, 0x2e, 0xa1, 0xab, 0xe8, 0xe6, 0xb9, 0xf5, 0x35, 0x3a, 0xcf, 0xdb,
-	0xa1, 0xde, 0x65, 0x67, 0xf9, 0xf8, 0xfb, 0x95, 0x46, 0x04, 0x0e, 0x21, 0xc5, 0x17, 0x5c, 0xc4,
-	0xae, 0xb0, 0x0f, 0x73, 0xfd, 0x88, 0x5b, 0x0e, 0xe1, 0xa4, 0x85, 0x57, 0x52, 0xb9, 0x2f, 0x0e,
-	0x5d, 0xc8, 0xd9, 0xc8, 0x7f, 0x09, 0xfb, 0xf8, 0x62, 0xa5, 0x1e, 0xb0, 0x9e, 0xe2, 0xd5, 0xd8,
-	0x3f, 0x02, 0xae, 0xce, 0x7c, 0x5c, 0xe0, 0x03, 0x60, 0xa5, 0x47, 0xf8, 0x12, 0xc8, 0xb6, 0xb3,
-	0xec, 0x37, 0xb2, 0xc7, 0x18, 0x4f, 0x46, 0x03, 0x59, 0xd7, 0xcb, 0xac, 0xf1, 0x1c, 0xa9, 0x5f,
-	0x1d, 0x98, 0x23, 0xdd, 0xe3, 0x89, 0x00, 0x6d, 0x34, 0xa5, 0x0c, 0x3f, 0x20, 0x68, 0x66, 0x3a,
-	0xe2, 0x4f, 0xcd, 0x9c, 0xf9, 0xdf, 0x66, 0xc8, 0xee, 0x29, 0xe4, 0x25, 0x87, 0x7c, 0xe3, 0x9f,
-	0xc8, 0x9e, 0x65, 0x9a, 0x79, 0xfd, 0xcb, 0x32, 0x5e, 0x71, 0xcc, 0xe4, 0x23, 0xc2, 0x4d, 0x3f,
-	0x52, 0xb2, 0x39, 0x1f, 0x5b, 0x75, 0xc3, 0xda, 0x5b, 0x0b, 0x28, 0x3d, 0x55, 0x78, 0xf7, 0xed,
-	0xd7, 0x9f, 0xef, 0x97, 0x18, 0xe9, 0x30, 0xb8, 0xa0, 0x89, 0x45, 0xe7, 0xef, 0xd7, 0x41, 0x3e,
-	0x23, 0xbc, 0x0a, 0x2f, 0x89, 0xdc, 0xab, 0x91, 0x5e, 0x59, 0xd0, 0xf6, 0xfd, 0x05, 0xd5, 0xc0,
-	0xff, 0xc0, 0xf1, 0x6f, 0x91, 0x8d, 0x39, 0xf9, 0xcb, 0x8b, 0x65, 0xaf, 0xdd, 0x25, 0xbc, 0x21,
-	0x9f, 0x10, 0xc6, 0x60, 0xba, 0x9d, 0x65, 0xb5, 0x9a, 0xa9, 0xec, 0x74, 0xad, 0x66, 0xaa, 0xeb,
-	0x1a, 0x6e, 0xb8, 0x66, 0xba, 0x84, 0xd5, 0x6c, 0x66, 0x27, 0x3a, 0x1e, 0x06, 0xe8, 0x64, 0x18,
-	0xa0, 0x1f, 0xc3, 0x00, 0xbd, 0x1b, 0x05, 0x8d, 0x93, 0x51, 0xd0, 0xf8, 0x36, 0x0a, 0x1a, 0xcf,
-	0x37, 0x93, 0xd4, 0xf6, 0x07, 0x3d, 0x1a, 0xab, 0x7c, 0x96, 0xe9, 0xe1, 0xb4, 0xad, 0x3d, 0xd2,
-	0xc2, 0xf4, 0x9a, 0xee, 0x3f, 0xed, 0xce, 0xaf, 0x00, 0x00, 0x00, 0xff, 0xff, 0x5a, 0x6a, 0xaa,
-	0x43, 0xe0, 0x05, 0x00, 0x00,
+	// 656 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xb4, 0x56, 0xcd, 0x6e, 0xd3, 0x40,
+	0x10, 0xce, 0xb6, 0xb4, 0x85, 0xe5, 0xb6, 0x44, 0x14, 0x45, 0xc8, 0x20, 0x53, 0xf1, 0xa7, 0xd6,
+	0xab, 0x14, 0xa1, 0xfe, 0x40, 0x55, 0xb5, 0xa5, 0x44, 0xad, 0x54, 0xa9, 0xe4, 0xc8, 0xa5, 0x6c,
+	0xdc, 0x95, 0x63, 0xc9, 0xf6, 0xba, 0xf6, 0x06, 0xb5, 0x42, 0x5c, 0x78, 0x02, 0x24, 0xae, 0xbc,
+	0x04, 0x12, 0x4f, 0xc0, 0x01, 0x7a, 0xac, 0xc4, 0x85, 0x13, 0x42, 0x09, 0x3c, 0x03, 0x17, 0x0e,
+	0x28, 0xbb, 0xe3, 0x26, 0xc1, 0xf9, 0x73, 0x1b, 0x6e, 0xb1, 0x3d, 0xf3, 0xfd, 0xcd, 0x7a, 0x1c,
+	0x7c, 0xcf, 0x0d, 0x24, 0x8f, 0xec, 0x2a, 0x73, 0x03, 0x66, 0xdb, 0xa2, 0x16, 0xc8, 0x98, 0xda,
+	0x22, 0x90, 0x91, 0xf0, 0x3c, 0x1e, 0xd1, 0x83, 0x1a, 0x8f, 0x8e, 0xac, 0x30, 0x12, 0x52, 0x90,
+	0x19, 0x5b, 0xc4, 0xbe, 0x88, 0xad, 0x74, 0x87, 0xd5, 0xea, 0x28, 0xe4, 0x1d, 0xe1, 0x08, 0xd5,
+	0x40, 0x9b, 0xbf, 0x74, 0x6f, 0xe1, 0xba, 0x23, 0x84, 0xe3, 0x71, 0xca, 0x42, 0x97, 0xb2, 0x20,
+	0x10, 0x92, 0x49, 0x57, 0x04, 0x31, 0x3c, 0xbd, 0xaf, 0x91, 0x69, 0x85, 0xc5, 0x5c, 0x53, 0xd2,
+	0x97, 0xc5, 0x0a, 0x97, 0xac, 0x48, 0x43, 0xe6, 0xb8, 0x81, 0x2a, 0x4e, 0x6a, 0xfb, 0x0b, 0x0e,
+	0x59, 0xc4, 0xfc, 0x04, 0x77, 0xb6, 0x7f, 0xad, 0xed, 0x87, 0x7b, 0xfb, 0x4c, 0x32, 0xa8, 0x5e,
+	0x1e, 0x5c, 0xdd, 0xba, 0xdc, 0x8b, 0xf8, 0x41, 0x8d, 0xc7, 0x52, 0xf7, 0x9a, 0x79, 0x4c, 0x9e,
+	0x35, 0x75, 0xef, 0x2a, 0xfa, 0xb2, 0x7e, 0x66, 0x32, 0x7c, 0xa5, 0xe3, 0x6e, 0x1c, 0x8a, 0x20,
+	0xe6, 0x64, 0x1b, 0x4f, 0x6a, 0x99, 0xd7, 0xd0, 0x4d, 0x74, 0xf7, 0xf2, 0xfc, 0xac, 0x35, 0x4c,
+	0xb2, 0x96, 0x46, 0x59, 0xbf, 0x70, 0xfc, 0xfd, 0x46, 0xae, 0x0c, 0x08, 0xa6, 0x85, 0xaf, 0x2a,
+	0x8a, 0x12, 0x97, 0x1b, 0x7e, 0xf8, 0x84, 0x49, 0x06, 0xe4, 0x24, 0x8f, 0x27, 0xdc, 0x60, 0x9f,
+	0x1f, 0x2a, 0x92, 0x4b, 0x65, 0x7d, 0x61, 0x56, 0xf1, 0x74, 0xaa, 0x1e, 0x64, 0xed, 0xe0, 0x29,
+	0x5b, 0xdf, 0x02, 0x5d, 0x73, 0xc3, 0xe9, 0x02, 0x1c, 0x10, 0x96, 0x60, 0x98, 0x2f, 0x40, 0xd9,
+	0x9a, 0xe7, 0xfd, 0xa3, 0xec, 0x29, 0xc6, 0xad, 0xb1, 0x02, 0xd7, 0xed, 0x84, 0xab, 0x79, 0x06,
+	0x2c, 0x7d, 0xec, 0xe0, 0x0c, 0x58, 0xbb, 0xcc, 0xe1, 0xd0, 0x5b, 0x6e, 0xeb, 0x34, 0x3f, 0x20,
+	0x30, 0xd3, 0x4e, 0xd1, 0xcd, 0xcc, 0xf8, 0x79, 0xcd, 0x90, 0x52, 0x87, 0xe4, 0x31, 0x25, 0xf9,
+	0xce, 0x40, 0xc9, 0x5a, 0x4b, 0x87, 0xe6, 0x47, 0xf8, 0x56, 0x5b, 0xfe, 0x1b, 0xa7, 0xc4, 0x89,
+	0xbf, 0xbe, 0xc3, 0x7b, 0x8f, 0xf0, 0x4c, 0xff, 0x6e, 0x70, 0x2f, 0x71, 0xde, 0xee, 0xf2, 0x1c,
+	0xb2, 0x5e, 0x1e, 0x3a, 0x8a, 0x14, 0x02, 0xe4, 0xd2, 0x15, 0xdd, 0xf4, 0xc1, 0x9b, 0x1e, 0x47,
+	0x4f, 0x6f, 0xa3, 0x1a, 0xff, 0xaf, 0x24, 0x8d, 0x9e, 0x7c, 0x03, 0xd3, 0x18, 0xff, 0x7f, 0x69,
+	0x8c, 0xec, 0xc8, 0xcc, 0x7f, 0xbe, 0x88, 0x27, 0x94, 0x4f, 0xf2, 0x11, 0xe1, 0x49, 0xbd, 0x05,
+	0xc8, 0xe2, 0x70, 0xaa, 0xd3, 0x4b, 0xa9, 0xb0, 0x74, 0x86, 0x4e, 0xad, 0xca, 0x7c, 0xf8, 0xe6,
+	0xeb, 0xcf, 0x77, 0x63, 0x94, 0xcc, 0x51, 0x58, 0xd8, 0x2d, 0x88, 0xb9, 0xde, 0xcb, 0x98, 0x7c,
+	0x41, 0x78, 0x0a, 0xde, 0x2b, 0xf2, 0x38, 0x03, 0x7b, 0x6a, 0xa7, 0x15, 0x56, 0xce, 0xd8, 0x0d,
+	0xfa, 0x57, 0x95, 0xfe, 0x25, 0xb2, 0x30, 0xa4, 0xfe, 0xe4, 0x03, 0x41, 0x5f, 0xa9, 0xf7, 0xef,
+	0x35, 0xf9, 0x84, 0x30, 0x06, 0xd0, 0x35, 0xcf, 0xcb, 0x64, 0x26, 0xb5, 0x06, 0x33, 0x99, 0x49,
+	0x6f, 0x38, 0x73, 0x41, 0x99, 0x29, 0x12, 0x9a, 0xd1, 0x0c, 0xf9, 0x83, 0x70, 0xbe, 0xdb, 0x69,
+	0x26, 0x5b, 0x99, 0xd3, 0xed, 0xf5, 0x8e, 0x17, 0xb6, 0x47, 0x01, 0x05, 0x46, 0x77, 0x94, 0xd1,
+	0x12, 0xd9, 0xcc, 0x60, 0x34, 0xfd, 0xa1, 0x3e, 0x9d, 0xe1, 0x6f, 0x84, 0xa7, 0xbb, 0xf1, 0x35,
+	0x07, 0xba, 0x95, 0x79, 0x24, 0x23, 0x49, 0x60, 0xc0, 0x02, 0x33, 0x37, 0x55, 0x02, 0xab, 0x64,
+	0xe5, 0x5c, 0x09, 0xac, 0x97, 0x8f, 0xeb, 0x06, 0x3a, 0xa9, 0x1b, 0xe8, 0x47, 0xdd, 0x40, 0x6f,
+	0x1b, 0x46, 0xee, 0xa4, 0x61, 0xe4, 0xbe, 0x35, 0x8c, 0xdc, 0xf3, 0x45, 0xc7, 0x95, 0xd5, 0x5a,
+	0xc5, 0xb2, 0x85, 0xdf, 0x8f, 0xe2, 0xb0, 0x9d, 0x44, 0x1e, 0x85, 0x3c, 0xae, 0x4c, 0xaa, 0xff,
+	0x3f, 0x0f, 0xfe, 0x06, 0x00, 0x00, 0xff, 0xff, 0x5d, 0x4b, 0x18, 0xe4, 0x48, 0x0a, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -365,6 +561,10 @@ type QueryClient interface {
 	CmpData(ctx context.Context, in *QueryGetCmpDataRequest, opts ...grpc.CallOption) (*QueryGetCmpDataResponse, error)
 	// Queries a list of CmpData items.
 	CmpDataAll(ctx context.Context, in *QueryAllCmpDataRequest, opts ...grpc.CallOption) (*QueryAllCmpDataResponse, error)
+	// Queries a CmpControllerRequest by index.
+	CmpControllerRequest(ctx context.Context, in *QueryGetCmpControllerRequestRequest, opts ...grpc.CallOption) (*QueryGetCmpControllerRequestResponse, error)
+	// Queries a list of CmpControllerRequest items.
+	CmpControllerRequestAll(ctx context.Context, in *QueryAllCmpControllerRequestRequest, opts ...grpc.CallOption) (*QueryAllCmpControllerRequestResponse, error)
 }
 
 type queryClient struct {
@@ -402,6 +602,24 @@ func (c *queryClient) CmpDataAll(ctx context.Context, in *QueryAllCmpDataRequest
 	return out, nil
 }
 
+func (c *queryClient) CmpControllerRequest(ctx context.Context, in *QueryGetCmpControllerRequestRequest, opts ...grpc.CallOption) (*QueryGetCmpControllerRequestResponse, error) {
+	out := new(QueryGetCmpControllerRequestResponse)
+	err := c.cc.Invoke(ctx, "/cosmos.interchainaccounts.controller.Query/CmpControllerRequest", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) CmpControllerRequestAll(ctx context.Context, in *QueryAllCmpControllerRequestRequest, opts ...grpc.CallOption) (*QueryAllCmpControllerRequestResponse, error) {
+	out := new(QueryAllCmpControllerRequestResponse)
+	err := c.cc.Invoke(ctx, "/cosmos.interchainaccounts.controller.Query/CmpControllerRequestAll", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // QueryServer is the server API for Query service.
 type QueryServer interface {
 	// Parameters queries the parameters of the module.
@@ -410,6 +628,10 @@ type QueryServer interface {
 	CmpData(context.Context, *QueryGetCmpDataRequest) (*QueryGetCmpDataResponse, error)
 	// Queries a list of CmpData items.
 	CmpDataAll(context.Context, *QueryAllCmpDataRequest) (*QueryAllCmpDataResponse, error)
+	// Queries a CmpControllerRequest by index.
+	CmpControllerRequest(context.Context, *QueryGetCmpControllerRequestRequest) (*QueryGetCmpControllerRequestResponse, error)
+	// Queries a list of CmpControllerRequest items.
+	CmpControllerRequestAll(context.Context, *QueryAllCmpControllerRequestRequest) (*QueryAllCmpControllerRequestResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -424,6 +646,12 @@ func (*UnimplementedQueryServer) CmpData(ctx context.Context, req *QueryGetCmpDa
 }
 func (*UnimplementedQueryServer) CmpDataAll(ctx context.Context, req *QueryAllCmpDataRequest) (*QueryAllCmpDataResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CmpDataAll not implemented")
+}
+func (*UnimplementedQueryServer) CmpControllerRequest(ctx context.Context, req *QueryGetCmpControllerRequestRequest) (*QueryGetCmpControllerRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CmpControllerRequest not implemented")
+}
+func (*UnimplementedQueryServer) CmpControllerRequestAll(ctx context.Context, req *QueryAllCmpControllerRequestRequest) (*QueryAllCmpControllerRequestResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CmpControllerRequestAll not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -484,6 +712,42 @@ func _Query_CmpDataAll_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Query_CmpControllerRequest_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetCmpControllerRequestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).CmpControllerRequest(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cosmos.interchainaccounts.controller.Query/CmpControllerRequest",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).CmpControllerRequest(ctx, req.(*QueryGetCmpControllerRequestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_CmpControllerRequestAll_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryAllCmpControllerRequestRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).CmpControllerRequestAll(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/cosmos.interchainaccounts.controller.Query/CmpControllerRequestAll",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).CmpControllerRequestAll(ctx, req.(*QueryAllCmpControllerRequestRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _Query_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "cosmos.interchainaccounts.controller.Query",
 	HandlerType: (*QueryServer)(nil),
@@ -499,6 +763,14 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CmpDataAll",
 			Handler:    _Query_CmpDataAll_Handler,
+		},
+		{
+			MethodName: "CmpControllerRequest",
+			Handler:    _Query_CmpControllerRequest_Handler,
+		},
+		{
+			MethodName: "CmpControllerRequestAll",
+			Handler:    _Query_CmpControllerRequestAll_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -708,6 +980,153 @@ func (m *QueryAllCmpDataResponse) MarshalToSizedBuffer(dAtA []byte) (int, error)
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetCmpControllerRequestRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetCmpControllerRequestRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetCmpControllerRequestRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Index) > 0 {
+		i -= len(m.Index)
+		copy(dAtA[i:], m.Index)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Index)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetCmpControllerRequestResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetCmpControllerRequestResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetCmpControllerRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.CmpControllerRequest.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllCmpControllerRequestRequest) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllCmpControllerRequestRequest) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllCmpControllerRequestRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryAllCmpControllerRequestResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryAllCmpControllerRequestResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryAllCmpControllerRequestResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		{
+			size, err := m.Pagination.MarshalToSizedBuffer(dAtA[:i])
+			if err != nil {
+				return 0, err
+			}
+			i -= size
+			i = encodeVarintQuery(dAtA, i, uint64(size))
+		}
+		i--
+		dAtA[i] = 0x12
+	}
+	if len(m.CmpControllerRequest) > 0 {
+		for iNdEx := len(m.CmpControllerRequest) - 1; iNdEx >= 0; iNdEx-- {
+			{
+				size, err := m.CmpControllerRequest[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				if err != nil {
+					return 0, err
+				}
+				i -= size
+				i = encodeVarintQuery(dAtA, i, uint64(size))
+			}
+			i--
+			dAtA[i] = 0xa
+		}
+	}
+	return len(dAtA) - i, nil
+}
+
 func encodeVarintQuery(dAtA []byte, offset int, v uint64) int {
 	offset -= sovQuery(v)
 	base := offset
@@ -784,6 +1203,62 @@ func (m *QueryAllCmpDataResponse) Size() (n int) {
 	_ = l
 	if len(m.CmpData) > 0 {
 		for _, e := range m.CmpData {
+			l = e.Size()
+			n += 1 + l + sovQuery(uint64(l))
+		}
+	}
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetCmpControllerRequestRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Index)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetCmpControllerRequestResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.CmpControllerRequest.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
+func (m *QueryAllCmpControllerRequestRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if m.Pagination != nil {
+		l = m.Pagination.Size()
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryAllCmpControllerRequestResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	if len(m.CmpControllerRequest) > 0 {
+		for _, e := range m.CmpControllerRequest {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -1245,6 +1720,377 @@ func (m *QueryAllCmpDataResponse) Unmarshal(dAtA []byte) error {
 			}
 			m.CmpData = append(m.CmpData, CmpData{})
 			if err := m.CmpData[len(m.CmpData)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		case 2:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageResponse{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetCmpControllerRequestRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetCmpControllerRequestRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetCmpControllerRequestRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Index", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Index = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetCmpControllerRequestResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetCmpControllerRequestResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetCmpControllerRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CmpControllerRequest", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.CmpControllerRequest.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllCmpControllerRequestRequest) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllCmpControllerRequestRequest: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllCmpControllerRequestRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Pagination", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if m.Pagination == nil {
+				m.Pagination = &query.PageRequest{}
+			}
+			if err := m.Pagination.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryAllCmpControllerRequestResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryAllCmpControllerRequestResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryAllCmpControllerRequestResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field CmpControllerRequest", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.CmpControllerRequest = append(m.CmpControllerRequest, CmpControllerRequest{})
+			if err := m.CmpControllerRequest[len(m.CmpControllerRequest)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

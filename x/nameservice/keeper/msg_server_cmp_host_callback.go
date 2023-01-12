@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -27,29 +28,34 @@ func (k msgServer) CmpHostCallback(goCtx context.Context, msg *types.MsgCmpHostC
 	// }
 
 	serverName := pendingBuy.Name
-
+	var extraErrorMessages string = ""
+	var err error = nil
 	// Execute logic of the CMP protocol, yes/no
-	if msg.Result == "OK" || msg.Result == "YES" {
+	if strings.HasPrefix(msg.Result, "OK") || strings.HasPrefix(msg.Result, "YES") {
 		whois, ownerFound := k.GetWhois(ctx, serverName)
-		if (ownerFound) {
+		if ownerFound {
 			pendingSell, isSelling := k.GetPendingSell(ctx, serverName)
 			if !isSelling {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Name owner is not selling")
+				extraErrorMessages = "Name owner is not selling"
+				err = sdkerrors.Wrap(sdkerrors.ErrLogic, "Name owner is not selling")
 			}
 
 			toAddr, err := sdk.AccAddressFromBech32(whois.Owner)
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Invalid address: " + err.Error())
+				extraErrorMessages = "Invalid address: " + err.Error()
+				err = sdkerrors.Wrap(sdkerrors.ErrLogic, "Invalid address: "+err.Error())
 			}
 
 			coins, err := sdk.ParseCoinsNormalized(pendingSell.Price + "stake")
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Cannot parse coins: " + err.Error())
+				extraErrorMessages = "Cannot parse coins: " + err.Error()
+				err = sdkerrors.Wrap(sdkerrors.ErrLogic, "Cannot parse coins: "+err.Error())
 			}
 
 			err = k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, toAddr, coins)
 			if err != nil {
-				return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Could not send coins from module to seller: " + err.Error())
+				extraErrorMessages = "Could not send coins from module to seller: " + err.Error()
+				err = sdkerrors.Wrap(sdkerrors.ErrLogic, "Could not send coins from module to seller: "+err.Error())
 			}
 
 			k.RemovePendingSell(ctx, serverName)
@@ -69,6 +75,13 @@ func (k msgServer) CmpHostCallback(goCtx context.Context, msg *types.MsgCmpHostC
 
 	// remove the pending request
 	k.RemovePendingBuy(ctx, msg.Request)
+	newCmpHostResult := types.CmpHostResult{
+		Index:   msg.Request,
+		Result:  msg.Result + "\n" + extraErrorMessages,
+		Request: msg.Request,
+	}
+	// add the result to the result store
+	k.SetCmpHostResult(ctx, newCmpHostResult)
 
-	return &types.MsgCmpHostCallbackResponse{}, nil
+	return &types.MsgCmpHostCallbackResponse{}, err
 }

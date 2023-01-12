@@ -4,6 +4,7 @@ package cosmos.interchainaccounts.controller;
 import "gogoproto/gogo.proto";
 import "interchainaccounts/controller/params.proto";
 import "interchainaccounts/controller/cmp_data.proto";
+import "interchainaccounts/controller/cmp_controller_request.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/cosmos/interchain-accounts/x/controller/types";
@@ -12,5 +13,6 @@ option go_package = "github.com/cosmos/interchain-accounts/x/controller/types";
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
   repeated CmpData cmpDataList = 2 [(gogoproto.nullable) = false];
+  repeated CmpControllerRequest cmpControllerRequestList = 3 [(gogoproto.nullable) = false];
   // this line is used by starport scaffolding # genesis/proto/state
 }

@@ -4,5 +4,28 @@
         ".com": [100,200],
         ".org": [10,20],
         "default": [50,500]
+    },
+    "user_info":{
+        "cosmos1m9l358xunhhwds0568za49mzhvuxx9uxre5tud":{
+            "name":"User_1",
+            "country":"country-x",
+            "region":"region-y",
+            "investor_type":"retail",
+            "kyc":true
+        },
+        "cosmos10h9stc5v6ntgeygf5xf945njqq5h32r53uquvw":{
+            "name":"User_2",
+            "country":"country-x",
+            "region":"region-y",
+            "investor_type":"institutional",
+            "kyc":true
+        },
+        "cosmos1d84j42rnfgq60sjxpzj4pgfu35mew34dpp3g0h":{
+            "name":"Oracle Wallet",
+            "country":"oracle",
+            "region":"oracle",
+            "investor_type":"oracle",
+            "kyc":true
+        }
     }
 }

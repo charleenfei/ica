@@ -9,6 +9,7 @@ import "interchainaccounts/nameservice/whois.proto";
 import "interchainaccounts/nameservice/testmin.proto";
 import "interchainaccounts/nameservice/pending_buy.proto";
 import "interchainaccounts/nameservice/pending_sell.proto";
+import "interchainaccounts/nameservice/cmp_host_result.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/cosmos/interchain-accounts/x/nameservice/types";
@@ -51,6 +52,16 @@ service Query {
 	// Queries a list of PendingSell items.
 	rpc PendingSellAll(QueryAllPendingSellRequest) returns (QueryAllPendingSellResponse) {
 		option (google.api.http).get = "/cosmos/interchain-accounts/nameservice/pending_sell";
+	}
+
+// Queries a CmpHostResult by index.
+	rpc CmpHostResult(QueryGetCmpHostResultRequest) returns (QueryGetCmpHostResultResponse) {
+		option (google.api.http).get = "/cosmos/interchain-accounts/nameservice/cmp_host_result/{index}";
+	}
+
+	// Queries a list of CmpHostResult items.
+	rpc CmpHostResultAll(QueryAllCmpHostResultRequest) returns (QueryAllCmpHostResultResponse) {
+		option (google.api.http).get = "/cosmos/interchain-accounts/nameservice/cmp_host_result";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -121,6 +132,24 @@ message QueryAllPendingSellRequest {
 
 message QueryAllPendingSellResponse {
 	repeated PendingSell pendingSell = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetCmpHostResultRequest {
+	  string index = 1;
+
+}
+
+message QueryGetCmpHostResultResponse {
+	CmpHostResult cmpHostResult = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllCmpHostResultRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllCmpHostResultResponse {
+	repeated CmpHostResult cmpHostResult = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

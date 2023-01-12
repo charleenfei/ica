@@ -1,5 +1,5 @@
 # After list-whois shows test.controller.com belongs to $ICA_ADDR
-# workflow B1: 
+# workflow B1:
 
 # Create an interchain account for $WALLET_2
 icad tx intertx register --from $WALLET_2 --connection-id connection-0 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test

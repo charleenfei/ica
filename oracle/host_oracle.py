@@ -46,7 +46,7 @@ def on_message(ws, message):
                 cmp_event[event] = event_attribute[0]
                 print(event, event_attribute[0])
             if "tx.hash" in event:
-                print(event, event_attribute[0])
+                print("Host Chain: ",event, event_attribute[0])
         if CmpHostId in cmp_event:
 
             # cmp event exist, process logic
@@ -61,26 +61,30 @@ def execute_cmp_logic(cmp_event):
         config = json.load(open(config_path, "r"))
         print(f"Loaded config")
         pprint.pprint(config, indent=2)
-        if check_cmp_logic(cmp_event, config):
-            host_cmp_callback(cmp_event[CmpHostId], "OK")
+        result, reason = check_cmp_logic(cmp_event, config)
+        if result:
+            host_cmp_callback(cmp_event[CmpHostId], "OK::" + reason)
+            return
+        else:
+            host_cmp_callback(cmp_event[CmpHostId], "REJECT::" + reason)
             return
     except Exception as err:
         print("Failed to load config and execute CMP logic: ", err)
         print("Send NO to host-cmp-module")
-        pass
-    host_cmp_callback(cmp_event[CmpHostId], "REJECT")
-    # Send NO when cannot load config
+        host_cmp_callback(cmp_event[CmpHostId], "REJECT::Exception when loading config and executing CMP logic")
+        return
 
-# check the cmp event against the config, return True/False
-def check_cmp_logic(cmp_event, cmp_config) -> bool:
+
+# check the cmp event against the config, return True/False + reason
+def check_cmp_logic(cmp_event, cmp_config):
     domain_name = "." + cmp_event[CmpHostItem].split(".")[-1]
     bid = int(cmp_event[CmpHostBid])
     print(f"Checking Domain {domain_name}, bid {bid}")
     # check banned / sanction
     if "banned" in cmp_config:
         if "." + domain_name.split(".")[-1] in cmp_config["banned"]:
-            print(f"Domain {domain_name} is banned")
-            return False
+            reason = f"Domain {domain_name} is banned"
+            return False, reason
 
     # check price range
     price_range = cmp_config["price_range"]["default"]
@@ -88,18 +92,19 @@ def check_cmp_logic(cmp_event, cmp_config) -> bool:
         price_range = cmp_config["price_range"][domain_name]
 
     if bid < price_range[0] or bid > price_range[1]:
-        return False
+        reason = f"Bid {bid} is out of price range {price_range[0]} -> {price_range[1]} for domain {domain_name}"
+        return False, reason
 
     # Optional: extra logic with metadata
     # meta_data = cmp_event[CmpHostMetaData]
 
-    return True
+    return True, ""
 
 # get tx command template for submitting the callback to the blockchain
 def get_tx_command(request_id, decision, chain_id, chain_home, oracle_wallet):
     # print(" build tx command ", request_id, decision, chain_id, chain_home, oracle_wallet)
     return (
-        f"icad tx nameservice cmp-host-callback {request_id} {decision} "
+        f"icad tx nameservice cmp-host-callback {request_id} '{decision}' "
         f"--chain-id {chain_id} --home {chain_home} --keyring-backend test --from {oracle_wallet} -y"
     )
 
@@ -119,7 +124,7 @@ def host_cmp_callback(request_id, decision):
     print(f"Host cmp callback:")
     print(f"\n  Request_id {request_id}")
     print(f"\n  Decision {decision}")
-    print(f"\n  Command: {tx_command}")
+    # print(f"\n  Command: {tx_command}")
     run_sh(tx_command)
 
 
@@ -134,6 +139,9 @@ def on_close(ws, close_status_code, close_msg):
 def on_open(ws):
     ws.send(json.dumps(ws_params))
 
+# Clear pending requests from blockchain
+def clear_pending_buy():
+    ...
 
 if __name__ == "__main__":
     websocket.enableTrace(True)
