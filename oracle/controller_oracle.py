@@ -58,14 +58,15 @@ def execute_cmp_logic(cmp_event):
         config = json.load(open(config_path, "r"))
         print(f"Loaded config")
         pprint.pprint(config.get("user_info"), indent=2)
-        if check_cmp_logic(cmp_event, config):
-            controller_cmp_callback(cmp_event[CmpControllerId], "OK")
-            return
+        result,reason = check_cmp_logic(cmp_event, config)
+        if result:
+            controller_cmp_callback(cmp_event[CmpControllerId], "OK::" + reason)
+        else:
+            controller_cmp_callback(cmp_event[CmpControllerId], "REJECT::"+reason)
     except Exception as err:
         print("Failed to load config and execute CMP logic: ", err)
         print("Send NO to controller module")
-        pass
-    controller_cmp_callback(cmp_event[CmpControllerId], "REJECT")
+        controller_cmp_callback(cmp_event[CmpControllerId], "REJECT::Exception when loading config and executing CMP logic")
     # Send NO when cannot load config
 
 # check the cmp event against the config, return True/False
@@ -75,17 +76,17 @@ def check_cmp_logic(cmp_event, cmp_config) -> bool:
     print(f"Checking User {user_info}")
     # check banned / sanction
     if user_info.get("kyc"):
-        return True
+        return True, ""
     else:
         print("User is not verified yet, KYC required")
-        return False
+        return False, "User is not verified yet, KYC required"
 
 
 # get tx command template for submitting the callback to the blockchain
 def get_tx_command(request_id, decision, chain_id, chain_home, oracle_wallet):
     # print(" build tx command ", request_id, decision, chain_id, chain_home, oracle_wallet)
     return (
-        f"icad tx controller cmp-controller-callback {request_id} {decision} "
+        f"icad tx controller cmp-controller-callback {request_id} '{decision}' "
         f"--chain-id {chain_id} --home {chain_home} --keyring-backend test --from {oracle_wallet} --node {CONTROLLER_NODE} -y"
     )
 

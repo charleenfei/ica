@@ -40,10 +40,11 @@ icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
+icad q controller show-cmp-controller-result $WALLET_1 --node tcp://localhost:16657
+
 # Check the Relayer terminal, there is no Crosschain TX being relayed, it stopped at the controller chain.
 # Check the List item on Hostchain, It shoule be empty
-icad q nameservice list-whois --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
-
+icad q nameservice list-whois
 # Change cmp_config.json to set WALLET_1 kyc = true
 
 icad tx controller submit-tx \
@@ -71,7 +72,7 @@ icad tx controller submit-tx \
 
 python3 scripts/query_status.py -r "testcontroller.com:::$ICA_ADDR" -w $WALLET_1 -ica $ICA_ADDR
 This time it shows success message
-
+icad q nameservice list-whois
 -------------------------------
 # workflow 1 : banned domain cannot be bought
 # default configuration, ".country-x" domain is banned

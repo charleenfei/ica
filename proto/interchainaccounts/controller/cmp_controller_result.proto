@@ -1,0 +1,12 @@
+syntax = "proto3";
+package cosmos.interchainaccounts.controller;
+
+option go_package = "github.com/cosmos/interchain-accounts/x/controller/types";
+
+message CmpControllerResult {
+  string index = 1; 
+  string request = 2; 
+  string result = 3; 
+  
+}
+

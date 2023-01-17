@@ -7,6 +7,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "interchainaccounts/controller/params.proto";
 import "interchainaccounts/controller/cmp_data.proto";
 import "interchainaccounts/controller/cmp_controller_request.proto";
+import "interchainaccounts/controller/cmp_controller_result.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/cosmos/interchain-accounts/x/controller/types";
@@ -35,6 +36,16 @@ service Query {
 	// Queries a list of CmpControllerRequest items.
 	rpc CmpControllerRequestAll(QueryAllCmpControllerRequestRequest) returns (QueryAllCmpControllerRequestResponse) {
 		option (google.api.http).get = "/cosmos/interchain-accounts/controller/cmp_controller_request";
+	}
+
+// Queries a CmpControllerResult by index.
+	rpc CmpControllerResult(QueryGetCmpControllerResultRequest) returns (QueryGetCmpControllerResultResponse) {
+		option (google.api.http).get = "/cosmos/interchain-accounts/controller/cmp_controller_result/{index}";
+	}
+
+	// Queries a list of CmpControllerResult items.
+	rpc CmpControllerResultAll(QueryAllCmpControllerResultRequest) returns (QueryAllCmpControllerResultResponse) {
+		option (google.api.http).get = "/cosmos/interchain-accounts/controller/cmp_controller_result";
 	}
 
 // this line is used by starport scaffolding # 2
@@ -82,6 +93,24 @@ message QueryAllCmpControllerRequestRequest {
 
 message QueryAllCmpControllerRequestResponse {
 	repeated CmpControllerRequest cmpControllerRequest = 1 [(gogoproto.nullable) = false];
+	cosmos.base.query.v1beta1.PageResponse pagination = 2;
+}
+
+message QueryGetCmpControllerResultRequest {
+	  string index = 1;
+
+}
+
+message QueryGetCmpControllerResultResponse {
+	CmpControllerResult cmpControllerResult = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryAllCmpControllerResultRequest {
+	cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryAllCmpControllerResultResponse {
+	repeated CmpControllerResult cmpControllerResult = 1 [(gogoproto.nullable) = false];
 	cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 

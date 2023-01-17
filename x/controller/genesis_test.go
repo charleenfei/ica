@@ -30,6 +30,14 @@ func TestGenesis(t *testing.T) {
 				Index: "1",
 			},
 		},
+		CmpControllerResultList: []types.CmpControllerResult{
+			{
+				Index: "0",
+			},
+			{
+				Index: "1",
+			},
+		},
 		// this line is used by starport scaffolding # genesis/test/state
 	}
 
@@ -43,5 +51,6 @@ func TestGenesis(t *testing.T) {
 
 	require.ElementsMatch(t, genesisState.CmpDataList, got.CmpDataList)
 	require.ElementsMatch(t, genesisState.CmpControllerRequestList, got.CmpControllerRequestList)
+	require.ElementsMatch(t, genesisState.CmpControllerResultList, got.CmpControllerResultList)
 	// this line is used by starport scaffolding # genesis/test/assert
 }
