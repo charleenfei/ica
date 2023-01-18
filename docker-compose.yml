@@ -21,3 +21,10 @@ services:
     volumes:
       - ./storage:/home/ubuntu/data
       - ./network:/network
+
+  relayer:
+    image: relayer:local
+    command: bash ./network/relayer/interchain-acc-config/rly-start.sh
+    volumes:
+      - ./storage:/src/app/data
+      - ./network:/src/app/network
