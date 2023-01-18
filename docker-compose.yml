@@ -28,3 +28,10 @@ services:
     volumes:
       - ./storage:/src/app/data
       - ./network:/src/app/network
+
+  oracle:
+    image: oracle:local
+    command: bash /src/app/oracle/run_oracle.sh
+    volumes:
+      - ./storage:/src/app/data
+      - ./oracle:/src/app/oracle

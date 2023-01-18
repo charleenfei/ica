@@ -13,6 +13,12 @@ services:
       dockerfile: Dockerfile.relayer
     image: relayer:local
 
+  build-oracle:
+    build:
+      context: .
+      dockerfile: Dockerfile.oracle
+    image: oracle:local
+
   init-chain:
     image: icad:local
     command: bash ./network/init.sh
