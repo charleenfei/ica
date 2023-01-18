@@ -182,3 +182,6 @@ docker-init-oracle:
 
 docker-start-oracle:
 	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose up -d oracle
+
+docker-unitest:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose run -it chain-test-1 bash /network/unitest.sh

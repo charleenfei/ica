@@ -25,6 +25,8 @@ WALLET_2
 WALLET_3
 WALLET_4
 ```
+
+- Run unitest: `make docker-unitest`
 ## Configuration
 
 - setup ICA account from controller chain (chain 1 id test-1)
