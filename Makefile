@@ -170,3 +170,6 @@ docker-init-chain:
 
 docker-start-chain:
 	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose up -d
+
+docker-init-relayer:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml run init-relayer

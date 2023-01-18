@@ -7,8 +7,21 @@ services:
       dockerfile: Dockerfile
     image: icad:local
 
+  build-relayer:
+    build:
+      context: .
+      dockerfile: Dockerfile.relayer
+    image: relayer:local
+
   init-chain:
     image: icad:local
     command: bash ./network/init.sh
     volumes:
       - ./storage:/home/ubuntu/data
+
+  init-relayer:
+    image: relayer:local
+    command: bash ./network/relayer/interchain-acc-config/rly-init.sh
+    volumes:
+      - ./storage:/src/app/data
+      - ./network:/src/app/network
