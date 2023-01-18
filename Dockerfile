@@ -1,14 +1,21 @@
-FROM golang:1.18 as builder
-ARG arch=x86_64
+FROM ubuntu:20.04
+
+WORKDIR /home/ubuntu
+
+env PATH /usr/local/go/bin:$PATH
+
+RUN apt-get update && apt-get install -y wget make
+RUN wget https://go.dev/dl/go1.18.9.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzvf go1.18.9.linux-amd64.tar.gz
 
 ENV GOPATH=""
 ENV GOMODULE="on"
 
 COPY . .
 
+RUN rm -rf ./build
+
 RUN go mod download
 RUN make build
 
-RUN cp /go/build/icad /usr/bin/
-
-RUN apt-get install bash
+RUN cp ./build/icad /bin/icad
