@@ -9,8 +9,6 @@ COPY . .
 RUN go mod download
 RUN make build
 
-FROM ubuntu:20.04
+RUN cp /go/build/icad /usr/bin/
 
-COPY --from=builder /go/build/icad /bin/icad
-
-ENTRYPOINT ["icad"]
+RUN apt-get install bash
