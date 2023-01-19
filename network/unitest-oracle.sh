@@ -25,6 +25,7 @@ txhash=$(icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
+sleep 5
 
 echo "[INFO] Show that it's not accepted, only 3 domains: \"testcontroller.com\", \"testdomain.country-x\" were registered..."
 icad q nameservice list-whois --chain-id ${HOSTCHAIN_ID} --home ./data/${HOSTCHAIN_ID} --node tcp://${HOSTCHAIN_URL}:26657 --output json

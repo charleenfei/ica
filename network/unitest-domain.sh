@@ -30,6 +30,7 @@ txhash=$(icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
+sleep 5
 
 echo "[INFO] Check the List item on Hostchain, It shoule be empty..."
 icad q nameservice list-whois --chain-id ${HOSTCHAIN_ID} --home ./data/${HOSTCHAIN_ID} --node tcp://${HOSTCHAIN_URL}:26657 --output json
@@ -40,6 +41,7 @@ icad q controller list-cmp-data --chain-id ${CONTROLLERCHAIN_ID} --home ./data/$
 echo "[EXECUTING] Simulate offchain process submits KYC info from offchain source for WALLET_1..."
 txhash=$(icad tx controller cmp-controller-push $WALLET_1 true retail test_meta_data --from $WALLET_1 --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
+sleep 5
 
 icad q controller list-cmp-data --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --output json
 
@@ -53,6 +55,7 @@ txhash=$(icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
+sleep 5
 
 echo "[INFO] Check the List item on Hostchain, verify there is only one name registered \"testcontroller.com\" (from the controller chain test)..."
 icad q nameservice list-whois --chain-id ${HOSTCHAIN_ID} --home ./data/${HOSTCHAIN_ID} --node tcp://${HOSTCHAIN_URL}:26657 --output json
@@ -71,6 +74,7 @@ txhash=$(icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
+sleep 5
 
 echo "[INFO] show that it's not showed on list-whois..."
 icad q nameservice list-whois --chain-id ${HOSTCHAIN_ID} --home ./data/${HOSTCHAIN_ID} --node tcp://${HOSTCHAIN_URL}:26657 --output json
@@ -85,6 +89,7 @@ txhash=$(icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
+sleep 5
 
 echo "[INFO] Show that the name is bought..."
 icad q nameservice list-whois --chain-id ${HOSTCHAIN_ID} --home ./data/${HOSTCHAIN_ID} --node tcp://${HOSTCHAIN_URL}:26657 --output json
@@ -103,6 +108,7 @@ txhash=$(icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
+sleep 5
 
 echo "[INFO] Show that it's not accepted, only 2 domains: \"testcontroller.com\", \"testdomain.country-x\" were registered..."
 icad q nameservice list-whois --chain-id ${HOSTCHAIN_ID} --home ./data/${HOSTCHAIN_ID} --node tcp://${HOSTCHAIN_URL}:26657 --output json
@@ -117,6 +123,7 @@ txhash=$(icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
+sleep 5
 
 echo "[INFO] show that it's accepted, 3 domains \"testcontroller.com\", \"testdomain.country-x\" and \"testdomain.org\" were registered..."
 icad q nameservice list-whois --chain-id ${HOSTCHAIN_ID} --home ./data/${HOSTCHAIN_ID} --node tcp://${HOSTCHAIN_URL}:26657 --output json
