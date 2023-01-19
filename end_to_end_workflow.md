@@ -27,7 +27,7 @@ WALLET_4
 ```
 
 - Run unitest: `make docker-unitest`
-## Configuration
+## Setup Account
 
 - setup ICA account from controller chain (chain 1 id test-1)
 ```
@@ -94,7 +94,7 @@ icad tx controller submit-tx \
 icad q nameservice list-whois --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
 ```
 
-- workflow 1 : banned domain cannot be bought
+## workflow 1 : banned domain cannot be bought
 - default configuration, ".country-x" domain is banned
 - submit ICA tx to register a name domain ".country-x" under ICA address with bid = 200
 ```
@@ -134,7 +134,7 @@ icad q nameservice list-whois --node tcp://localhost:26657
 ```
 
 
-- workflow 2 : Price control, certain domain has certain price range
+## workflow 2 : Price control, certain domain has certain price range
 - example in the cmp_config.json  ".org": [10,20], meaning domain .org can be bought with price between 10 and 20
 
 - submit ICA the same tx to register a name domain ".org" with bid = 50, out side acceptable range
@@ -172,8 +172,9 @@ icad tx controller submit-tx \
 icad q nameservice list-whois --node tcp://localhost:26657
 ```
 
-- What will happens if oracle is offline. Tx will be in pending list and never be cleared
+## Workflow 3: If oracle is offline. Tx will be in pending list and never be cleared
 - Close the oracle process `oracle/simple_oracle.py` earlier
+- Then, submit below transaction
 ```
 icad tx controller submit-tx \
 "{
