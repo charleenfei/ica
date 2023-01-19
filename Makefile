@@ -184,4 +184,7 @@ docker-start-oracle:
 	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose up -d oracle
 
 docker-unitest:
-	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose run -it chain-test-1 bash /network/unitest.sh
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose run -it chain-test-1 bash /network/unitest-domain.sh
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose stop oracle
+	echo "****** Oracle STOPPED !!! ******"
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose run -it chain-test-1 bash /network/unitest-oracle.sh

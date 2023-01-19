@@ -16,7 +16,7 @@ txhash=$(icad tx intertx register --from $WALLET_1 --connection-id ${CONNECTION_
 echo "[INFO] txhash: ${txhash}"
 
 echo "[INFO] Query the address of the interchain account..."
-sleep 2
+sleep 5
 ICA_ADDR=$(icad query intertx interchainaccounts ${CONNECTION_ID} $WALLET_1 --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --output json | jq -r '.interchain_account_address')
 echo "[INFO] interchain_account_address: ${ICA_ADDR}"
 
@@ -104,7 +104,7 @@ txhash=$(icad tx controller submit-tx \
 }" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
 
-echo "[INFO] Show that it's not accepted, only tow domain \"testcontroller.com\", \"testdomain.country-x\" were registered..."
+echo "[INFO] Show that it's not accepted, only 2 domains: \"testcontroller.com\", \"testdomain.country-x\" were registered..."
 icad q nameservice list-whois --chain-id ${HOSTCHAIN_ID} --home ./data/${HOSTCHAIN_ID} --node tcp://${HOSTCHAIN_URL}:26657 --output json
 
 echo "[EXECUTING] submit the same tx again, this time it should be accepted..."
