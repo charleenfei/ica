@@ -32,18 +32,44 @@ txhash=$(icad tx controller submit-tx \
 echo "[INFO] txhash: ${txhash}"
 sleep 5
 
-echo "[INFO] Check the List item on Hostchain, It shoule be empty..."
-icad q nameservice list-whois --chain-id ${HOSTCHAIN_ID} --home ./data/${HOSTCHAIN_ID} --node tcp://${HOSTCHAIN_URL}:26657 --output json
+expected_whois_size=$(icad q nameservice list-whois --chain-id ${HOSTCHAIN_ID} --home ./data/${HOSTCHAIN_ID} --node tcp://${HOSTCHAIN_URL}:26657 --output json | jq -r '.whois | length')
 
-echo "[INFO] cmp data on controller chain is still bank, reject all crosschain tx..."
-icad q controller list-cmp-data --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --output json
+if [ ${expected_whois_size} -eq 0 ]; then
+    echo
+    echo "[SUCCESS!!!] DNS Item List is expected to be be empty..."
+    echo
+else
+    echo
+    echo "[ERROR!!!] DNS Item List is NOT empty..."
+    exit 1
+fi
+
+expected_cmpData_size=$(icad q controller list-cmp-data --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --output json | jq -r '.cmpData | length')
+if [ ${expected_cmpData_size} -eq 0 ]; then
+    echo
+    echo "[SUCCESS!!!] cmp data on controller chain is expected to be blank"
+    echo
+else
+    echo
+    echo "[ERROR!!!] cmp data on controller chain is NOT empty..."
+    exit 1
+fi
 
 echo "[EXECUTING] Simulate offchain process submits KYC info from offchain source for WALLET_1..."
 txhash=$(icad tx controller cmp-controller-push $WALLET_1 true retail test_meta_data --from $WALLET_1 --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
 sleep 5
 
-icad q controller list-cmp-data --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --output json
+expected_cmpData_size=$(icad q controller list-cmp-data --chain-id ${CONTROLLERCHAIN_ID} --home ./data/${CONTROLLERCHAIN_ID} --node tcp://${CONTROLLERCHAIN_URL}:16657 --output json | jq -r '.cmpData | length')
+if [ ${expected_cmpData_size} -eq 1 ]; then
+    echo
+    echo "[SUCCESS!!!] After submit KYC, cmp data on controller chain is NOT empty"
+    echo
+else
+    echo
+    echo "[ERROR!!!] cmp data on controller chain is empty..."
+    exit 1
+fi
 
 echo "[EXECUTING] Re-submit the same Tx again to setup ICA account from controller chain (ChainId: ${CONTROLLERCHAIN_ID})..."
 txhash=$(icad tx controller submit-tx \
@@ -58,7 +84,17 @@ echo "[INFO] txhash: ${txhash}"
 sleep 5
 
 echo "[INFO] Check the List item on Hostchain, verify there is only one name registered \"testcontroller.com\" (from the controller chain test)..."
-icad q nameservice list-whois --chain-id ${HOSTCHAIN_ID} --home ./data/${HOSTCHAIN_ID} --node tcp://${HOSTCHAIN_URL}:26657 --output json
+expected_whois_size=$(icad q nameservice list-whois --chain-id ${HOSTCHAIN_ID} --home ./data/${HOSTCHAIN_ID} --node tcp://${HOSTCHAIN_URL}:26657 --output json | jq -r '.whois | length')
+
+if [ ${expected_whois_size} -eq 1 ]; then
+    echo
+    echo "[SUCCESS!!!] testcontroller.com successfully registered"
+    echo
+else
+    echo
+    echo "[ERROR!!!] DNS Item List is STILL empty..."
+    exit 1
+fi
 
 echo
 echo "****** WORKFLOW 1: Banned Domain Cannot Be Bought ******"
