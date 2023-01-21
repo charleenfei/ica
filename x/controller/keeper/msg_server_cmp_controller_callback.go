@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
@@ -29,7 +30,7 @@ func (k msgServer) CmpControllerCallback(goCtx context.Context, msg *types.MsgCm
 	// }
 
 	// Execute logic of the CMP protocol, yes/no
-	if msg.Result == "OK" || msg.Result == "YES" {
+	if strings.HasPrefix(msg.Result, "OK") || strings.HasPrefix(msg.Result, "YES") {
 		// Unmarshall the packet data
 		var packageData icatypes.InterchainAccountPacketData
 		proto.Unmarshal(pendingRequest.Data, &packageData)
@@ -40,6 +41,13 @@ func (k msgServer) CmpControllerCallback(goCtx context.Context, msg *types.MsgCm
 
 	// remove the pending request
 	k.RemoveCmpControllerRequest(ctx, msg.Request)
+	// store the cmp result
+	newCmpControllerResult := types.CmpControllerResult{
+		Index:   msg.Request,
+		Result:  msg.Result,
+		Request: msg.Request,
+	}
+	k.SetCmpControllerResult(ctx, newCmpControllerResult)
 
 	return &types.MsgCmpControllerCallbackResponse{}, nil
 }

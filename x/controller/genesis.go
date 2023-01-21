@@ -16,6 +16,10 @@ func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) 
 	for _, elem := range genState.CmpControllerRequestList {
 		k.SetCmpControllerRequest(ctx, elem)
 	}
+	// Set all the cmpControllerResult
+	for _, elem := range genState.CmpControllerResultList {
+		k.SetCmpControllerResult(ctx, elem)
+	}
 	// this line is used by starport scaffolding # genesis/module/init
 	k.SetParams(ctx, genState.Params)
 }
@@ -27,6 +31,7 @@ func ExportGenesis(ctx sdk.Context, k keeper.Keeper) *types.GenesisState {
 
 	genesis.CmpDataList = k.GetAllCmpData(ctx)
 	genesis.CmpControllerRequestList = k.GetAllCmpControllerRequest(ctx)
+	genesis.CmpControllerResultList = k.GetAllCmpControllerResult(ctx)
 	// this line is used by starport scaffolding # genesis/module/export
 
 	return genesis
