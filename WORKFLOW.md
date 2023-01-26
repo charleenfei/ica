@@ -77,6 +77,9 @@ This demo follows this workflow
           icad q nameservice list-whois #(optional parameters) --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
           ```
    + Change `oracle/cmp_config.json` to set `kyc = true` for `WALLET_1`
+       ```sh
+       sed -i '14s/false/true/' oracle/cmp_config.json  # change false -> true on line 14 of the file
+       ```
    + Try the buy request again. Then show the oracle's decision with 
        ```sh
        python3 scripts/query_status.py -r "testcontroller.com:::$ICA_ADDR" -w $WALLET_1 -ica $ICA_ADDR
