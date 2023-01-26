@@ -67,7 +67,7 @@ This demo follows this workflow
           \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
           \"creator\": \"$ICA_ADDR\",
           \"name\":\"testcontroller.com\",
-          \"bid\":\"1500\",
+          \"bid\":\"150\",
           \"metadata\":\"test_meta_data\"
       }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
       ```
@@ -80,27 +80,7 @@ This demo follows this workflow
        ```sh
        sed -i '14s/false/true/' oracle/cmp_config.json  # change false -> true on line 14 of the file
        ```
-   + Try the buy request again. Then show the oracle's decision with 
-       ```sh
-       python3 scripts/query_status.py -r "testcontroller.com:::$ICA_ADDR" -w $WALLET_1 -ica $ICA_ADDR
-       ```
-
-     This time it shows another message
-       ```sh
-       Query result:  REJECT::Bid 1500 is out of price range 100 -> 200 for domain .com
-       ```
-   + We can fix this by either changing the price bid in the transaction or price range in the offchain json file. Let's say you change the price from 1500 to 150
-       ```sh
-      icad tx controller submit-tx \
-      "{
-          \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
-          \"creator\": \"$ICA_ADDR\",
-          \"name\":\"testcontroller.com\",
-          \"bid\":\"150\",
-          \"metadata\":\"test_meta_data\"
-      }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
-       ```
-       Now the transaction is successful!
+   + Try the buy request again. Now the transaction is successful!
        ```sh
         python3 scripts/query_status.py -r "testcontroller.com:::$ICA_ADDR" -w $WALLET_1 -ica $ICA_ADDR
         #Expected output: Query result:  OK::
@@ -136,7 +116,7 @@ This demo follows this workflow
 
 4. **Workflow B: Price control, certain domain has certain price range**
 
-   Example in `cmp_config.json`:  `".org": [10,20]` means domain `.org` can be bought with price between 10 and 20
+   Example in `oracle/cmp_config.json`:  `".org": [10,20]` means domain `.org` can be bought with price between 10 and 20
    + With a similar command, try buying a `.org` domain with bid=50 (outside acceptable range):
        ```sh
       icad tx controller submit-tx \
@@ -155,8 +135,7 @@ This demo follows this workflow
        ## testcontroller.com and testdomain.country-x show up if you've done previous workflows
        ```
 
-   + Change in `oracle/cmp_config.json`:  `".org": [10,200]`, meaning domain `.org` can be bought with price between 10 and 200
-   + Submit the same transaction again, now it should be accepted. Check with
+   + Submit the same transaction, but with bid 15, it should be accepted. Check with
        ```sh
        icad q nameservice list-whois
        ## testdomain.org now belongs to interchain account of $WALLET_1
