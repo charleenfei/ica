@@ -49,23 +49,22 @@ WALLET_2
 WALLET_3
 WALLET_4
 ```
+## Configuration
 
+- setup ICA account from controller chain (chain 1 id test-1)
+icad tx intertx register --from $WALLET_1 --connection-id connection-0 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test --timeout-height 1000
 
-#setup ICA account from controller chain (chain 1 id test-1)
-#if it doesn't work, just restart relayer
-icad tx intertx register --from $WALLET_1 --connection-id connection-0 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test --timeout-height 1000 -y
-
-# Query the address of the interchain account
+- Query the address of the interchain account
 icad query intertx interchainaccounts connection-0 $WALLET_1 --home ./data/test-1 --node tcp://localhost:16657
 
-# Before moving forward, make sure there this step is successful. It should show 1 interchain account address
+- Before moving forward, make sure there this step is successful. It should show 1 interchain account address
 
-# Store the interchain account address by parsing the query result: cosmos1hd0f4u7zgptymmrn55h3hy20jv2u0ctdpq23cpe8m9pas8kzd87smtf8al
+- Store the interchain account address by parsing the query result: cosmos1hd0f4u7zgptymmrn55h3hy20jv2u0ctdpq23cpe8m9pas8kzd87smtf8al
 export ICA_ADDR=$(icad query intertx interchainaccounts connection-0 $WALLET_1 --home ./data/test-1 --node tcp://localhost:16657 -o json | jq -r '.interchain_account_address') && echo $ICA_ADDR
 
-# Test controlelr verification module. Only KYC-ed account can send crosschain tx through the "controller" module
-# By default, all account are not verified, will failed all.
-# Noticed that we submit through module "controller" with custom verification, not using "intertx" anymore.
+- Test controlelr verification module. Only KYC-ed account can send crosschain tx through the "controller" module
+- By default, all account are not verified, will failed all.
+- Noticed that we submit through module "controller" with custom verification, not using "intertx" anymore.
 
 icad tx controller submit-tx \
 "{
@@ -122,13 +121,13 @@ icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# show that it's not showed on list-whois
+- show that it's not showed on list-whois
 icad q nameservice list-whois --node tcp://localhost:26657
 
-# remove ".country-x" from the banned entries in the offchain file : cmp_config.json
-# the banned entries should become like this "banned": [".xyz", ".abc", ".region-y"],
+- remove ".country-x" from the banned entries in the offchain file : cmp_config.json
+- the banned entries should become like this "banned": [".xyz", ".abc", ".region-y"],
 
-# submit ICA the same tx to register a name domain ".country-x" again, this time it is not banned
+- submit ICA the same tx to register a name domain ".country-x" again, this time it is not banned
 icad tx controller submit-tx \
 "{
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
@@ -138,14 +137,14 @@ icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# show that the name is bought
+- show that the name is bought
 icad q nameservice list-whois --node tcp://localhost:26657
 
 
-# workflow 2 : Price control, certain domain has certain price range
-# example in the cmp_config.json  ".org": [10,20], meaning domain .org can be bought with price between 10 and 20
+- workflow 2 : Price control, certain domain has certain price range
+- example in the cmp_config.json  ".org": [10,20], meaning domain .org can be bought with price between 10 and 20
 
-# submit ICA the same tx to register a name domain ".org" with bid = 50, out side acceptable range
+- submit ICA the same tx to register a name domain ".org" with bid = 50, out side acceptable range
 icad tx controller submit-tx \
 "{
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
@@ -155,11 +154,11 @@ icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# show that it's not accepted, only tow domain "testcontroller.com", "testdomain.country-x" were registered
+- show that it's not accepted, only tow domain "testcontroller.com", "testdomain.country-x" were registered
 icad q nameservice list-whois --node tcp://localhost:26657
 
-# Change the cmp_config.json  ".org": [10,200], meaning domain .org can be bought with price between 10 and 200
-# submit the same tx again, this time it should be accepted.
+- Change the cmp_config.json  ".org": [10,200], meaning domain .org can be bought with price between 10 and 200
+- submit the same tx again, this time it should be accepted.
 icad tx controller submit-tx \
 "{
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
@@ -169,11 +168,11 @@ icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# show that it's accepted, 3 domains "testcontroller.com", "testdomain.country-x" and "testdomain.org" were registered
+- show that it's accepted, 3 domains "testcontroller.com", "testdomain.country-x" and "testdomain.org" were registered
 icad q nameservice list-whois --node tcp://localhost:26657
 
-# What will happens if oracle is offline. Tx will be in pending list and never be cleared
-# Close the oracle process `oracle/simple_oracle.py` earlier
+- What will happens if oracle is offline. Tx will be in pending list and never be cleared
+- Close the oracle process `oracle/simple_oracle.py` earlier
 
 icad tx controller submit-tx \
 "{
@@ -184,7 +183,7 @@ icad tx controller submit-tx \
     \"metadata\":\"test_meta_data\"
 }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
 
-# show that it's not accepted, only 3 domains "testcontroller.com", "testdomain.country-x" and "testdomain.org" were registered
+- show that it's not accepted, only 3 domains "testcontroller.com", "testdomain.country-x" and "testdomain.org" were registered
 icad q nameservice list-whois --node tcp://localhost:26657
 # show that there is a pending item waiting for cmp result: item "my_domain.com"
 icad q nameservice list-pending-buy --node tcp://localhost:26657
