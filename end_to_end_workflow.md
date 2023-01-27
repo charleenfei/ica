@@ -1,18 +1,54 @@
-make install
-make init-golang-rly
-make start-golang-rly
+# End to End Workflow
 
-# open new terminal
-# install pip package if not yet installed : pip3 install -r oracle/requirements.txt
-# start oracle service
-make start-oracle
+## Installation
 
-# open new terminal
-# Store the following account addresses within the current shell env
-export WALLET_1=$(icad keys show wallet1 -a --keyring-backend test --home ./data/test-1) && echo $WALLET_1;
-export WALLET_2=$(icad keys show wallet2 -a --keyring-backend test --home ./data/test-1) && echo $WALLET_2;
-export WALLET_3=$(icad keys show wallet3 -a --keyring-backend test --home ./data/test-2) && echo $WALLET_3;
-export WALLET_4=$(icad keys show wallet4 -a --keyring-backend test --home ./data/test-2) && echo $WALLET_4;
+- reset data
+```
+make docker-reset
+```
+
+- build icad, relayer & oracle docker images
+```
+make docker-build
+```
+
+- init blockchain
+```
+make docker-init-chain
+```
+
+- start blockchain
+```
+make docker-start-chain
+```
+
+- init relayer
+```
+make docker-init-relayer
+```
+
+- start relayer
+```
+make docker-start-relayer
+```
+
+- init oracle wallet
+```
+make docker-init-oracle
+```
+
+- start oracle
+```
+make docker-start-oracle
+```
+
+-  open `storage/oracle/docker.env`, verify the following account addresses
+```
+WALLET_1
+WALLET_2
+WALLET_3
+WALLET_4
+```
 
 
 #setup ICA account from controller chain (chain 1 id test-1)

@@ -177,5 +177,8 @@ docker-init-relayer:
 docker-start-relayer:
 	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose up -d relayer
 
+docker-init-oracle:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml run init-oracle
+
 docker-start-oracle:
 	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose up -d oracle

@@ -31,3 +31,10 @@ services:
     volumes:
       - ./storage:/src/app/data
       - ./network:/src/app/network
+
+  init-oracle:
+    image: icad:local
+    command: bash ./oracle/init_oracle.sh
+    volumes:
+      - ./storage:/home/ubuntu/data
+      - ./oracle:/home/ubuntu/oracle
