@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+
+  chain-test-1:
+    image: icad:local
+    command: bash /network/start.sh
+    env_file: docker.env
+    environment:
+      CHAINID: test-1
+    volumes:
+      - ./storage:/home/ubuntu/data
+      - ./network:/network
+  
+  chain-test-2:
+    image: icad:local
+    command: bash /network/start.sh
+    env_file: docker.env
+    environment:
+      CHAINID: test-2
+    volumes:
+      - ./storage:/home/ubuntu/data
+      - ./network:/network
