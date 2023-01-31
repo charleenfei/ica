@@ -250,3 +250,14 @@ chore(bump): bumping version to 2.0
 fix(bug): fixing issue with...
 feat(featurex): adding feature...
 ```
+
+## Last price implementation
+Run the controller oracle server with
+```sh
+./oracle/controller_oracle_server.py
+```
+Run the host oracle server with
+```sh
+./oracle/host_oracle_server.py
+```
+Then you can check last price of domains with, for example, `http://localhost:7777/last-price/test2.com` (`localhost:7777` is controller oracle address)
