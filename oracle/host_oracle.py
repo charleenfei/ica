@@ -22,6 +22,7 @@ from shlex import quote
 
 # file path for configuring CMP logic
 CMP_CONFIG_FILE = "oracle/cmp_config.json"
+HOST_DATA_FILE = "oracle/host-data.json"
 
 # For websocket subscription of events
 ws_params = {"jsonrpc": "2.0", "method": "subscribe", "id": 0, "params": {"query": "tm.event = 'Tx'"}}
@@ -57,6 +58,7 @@ def on_message(ws, message):
 # when there is CMP event, execute the cmp logic on that event
 def execute_cmp_logic(cmp_event):
     config_path = os.getcwd() + "/" + CMP_CONFIG_FILE
+    data_path = os.getcwd() + "/" + HOST_DATA_FILE
     try:
         config = json.load(open(config_path, "r"))
         print(f"Loaded config")
@@ -64,6 +66,14 @@ def execute_cmp_logic(cmp_event):
         result, reason = check_cmp_logic(cmp_event, config)
         if result:
             host_cmp_callback(cmp_event[CmpHostId], "OK::" + reason)
+
+            data = json.load(open(data_path, "r"))
+            if not "last_price" in data:
+                data["last_price"] = {}
+            data["last_price"][cmp_event[CmpHostItem]] = cmp_event[CmpHostBid]
+            data_string = json.dumps(data, indent=4)
+            with open(data_path, "w") as writer:
+                writer.write(data_string)
             return
         else:
             host_cmp_callback(cmp_event[CmpHostId], "REJECT::" + reason)
