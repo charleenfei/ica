@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# set -x
+
+ADDRESS=$1
+CHAIN=$2
+NODE=tcp://localhost:16657
+
+if [[ -z "${ADDRESS}" ]]; then
+  ADDRESS=$WALLET_1
+fi
+
+if [[ -z "${CHAIN}" ]]; then
+  CHAIN=test-1
+fi
+
+if [[ "${CHAIN}" = "test-1" ]]; then
+  NODE=tcp://localhost:16657
+fi
+
+if [[ "${CHAIN}" = "test-3" ]]; then
+  NODE=tcp://localhost:36657
+fi
+
+icad tx intertx register --from $ADDRESS --connection-id connection-0 --chain-id $CHAIN --home ./data/$CHAIN --node $NODE --keyring-backend test --timeout-height 1000 -y 1> /dev/null 2>&1
+
+declare -i i=0
+
+for i in {1..10}
+do
+  echo -n . 
+  if [[ $i -eq 10 ]]; then
+    break
+  fi
+
+  ICA=$(icad query intertx interchainaccounts connection-0 $WALLET_1 --home ./data/test-1 --node tcp://localhost:16657 -o json 2> /dev/null | jq -r '.interchain_account_address') 
+  if [[ -n "$ICA" ]]; then
+    break
+  fi
+
+  sleep 2
+done
+
+echo
+if [[ $i -eq 10 ]]; then
+  echo "Failed to register interchain account. Try restarting relayer" >&2
+else
+  echo "Interchain account created: $ICA"
+fi
