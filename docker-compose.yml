@@ -12,6 +12,7 @@ services:
     volumes:
       - ./storage:/home/ubuntu/data
       - ./network:/network
+      - ./oracle:/oracle
   
   chain-test-2:
     image: icad:local
