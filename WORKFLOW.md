@@ -31,6 +31,7 @@ WALLET_1
 WALLET_2
 WALLET_3
 WALLET_4
+CMP_ORACLE_WALLET
 ```
 
 - Run unitest: `make docker-unitest`
