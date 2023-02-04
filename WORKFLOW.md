@@ -8,31 +8,32 @@
 This demo follows this workflow
 
 ### Setup
-1. **Build the `icad` binary, the relayer binary, and run an `icad` node and a relayer**
 
-   Run the following and keep the relayer running in that terminal
+- Reset data: `make docker-reset`
 
-    ```sh
-    make install
-    make init-golang-rly
-    make start-golang-rly
-    ```
+- Build icad, relayer & oracle docker images: `make docker-build`
 
-2. **Run the oracle**
+- Init blockchain data : `make docker-init-chain`
 
-   + Open a new terminal
+- Start blockchain: `make docker-start-chain`
 
-   + Install pip package if not yet installed
+- Init relayer data: `make docker-init-relayer`
 
-      ```sh
-      pip3 install -r oracle/requirements.txt
-      ```
-   + Run the oracle
+- Start relayer: `make docker-start-relayer`
 
-      ```sh
-      make start-oracle
-      ```
-   + Keep it running
+- Init oracle wallet: `make docker-init-oracle`
+
+- Start oracle: `make docker-start-oracle`
+
+- Open `storage/oracle/docker.env`, verify the following account addresses
+```
+WALLET_1
+WALLET_2
+WALLET_3
+WALLET_4
+```
+
+- Run unitest: `make docker-unitest`
 
 ### Workflows
 1. **Preparation**
