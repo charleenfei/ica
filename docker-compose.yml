@@ -31,9 +31,16 @@ services:
       - ./storage:/src/app/data
       - ./network:/src/app/network
 
-  oracle:
+  controller-oracle:
     image: oracle:local
-    command: bash /src/app/oracle/run_oracle.sh
+    command: bash /src/app/oracle/run_controller_oracle.sh
+    volumes:
+      - ./oracle:/src/app/oracle
+      - ./storage/oracle/docker.env:/src/app/docker.env
+  
+  host-oracle:
+    image: oracle:local
+    command: bash /src/app/oracle/run_host_oracle.sh
     volumes:
       - ./oracle:/src/app/oracle
       - ./storage/oracle/docker.env:/src/app/docker.env
