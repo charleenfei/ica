@@ -46,9 +46,9 @@ services:
     image: oracle:local
     command: bash /src/app/oracle/run_host_oracle.sh
     environment:
-      CMP_CONTROLLER_CHAIN_ID: test-2
+      CMP_HOST_CHAIN_ID: test-2
       CMP_CHAIN_WS: ws://chain-test-2:26657/websocket
-      CMP_CONTROLLER_CHAIN_HOME: /src/app/data/test-2
+      CMP_HOST_CHAIN_HOME: /src/app/data/test-2
     volumes:
       - ./oracle:/src/app/oracle
       - ./storage:/src/app/data
