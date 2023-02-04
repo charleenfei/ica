@@ -2,13 +2,15 @@
 
 # set -x
 
+if [[ $1 = "--h" || $1 = "-h" || $1 = "--help" || -z $1 ]]; then
+  echo "Usage: $0 COSMOS_ADDRESS CHAIN_ID"
+  echo "  Example: $0 cosmos1m9l358xunhhwds0568za49mzhvuxx9uxre5tud test-1"
+  exit 0
+fi
+
 ADDRESS=$1
 CHAIN=$2
 NODE=tcp://localhost:16657
-
-if [[ -z "${ADDRESS}" ]]; then
-  ADDRESS=$WALLET_1
-fi
 
 if [[ -z "${CHAIN}" ]]; then
   CHAIN=test-1
@@ -24,6 +26,11 @@ fi
 
 icad tx intertx register --from $ADDRESS --connection-id connection-0 --chain-id $CHAIN --home ./data/$CHAIN --node $NODE --keyring-backend test --timeout-height 1000 -y 1> /dev/null 2>&1
 
+if [[ $? -ne 0 ]]; then
+  echo "Failed to register interchain account for $ADDRESS"
+  exit 1
+fi
+
 declare -i i=0
 
 for i in {1..10}
@@ -33,7 +40,7 @@ do
     break
   fi
 
-  ICA=$(icad query intertx interchainaccounts connection-0 $WALLET_1 --home ./data/test-1 --node tcp://localhost:16657 -o json 2> /dev/null | jq -r '.interchain_account_address') 
+  ICA=$(icad query intertx interchainaccounts connection-0 $ADDRESS --home ./data/$CHAIN --node $NODE -o json 2> /dev/null | jq -r '.interchain_account_address') 
   if [[ -n "$ICA" ]]; then
     break
   fi
