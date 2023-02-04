@@ -34,13 +34,21 @@ services:
   controller-oracle:
     image: oracle:local
     command: bash /src/app/oracle/run_controller_oracle.sh
+    environment:
+      CMP_CONTROLLER_CHAIN_ID: test-1
+      CMP_CHAIN_WS: ws://chain-test-1:16657/websocket
+      CMP_CONTROLLER_CHAIN_HOME: /src/app/data/test-1
     volumes:
       - ./oracle:/src/app/oracle
-      - ./storage/oracle/docker.env:/src/app/docker.env
+      - ./storage:/src/app/data
   
   host-oracle:
     image: oracle:local
     command: bash /src/app/oracle/run_host_oracle.sh
+    environment:
+      CMP_CONTROLLER_CHAIN_ID: test-2
+      CMP_CHAIN_WS: ws://chain-test-2:26657/websocket
+      CMP_CONTROLLER_CHAIN_HOME: /src/app/data/test-2
     volumes:
       - ./oracle:/src/app/oracle
-      - ./storage/oracle/docker.env:/src/app/docker.env
+      - ./storage:/src/app/data
