@@ -158,7 +158,9 @@ kill-dev:
 ###############################################################################
 
 docker-build:
-	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml build 
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml build build-icad
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml build build-relayer
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml build build-oracle
 
 docker-reset:
 	docker-compose stop
