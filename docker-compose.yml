@@ -13,17 +13,31 @@ services:
       - ./storage:/home/ubuntu/data
       - ./network:/network
       - ./oracle:/oracle
+    ports:
+      - "8090:8090"
+      - "8091:8091"
+      - "16656:16656"
+      - "16657:16657"
+      - "1316:1316"
+      - "8080:8080"
   
   chain-test-2:
     image: icad:local
     command: bash /network/start.sh
     environment:
       CHAINID: test-2
-      GRPCPORT: 8090
-      GRPCWEB: 8091
+      GRPCPORT: 9090
+      GRPCWEB: 9091
     volumes:
       - ./storage:/home/ubuntu/data
       - ./network:/network
+    ports:
+      - "9090:9090"
+      - "9091:9091"
+      - "26656:26656"
+      - "26657:26657"
+      - "1317:1317"
+      - "8081:8081"
 
   relayer:
     image: relayer:local

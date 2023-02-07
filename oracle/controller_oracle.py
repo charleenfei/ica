@@ -70,7 +70,7 @@ def execute_cmp_logic(cmp_event):
     # Send NO when cannot load config
 
 # check the cmp event against the config, return True/False
-def check_cmp_logic(cmp_event, cmp_config) -> bool:
+def check_cmp_logic(cmp_event, cmp_config):
     # domain_name = "." + cmp_event[CmpHostItem].split(".")[-1]
     user_info = cmp_config.get("user_info").get(cmp_event[CmpControllerCreator])
     print(f"Checking User {user_info}")
