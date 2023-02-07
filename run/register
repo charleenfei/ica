@@ -25,7 +25,12 @@ if [[ "${CHAIN}" = "test-3" ]]; then
   NODE=tcp://localhost:36657
 fi
 
-icad tx intertx register --from $ADDRESS --connection-id connection-0 --chain-id $CHAIN --home ./data/$CHAIN --node $NODE --keyring-backend test --timeout-height 1000 -y 1> /dev/null 2>&1
+if icad tx intertx register --from $ADDRESS --connection-id connection-0 --chain-id $CHAIN --home ./data/$CHAIN --node $NODE --keyring-backend test --timeout-height 1000 -y 1> /dev/null 2>&1; then
+  :
+else
+  echo "Error: Register tx failed"
+  exit 1
+fi
 
 if [[ $? -ne 0 ]]; then
   echo "Failed to register interchain account for $ADDRESS"
@@ -54,5 +59,5 @@ if [[ $i -eq 10 ]]; then
   echo "Failed to register interchain account. Try restarting relayer" >&2
 else
   echo "Interchain account created: $ICA"
-  icad tx bank send $WALLET_3 $ICA 100000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y
+  icad tx bank send $WALLET_3 $ICA 100000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y 1> /dev/null 2>&1
 fi
