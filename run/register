@@ -4,6 +4,7 @@
 
 if [[ $1 = "--h" || $1 = "-h" || $1 = "--help" || -z $1 ]]; then
   echo "Usage: $0 COSMOS_ADDRESS CHAIN_ID"
+  echo "  Register an interchain account for COSMOS_ADDRESS on chain CHAIN_ID and fund it with 100,000stake"
   echo "  Example: $0 cosmos1m9l358xunhhwds0568za49mzhvuxx9uxre5tud test-1"
   exit 0
 fi
@@ -53,4 +54,5 @@ if [[ $i -eq 10 ]]; then
   echo "Failed to register interchain account. Try restarting relayer" >&2
 else
   echo "Interchain account created: $ICA"
+  icad tx bank send $WALLET_3 $ICA 100000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y
 fi
