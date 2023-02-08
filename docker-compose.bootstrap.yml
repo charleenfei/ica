@@ -18,6 +18,8 @@ services:
       context: .
       dockerfile: Dockerfile.oracle
     image: oracle:local
+    depends_on:
+        - build-icad
 
   init-chain:
     image: icad:local
