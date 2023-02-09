@@ -11,7 +11,7 @@
             "country":"country-x",
             "region":"region-y",
             "investor_type":"retail",
-            "kyc":true
+            "kyc":false
         },
         "cosmos10h9stc5v6ntgeygf5xf945njqq5h32r53uquvw":{
             "name":"User_2",
