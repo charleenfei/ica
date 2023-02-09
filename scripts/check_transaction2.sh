@@ -4,7 +4,8 @@ export WALLET_1=$(icad keys show wallet1 -a --keyring-backend test --home ./data
 export ICA_ADDR=$(icad query intertx interchainaccounts connection-0 $WALLET_1 --home ./data/test-1 --node tcp://localhost:16657 -o json | jq -r '.interchain_account_address') #&& echo $ICA_ADDR
 # export domain="amit.com"
 # export domain="block1.com"
-export domain="test.xyz"
+# export domain="test.xyz"
+export domain="google.xyz"
 echo ""
 echo "Who is owner of the product $domain ?"
 echo "-----------------------------------------"

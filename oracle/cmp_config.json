@@ -1,5 +1,5 @@
 {
-    "banned": [".xyz", ".abc", ".region-y", ".country-x"],
+    "banned": [ ".xyz",".abc", ".region-y", ".country-x"],
     "price_range":{
         ".com": [100,200],
         ".org": [10,20],
@@ -11,7 +11,7 @@
             "country":"country-x",
             "region":"region-y",
             "investor_type":"retail",
-            "kyc":true
+            "kyc": true
         },
         "cosmos10h9stc5v6ntgeygf5xf945njqq5h32r53uquvw":{
             "name":"User_2",

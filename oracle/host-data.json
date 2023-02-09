@@ -6,6 +6,9 @@
         "block.com": "150",
         "block1.com": "150",
         "testdomain.country-x": "200",
-        "test.xyz": "200"
+        "test.xyz": "200",
+        "foobar.com": "150",
+        "govbond.xyz": "200",
+        "google.xyz": "200"
     }
 }
