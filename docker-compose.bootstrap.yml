@@ -23,7 +23,7 @@ services:
 
   init-chain:
     image: icad:local
-    command: bash ./network/init.sh
+    command: bash ./network/docker-init.sh
     volumes:
       - ./storage:/home/ubuntu/data
 
