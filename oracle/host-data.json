@@ -1,2 +1,11 @@
 {
+    "last_price": {
+        "testcontroller.com": "150",
+        "testcontroller1.com": "150",
+        "amit.com": "150",
+        "block.com": "150",
+        "block1.com": "150",
+        "testdomain.country-x": "200",
+        "test.xyz": "200"
+    }
 }

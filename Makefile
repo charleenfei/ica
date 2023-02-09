@@ -152,3 +152,17 @@ kill-dev:
 	@echo "Killing icad and removing previous data"
 	-@rm -rf ./data
 	-@killall icad 2>/dev/null
+
+workflow1_submit_transaction:
+	@bash scripts/submit_transaction.sh
+
+workflow1_check_transaction:
+	@bash scripts/check_transaction.sh
+
+workflow2_submit_transaction:
+	@echo "Submitting transaction to buy product."
+	@bash scripts/submit_transaction2.sh
+
+workflow2_check_transaction:
+	@echo "Checking transaction whether product was successfully bought."
+	@bash scripts/check_transaction2.sh
