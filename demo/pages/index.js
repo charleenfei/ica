@@ -25,11 +25,18 @@ async  function workflow1_check() {
   document.getElementById("workflow1").innerHTML = data;
 }
 
-async  function handleClick1() {
-  const req = await fetch("/api/query1");
+async  function balance() {
+  const req = await fetch("/api/balance");
   const data = await req.json();
   console.log(data);
   document.getElementById("result").innerHTML = data;
+}
+
+async  function balance2() {
+  const req = await fetch("/api/balance2");
+  const data = await req.json();
+  console.log(data);
+  document.getElementById("result2").innerHTML = data;
 }
 
 async  function handleClick2() {
@@ -47,8 +54,9 @@ async  function handleClick3() {
 }
 async  function handleClear() {
   document.getElementById("getICA").textContent = "";
+  document.getElementById("result").textContent = "";
+  document.getElementById("result2").textContent = "";
   // document.getElementById("workflow1").textContent = "";
-  // document.getElementById("result").textContent = "";
   // document.getElementById("result2").textContent = "";
   // document.getElementById("result3").textContent = "";
 }
@@ -74,9 +82,10 @@ export default function Home() {
       <div>
       <div className="d-grid gap-2 d-md-flex justify-content-md-end">
         <Button variant="primary" size="sm" onClick={getICA}> ICA Details </Button>
+        <Button variant="primary" size="sm" onClick={balance}> Balance 1</Button>
+        <Button variant="primary" size="sm" onClick={balance2}> Balance 2</Button>
         {/* <Button variant="primary" size="sm" onClick={workflow1}> workflow1 </Button>
         <Button variant="primary" size="sm" onClick={workflow1_check}> workflow1_check </Button>
-        <Button variant="primary" size="sm" onClick={handleClick1}> Query1 </Button>
         <Button variant="primary" size="sm" onClick={handleClick2}> Query2 </Button>
         <Button variant="primary" size="sm" onClick={handleClick3}> Query3 </Button> */}
         <Button variant="primary" size="lg" onClick={handleClear}> Clear </Button>
@@ -92,10 +101,15 @@ export default function Home() {
             <div id="getICA"></div>
           </div>
 
-        {/* <div className={styles.card1}>
-            <h5> workflow1 &rarr;</h5>
-            <div id="workflow1"></div>
-        </div> */}
+        <div className={styles.card3}>
+            <h5> Balance &rarr;</h5>
+            <div id="result"></div>
+        </div>
+
+        <div className={styles.card3}>
+            <h5> Balance &rarr;</h5>
+            <div id="result2"></div>
+        </div>
 
           {/* <a href="http://localhost:3000/api/query1" className={styles.card1}>
           </a> */}

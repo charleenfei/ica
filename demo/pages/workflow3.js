@@ -58,7 +58,7 @@ export default function Home() {
 
       <main>
         <div className={styles.card3}>
-        Price control, certain product has certain price range
+        Workflow3: Price control, certain product has certain price range
         </div>
         <div className={styles.grid}>
 

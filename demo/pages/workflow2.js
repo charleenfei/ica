@@ -58,7 +58,7 @@ export default function Home() {
 
       <main>
         <div className={styles.card3}>
-        Banned product cannot be bought
+        Workflow2: Banned product cannot be bought
         </div>
         <div className={styles.grid}>
 

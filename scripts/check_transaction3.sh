@@ -2,7 +2,7 @@
 
 export WALLET_1=$(icad keys show wallet1 -a --keyring-backend test --home ./data/test-1) #&& echo $WALLET_1;
 export ICA_ADDR=$(icad query intertx interchainaccounts connection-0 $WALLET_1 --home ./data/test-1 --node tcp://localhost:16657 -o json | jq -r '.interchain_account_address') #&& echo $ICA_ADDR
-export product="amazon.org"
+export product="amazon3.org"
 echo ""
 echo "Who is owner of the product $product ?"
 echo "-----------------------------------------"

@@ -2,7 +2,7 @@
     "banned": [ ".xyz",".abc", ".region-y", ".country-x"],
     "price_range":{
         ".com": [100,200],
-        ".org": [10,80],
+        ".org": [10,160],
         "default": [50,500]
     },
     "user_info":{

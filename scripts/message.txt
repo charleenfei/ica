@@ -1,7 +1,1 @@
-{
-   "@type":"/cosmos.interchainaccounts.nameservice.MsgCmpBuy",
-   "creator":"$ICA_ADDR",
-   "name":"$product",
-   "bid":"$price",
-   "metadata":"test_meta_data"
-}
+{"@type":"/cosmos.interchainaccounts.nameservice.MsgCmpBuy","creator":"$ICA_ADDR","name":"$product","bid":"$price","metadata":"test_meta_data"}

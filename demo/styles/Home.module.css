@@ -88,7 +88,8 @@
 .card2 {
   background-color: rgb(247, 253, 166);
   margin: 1rem;
-  flex-basis: 45%;
+  /* flex-basis: 45%; */
+  flex-basis: 100%;
   padding: 1.5rem;
   text-align: left;
   color: inherit;
@@ -102,7 +103,8 @@
 .card3 {
   background-color: rgb(208, 250, 215);
   margin: 1rem;
-  flex-basis: 45%;
+  /* flex-basis: 45%; */
+  flex-basis: 100%;
   padding: 1.5rem;
   text-align: left;
   color: inherit;

@@ -5,7 +5,7 @@ export ICA_ADDR=$(icad query intertx interchainaccounts connection-0 $WALLET_1 -
 
 # export domain="testcontroller1.com"
 # export domain="block1.com"
-export domain="foobar.com"
+export domain="microsoft.com"
 echo ""
 echo "Buy name $domain for 150 tokens"
 echo "-----------------------------------------"

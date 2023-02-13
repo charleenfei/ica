@@ -1,7 +1,7 @@
 {
     "last_price": {
-        "testcontroller.com": "150",
-        "testcontroller1.com": "150",
+        "testcontroller.com": "110",
+        "testcontroller1.com": "110",
         "amit.com": "150",
         "block.com": "150",
         "block1.com": "150",
@@ -10,6 +10,9 @@
         "foobar.com": "150",
         "govbond.xyz": "200",
         "google.xyz": "200",
-        "amazon.org": "50"
+        "amazon.org": "150",
+        "amazon2.org": "50",
+        "amazon3.org": "40",
+        "microsoft.com": "150"
     }
 }

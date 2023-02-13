@@ -153,6 +153,10 @@ kill-dev:
 	-@rm -rf ./data
 	-@killall icad 2>/dev/null
 
+# 	@echo "Querying balance of $(addr) on $(chain)"
+query_balance:
+	@icad q bank balances $(addr) --chain-id $(chain) --node tcp://localhost:26657 --output json | jq -r '.balances[0].amount'
+
 workflow1_submit_transaction:
 	@bash scripts/submit_transaction.sh
 
@@ -174,3 +178,15 @@ workflow3_submit_transaction:
 workflow3_check_transaction:
 	@echo "Checking transaction whether product was successfully bought."
 	@bash scripts/check_transaction3.sh
+
+workflow4_submit_transaction:
+	@echo "Submitting transaction to sell product."
+	@bash scripts/submit_transaction4.sh
+
+workflow4_buy:
+	@echo "Submitting transaction to buy product."
+	@bash scripts/submit_buy_transaction4.sh
+
+workflow4_check_transaction:
+	@echo "Checking transaction whether product was successfully bought."
+	@bash scripts/check_transaction4.sh
