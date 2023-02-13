@@ -1,0 +1,8 @@
+icad tx controller submit-tx \
+"{
+   \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
+   \"creator\": \"$ICA_ADDR\",
+   \"name\":\"$product\",
+   \"bid\":\"$price\",
+   \"metadata\":\"test_meta_data\"
+}" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y  -o json
