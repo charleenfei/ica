@@ -1,1 +1,4 @@
-This is a starter template for [Learn Next.js](https://nextjs.org/learn).
+# CMP (Capital Markets Protocol) Demo
+
+* Setup the environment for node
+* Run `yarn install && yarn dev`
