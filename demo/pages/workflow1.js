@@ -58,7 +58,7 @@ export default function Home() {
 
       <main>
         <div className={styles.card3}>
-        Only KYC-ed account can send crosschain tx through controller module.
+        Controller verification module: Only KYC-ed account can send crosschain tx through controller module.
         </div>
         <div className={styles.grid}>
 

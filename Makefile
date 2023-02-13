@@ -166,3 +166,11 @@ workflow2_submit_transaction:
 workflow2_check_transaction:
 	@echo "Checking transaction whether product was successfully bought."
 	@bash scripts/check_transaction2.sh
+
+workflow3_submit_transaction:
+	@echo "Submitting transaction to buy product."
+	@bash scripts/submit_transaction3.sh
+
+workflow3_check_transaction:
+	@echo "Checking transaction whether product was successfully bought."
+	@bash scripts/check_transaction3.sh
