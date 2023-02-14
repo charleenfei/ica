@@ -23,6 +23,7 @@ from shlex import quote
 # file path for configuring CMP logic
 CMP_CONFIG_FILE = "oracle/cmp_config.json"
 HOST_DATA_FILE = "oracle/host-data.json"
+PRICES_FILE = "oracle/prices.json"
 
 # For websocket subscription of events
 ws_params = {"jsonrpc": "2.0", "method": "subscribe", "id": 0, "params": {"query": "tm.event = 'Tx'"}}
@@ -53,7 +54,6 @@ def on_message(ws, message):
             # cmp event exist, process logic
             execute_cmp_logic(cmp_event)
     print("*" * 80 + "\n\n")
-
 
 # when there is CMP event, execute the cmp logic on that event
 def execute_cmp_logic(cmp_event):
@@ -90,6 +90,9 @@ def check_cmp_logic(cmp_event, cmp_config):
     domain_name = "." + cmp_event[CmpHostItem].split(".")[-1]
     bid = int(cmp_event[CmpHostBid])
     print(f"Checking Domain {domain_name}, bid {bid}")
+
+    prices_json = json.load(open(PRICES_FILE, "r"))
+
     # check banned / sanction
     if "banned" in cmp_config:
         if "." + domain_name.split(".")[-1] in cmp_config["banned"]:
@@ -97,9 +100,9 @@ def check_cmp_logic(cmp_event, cmp_config):
             return False, reason
 
     # check price range
-    price_range = cmp_config["price_range"]["default"]
-    if domain_name in cmp_config["price_range"]:
-        price_range = cmp_config["price_range"][domain_name]
+    price_range = prices_json["default"]
+    if domain_name in prices_json:
+        price_range = prices_json[domain_name]
 
     if bid < price_range[0] or bid > price_range[1]:
         reason = f"Bid {bid} is out of price range {price_range[0]} -> {price_range[1]} for domain {domain_name}"
