@@ -1,0 +1,49 @@
+#!/bin/bash
+
+# set -x
+
+if [[ $1 = "--h" || $1 = "-h" || $1 = "--help" || -z $1 ]]; then
+  echo "Usage: $0 COSMOS_ADDRESS CHAIN_ID ITEM PRICE"
+  echo "  Example: $0 cosmos1m9l358xunhhwds0568za49mzhvuxx9uxre5tud test-1 test.com 140 (140 means selling for 140 stakes)"
+  exit 0
+fi
+
+ADDRESS=$1
+CHAIN=$2
+ITEM=$3
+PRICE=$4
+NODE=tcp://localhost:16657
+
+if [[ -z "${CHAIN}" ]]; then
+  CHAIN=test-1
+fi
+
+if [[ "${CHAIN}" = "test-1" ]]; then
+  NODE=tcp://localhost:16657
+fi
+
+if [[ "${CHAIN}" = "test-3" ]]; then
+  NODE=tcp://localhost:36657
+fi
+
+ICA=$(icad query intertx interchainaccounts connection-0 $ADDRESS --home ./data/$CHAIN --node $NODE -o json 2> /dev/null | jq -r '.interchain_account_address') 
+if [[ -z "$ICA" ]]; then
+  echo "Error: No interchain account found"
+  exit 1
+fi
+
+CMD="icad q nameservice show-pending-sell $ITEM -o json 2> /dev/null | jq -r '.pendingSell.name'"
+if [[ -n "$($CMD)" ]]; then
+  echo "Error: Item is already for sale"
+  exit 1
+fi
+
+icad tx controller submit-tx "{
+   \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpSell\",
+   \"creator\": \"$ICA\",
+   \"name\":\"$ITEM\",
+   \"price\":\"$PRICE\",
+   \"metadata\":\"test\"
+}" connection-0 --from $ADDRESS --chain-id $CHAIN --home ./data/$CHAIN --node $NODE --keyring-backend test -y
+
+echo "Sell transaction sent. Check the result in a few seconds."
