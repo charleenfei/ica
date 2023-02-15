@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 
 import subprocess
+import os
+from pathlib import Path
+import sys
 
 from flask import Flask
 
@@ -28,7 +31,24 @@ def get_owns():
 
 @app.route('/alias/<address>')
 def get_alias(address):
+    print(aliases)
+    if address in aliases:
+        return aliases[address]
     return address
+
+@app.route('/register/<address>/<name>')
+def get_register(address, name):
+    try:
+        icaBytes = subprocess.check_output(['bash', str(Path(os.getcwd()).parent.absolute()) + '/run/register', address])
+#        icaBytes = subprocess.getoutput('bash ' + str(Path(os.getcwd()).parent.absolute()) + '/run/register ' + address)
+    except subprocess.CalledProcessError as exc:
+        return str(exc.output) + '!!'
+    else:
+        ica = icaBytes.decode(sys.stdout.encoding).strip()
+        aliases[ica] = name
+        #print (aliases)
+        return ica
+#    return subprocess.check_output(['bash', str(Path(os.getcwd()).parent.absolute()) + '/run/register', address])
 
 if __name__ == "__main__":
     app.run(debug=True, port=5555)

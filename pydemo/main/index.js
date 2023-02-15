@@ -2,6 +2,13 @@ let pricesElement = document.getElementById('prices');
 let sellsElement = document.getElementById('sells');
 let ownsElement = document.getElementById('owns');
 
+function addChild(element, cont, cClass) {
+  let node = document.createElement('div');
+  if (cClass !== '') node.classList.add(cClass);
+  node.innerHTML = cont;
+  element.appendChild(node);
+}
+
 function loadPrices() {
   fetch('/prices')
     .then((response) => response.json())
@@ -36,10 +43,19 @@ function loadOwns() {
     .then((data) => {
       owns.innerHTML = '';
       for (let own of data) {
-        let node = document.createElement('div');
-        node.classList.add('card-long');
-        node.innerHTML = own.name + ': is owned by: ' + own.owner;
-        ownsElement.appendChild(node);
+        let subjectNode = document.createElement('span');
+        subjectNode.innerHTML = own.name + ': isowned by: '
+        ownsElement.appendChild(subjectNode);
+
+        let aliasNode = document.createElement('span');
+        aliasNode.classList.add('brown');
+        fetch('/alias/' + own.owner)
+          .then((response) => response.text())
+          .then((data) => {
+            aliasNode.innerHTML = data;
+          });
+
+        ownsElement.appendChild(aliasNode);
       }
     });
 

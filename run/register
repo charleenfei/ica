@@ -9,6 +9,8 @@ if [[ $1 = "--h" || $1 = "-h" || $1 = "--help" || -z $1 ]]; then
   exit 0
 fi
 
+cd $HOME/interopera/interchain-accounts-demo
+
 ADDRESS=$1
 CHAIN=$2
 NODE=tcp://localhost:16657
@@ -28,20 +30,20 @@ fi
 if icad tx intertx register --from $ADDRESS --connection-id connection-0 --chain-id $CHAIN --home ./data/$CHAIN --node $NODE --keyring-backend test --timeout-height 1000 -y 1> /dev/null 2>&1; then
   :
 else
-  echo "Error: Register tx failed"
-  exit 1
+  echo "Error: Register tx failed" >&2
+  exit 2
 fi
 
 if [[ $? -ne 0 ]]; then
-  echo "Failed to register interchain account for $ADDRESS"
-  exit 1
+  echo "Failed to register interchain account for $ADDRESS" >&2
+  exit 3
 fi
 
 declare -i i=0
 
 for i in {1..10}
 do
-  echo -n . 
+  echo -n . >&2
   if [[ $i -eq 10 ]]; then
     break
   fi
@@ -54,10 +56,13 @@ do
   sleep 2
 done
 
-echo
+echo >&2
 if [[ $i -eq 10 ]]; then
   echo "Failed to register interchain account. Try restarting relayer" >&2
+  exit 4
 else
-  echo "Interchain account created: $ICA"
+  echo "Interchain account created: " >&2
+  echo $ICA
   icad tx bank send $WALLET_3 $ICA 100000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y 1> /dev/null 2>&1
+  exit 0
 fi
