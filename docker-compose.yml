@@ -20,7 +20,7 @@ services:
       - "16657:16657"
       - "1316:1316"
       - "8080:8080"
-  
+
   chain-test-2:
     image: icad:local
     command: bash /network/start.sh
@@ -56,7 +56,7 @@ services:
     volumes:
       - ./oracle:/src/app/oracle
       - ./storage:/src/app/data
-  
+
   host-oracle:
     image: oracle:local
     command: bash /src/app/oracle/run_host_oracle.sh

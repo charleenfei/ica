@@ -25,6 +25,8 @@ echo "****** WORKFLOW Z: Controller verification module ******"
 echo
 
 echo "[EXECUTING] try sending a buy request WITHOUT KYC..."
+sed -i '14s/true/false/' /oracle/cmp_config.json
+
 txhash=$(icad tx controller submit-tx \
 "{
     \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
@@ -80,6 +82,7 @@ echo "****** WORKFLOW A: Banned domain cannot be bought ******"
 echo
 
 echo "[INFO] In the default configuration, .country-x domain is banned..."
+sed -i '2s/#/country-x/' /oracle/cmp_config.json
 echo "[EXECUTING] Try buying a .country-x domain..."
 txhash=$(icad tx controller submit-tx \
 "{
@@ -103,12 +106,12 @@ else
     echo
     echo "[ERROR!!!] DNS Item List is NOT having one record..."
     icad q nameservice list-whois --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json
-    
+
     exit 1
 fi
 
 echo "[INFO] To unban .country-x domain"
-sed -i '2s/"country-x"//' /oracle/cmp_config.json
+sed -i '2s/country-x/#/' /oracle/cmp_config.json
 
 echo "[EXECUTING] Re-try buying a .country-x domain..."
 txhash=$(icad tx controller submit-tx \
