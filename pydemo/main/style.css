@@ -1,0 +1,27 @@
+body {
+  background-color: lightblue;
+}
+
+.card {
+  border: solid black 1px;
+  width: 600px;
+  margin: 5px;
+}
+
+.info {
+  margin: 5px;
+}
+
+.card-long {
+  border: solid black 1px;
+  width: 1000px;
+  margin: 5px;
+}
+
+.red {
+  color: red;
+}
+
+.brown {
+  color: brown;
+}
