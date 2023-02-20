@@ -9,7 +9,7 @@ ENV GOPATH=""
 ENV GOMODULE="on"
 
 RUN git clone https://github.com/cosmos/relayer.git \
-    && cd ./relayer && git checkout main \
+    && cd ./relayer && git checkout 921407ad5a6f52405a0d59b197eaa1b8b961ed72 \
     && make build
 
 RUN cp /src/app/relayer/build/rly /usr/bin/
