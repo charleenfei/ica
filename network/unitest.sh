@@ -137,3 +137,55 @@ else
     echo "[ERROR!!!] DNS Item List is NOT having two record..."
     exit 1
 fi
+
+echo
+echo "****** WORKFLOW B: Price control, certain domain has certain price range ******"
+echo
+
+echo "[EXECUTING] buying a testdomain.org domain with price = 50..."
+txhash=$(icad tx controller submit-tx \
+"{
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
+    \"creator\": \"$ICA_ADDR\",
+    \"name\":\"testdomain.org\",
+    \"bid\":\"50\",
+    \"metadata\":\"test_meta_data\"
+}" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CMP_CONTROLLER_CHAIN_ID} --home ./data/${CMP_CONTROLLER_CHAIN_ID} --node ${CMP_CONTROLLER_CHAIN_URL} --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
+
+echo "[INFO] txhash: ${txhash}"
+sleep 10
+
+expected_whois_size=$(icad q nameservice list-whois --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.whois | length')
+if [ ${expected_whois_size} -eq 2 ]; then
+    echo
+    echo "[SUCCESS!!!] DNS Item List is expected STILL to have two record..."
+    echo
+else
+    echo
+    echo "[ERROR!!!] DNS Item List is NOT having two record..."
+    exit 1
+fi
+
+echo "[EXECUTING] buying a testdomain.org domain with price = 15..."
+txhash=$(icad tx controller submit-tx \
+"{
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
+    \"creator\": \"$ICA_ADDR\",
+    \"name\":\"testdomain.org\",
+    \"bid\":\"15\",
+    \"metadata\":\"test_meta_data\"
+}" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CMP_CONTROLLER_CHAIN_ID} --home ./data/${CMP_CONTROLLER_CHAIN_ID} --node ${CMP_CONTROLLER_CHAIN_URL} --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
+
+echo "[INFO] txhash: ${txhash}"
+sleep 10
+
+expected_whois_size=$(icad q nameservice list-whois --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.whois | length')
+if [ ${expected_whois_size} -eq 3 ]; then
+    echo
+    echo "[SUCCESS!!!] DNS Item List is expected to have three records..."
+    echo
+else
+    echo
+    echo "[ERROR!!!] DNS Item List is NOT having three records..."
+    exit 1
+fi
