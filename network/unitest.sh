@@ -189,3 +189,168 @@ else
     echo "[ERROR!!!] DNS Item List is NOT having three records..."
     exit 1
 fi
+
+echo
+echo "****** WORKFLOW C: Match buyer and seller ******"
+echo
+
+echo "[EXECUTING] Create an interchain account for $WALLET_2 and store its account address in variable $ICA_ADDR_2..."
+txhash=$(icad tx intertx register --from $WALLET_2 --connection-id ${CONNECTION_ID} --chain-id ${CMP_CONTROLLER_CHAIN_ID} --home ./data/${CMP_CONTROLLER_CHAIN_ID} --node ${CMP_CONTROLLER_CHAIN_URL} --keyring-backend test --timeout-height 1000 --broadcast-mode block -y --output json | jq -r '.txhash')
+echo "[INFO] txhash: ${txhash}"
+
+echo "[INFO] Query the address of the NEW interchain account..."
+sleep 10
+ICA_ADDR_2=$(icad query intertx interchainaccounts ${CONNECTION_ID} $WALLET_2 --home ./data/${CMP_CONTROLLER_CHAIN_ID} --node ${CMP_CONTROLLER_CHAIN_URL} --output json | jq -r '.interchain_account_address')
+echo "[INFO] NEW interchain_account_address: ${ICA_ADDR_2}"
+
+echo "[EXECUTING] Fund the interchain accounts"
+txhash=$(icad tx bank send $WALLET_3 $ICA_ADDR 10000stake --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --keyring-backend test --timeout-height 1000 --broadcast-mode block -y --output json | jq -r '.txhash')
+
+denom=$(icad q bank balances $ICA_ADDR --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.balances[].denom')
+balance=$(icad q bank balances $ICA_ADDR --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.balances[].amount')
+if [ ${denom} = "stake" ]; then
+    echo
+    echo "[SUCCESS!!!] \$ICA_ADDR is expected to have correct denom"
+    echo
+else
+     echo
+    echo "[ERROR!!!] Incorrect denom for \$ICA_ADDR!!!"
+    exit 1
+fi
+
+if [ $balance -eq 10000 ]; then
+    echo
+    echo "[SUCCESS!!!] \$ICA_ADDR is expected to have correct balance"
+    echo
+else
+     echo
+    echo "[ERROR!!!] Incorrect balance for \$ICA_ADDR!!!"
+    exit 1
+fi
+
+txhash=$(icad tx bank send $WALLET_3 $ICA_ADDR_2 10000stake --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --keyring-backend test --timeout-height 1000 --broadcast-mode block -y --output json | jq -r '.txhash')
+echo "[INFO] txhash: ${txhash}"
+denom=$(icad q bank balances $ICA_ADDR_2 --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.balances[].denom')
+balance=$(icad q bank balances $ICA_ADDR_2 --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.balances[].amount')
+
+if [ ${denom} = "stake" ]; then
+    echo
+    echo "[SUCCESS!!!] \$ICA_ADDR_2 is expected to have correct denom"
+    echo
+else
+     echo
+    echo "[ERROR!!!] Incorrect denom for \$ICA_ADDR_2!!!"
+    exit 1
+fi
+
+if [ $balance -eq 10000 ]; then
+    echo
+    echo "[SUCCESS!!!] \$ICA_ADDR_2 is expected to have correct balance"
+    echo
+else
+     echo
+    echo "[ERROR!!!] Incorrect balance for \$ICA_ADDR_2!!!"
+    exit 1
+fi
+
+pending_sell_size=$(icad q nameservice list-pending-sell --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.pendingSell | length')
+if [ ${pending_sell_size} -eq 0 ]; then
+    echo
+    echo "[SUCCESS!!!] Pending sell list is expected to be empty..."
+    echo
+else
+    echo
+    echo "[ERROR!!!] Pending sell list is NOT empty..."
+    exit 1
+fi
+
+echo "[EXECUTING] Put testcontroller.com up for sale..."
+txhash=$(icad tx controller submit-tx \
+"{
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpSell\",
+    \"creator\": \"$ICA_ADDR\",
+    \"name\":\"testcontroller.com\",
+    \"price\":\"110\",
+    \"metadata\":\"test_meta_data\"
+}" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CMP_CONTROLLER_CHAIN_ID} --home ./data/${CMP_CONTROLLER_CHAIN_ID} --node ${CMP_CONTROLLER_CHAIN_URL} --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
+echo "[INFO] txhash: ${txhash}"
+sleep 10
+
+pending_sell_size=$(icad q nameservice list-pending-sell --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.pendingSell | length')
+if [ ${pending_sell_size} -eq 1 ]; then
+    echo
+    echo "[SUCCESS!!!] Pending sell list is expected to have one item..."
+    echo
+else
+    echo
+    echo "[ERROR!!!] Pending sell list is NOT expected to be empty..."
+    exit 1
+fi
+
+echo "[EXECUTING] \$WALLET_2 can buy testcontroller.com from \$WALLET_1 with 110 stake:"
+txhash=$(icad tx controller submit-tx \
+"{
+    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
+    \"creator\": \"$ICA_ADDR_2\",
+    \"name\":\"testcontroller.com\",
+    \"bid\":\"110\",
+    \"metadata\":\"test_meta_data\"
+}" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CMP_CONTROLLER_CHAIN_ID} --home ./data/${CMP_CONTROLLER_CHAIN_ID} --node ${CMP_CONTROLLER_CHAIN_URL} --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
+echo "[INFO] txhash: ${txhash}"
+sleep 10
+
+pending_sell_size=$(icad q nameservice list-pending-sell --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.pendingSell | length')
+if [ ${pending_sell_size} -eq 0 ]; then
+    echo
+    echo "[SUCCESS!!!] Pending sell list is expected to be empty..."
+    echo
+else
+    echo
+    echo "[ERROR!!!] Pending sell list is NOT empty..."
+    exit 1
+fi
+
+pending_buy_size=$(icad q nameservice list-pending-buy --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.pendingSell | length')
+if [ ${pending_buy_size} -eq 0 ]; then
+    echo
+    echo "[SUCCESS!!!] Pending buy list is expected to be empty..."
+    echo
+else
+    echo
+    echo "[ERROR!!!] Pending buy list is NOT empty..."
+    exit 1
+fi
+
+expected_whois_size=$(icad q nameservice list-whois --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.whois | length')
+icad q nameservice list-whois --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.whois'
+if [ ${expected_whois_size} -eq 4 ]; then
+    echo
+    echo "[SUCCESS!!!] DNS Item List is expected to have four records..."
+    echo
+else
+    echo
+    echo "[ERROR!!!] DNS Item List is NOT having four records..."
+    exit 1
+fi
+
+balance=$(icad q bank balances $ICA_ADDR --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.balances[].amount')
+if [ $balance -eq 10110 ]; then
+    echo
+    echo "[SUCCESS!!!] \$ICA_ADDR is expected to have correct balance"
+    echo
+else
+     echo
+    echo "[ERROR!!!] Incorrect balance for \$ICA_ADDR!!!"
+    exit 1
+fi
+
+balance=$(icad q bank balances $ICA_ADDR_2 --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.balances[].amount')
+if [ $balance -eq 9890 ]; then
+    echo
+    echo "[SUCCESS!!!] \$ICA_ADDR_2 is expected to have correct balance"
+    echo
+else
+     echo
+    echo "[ERROR!!!] Incorrect balance for \$ICA_ADDR_2!!!"
+    exit 1
+fi
