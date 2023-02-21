@@ -295,7 +295,7 @@ txhash=$(icad tx controller submit-tx \
     \"name\":\"testcontroller.com\",
     \"bid\":\"110\",
     \"metadata\":\"test_meta_data\"
-}" ${CONNECTION_ID} --from $WALLET_1 --chain-id ${CMP_CONTROLLER_CHAIN_ID} --home ./data/${CMP_CONTROLLER_CHAIN_ID} --node ${CMP_CONTROLLER_CHAIN_URL} --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
+}" ${CONNECTION_ID} --from $WALLET_2 --chain-id ${CMP_CONTROLLER_CHAIN_ID} --home ./data/${CMP_CONTROLLER_CHAIN_ID} --node ${CMP_CONTROLLER_CHAIN_URL} --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
 sleep 10
 
@@ -321,15 +321,16 @@ else
     exit 1
 fi
 
-expected_whois_size=$(icad q nameservice list-whois --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.whois | length')
-icad q nameservice list-whois --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.whois'
-if [ ${expected_whois_size} -eq 4 ]; then
+owner=$(icad q nameservice list-whois --chain-id ${CMP_HOST_CHAIN_ID} --home ./data/${CMP_HOST_CHAIN_ID} --node ${CMP_HOST_CHAIN_URL} --output json | jq -r '.whois[] | select(.index == "testcontroller.com") | .owner')
+if [ ${owner} = ${ICA_ADDR_2} ]; then
     echo
-    echo "[SUCCESS!!!] DNS Item List is expected to have four records..."
+    echo "[SUCCESS!!!] \$ICA_ADDR_2 is new owner of testcontroller.com..."
     echo
 else
     echo
-    echo "[ERROR!!!] DNS Item List is NOT having four records..."
+    echo "[ERROR!!!] \$ICA_ADDR_2 is NOT new owner of testcontroller.com..."
+    echo "owner: $owner"
+    echo "ICA_ADDR_2: $ICA_ADDR_2"
     exit 1
 fi
 
