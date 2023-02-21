@@ -1,22 +1,21 @@
-FROM golang:1.18 as builder
+FROM ubuntu:20.04
+
+WORKDIR /home/ubuntu
+
+env PATH /usr/local/go/bin:$PATH
+
+RUN apt-get update && apt-get install -y wget make jq
+RUN wget https://go.dev/dl/go1.18.9.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzvf go1.18.9.linux-amd64.tar.gz
 
 ENV GOPATH=""
 ENV GOMODULE="on"
 
-COPY go.mod .
-COPY go.sum .
+COPY . .
+
+RUN rm -rf ./build
 
 RUN go mod download
-
-ADD app app
-ADD cmd cmd
-ADD x x
-
-COPY Makefile .
 RUN make build
 
-FROM ubuntu:20.04
-
-COPY --from=builder /go/build/icad /bin/icad
-
-ENTRYPOINT ["icad"]
+RUN cp ./build/icad /bin/icad

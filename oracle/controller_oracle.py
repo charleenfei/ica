@@ -22,7 +22,7 @@ from shlex import quote
 
 # file path for configuring CMP logic
 CMP_CONFIG_FILE = "oracle/cmp_config.json"
-CONTROLLER_NODE = "tcp://localhost:16657"
+CONTROLLER_NODE = "tcp://chain-test-1:16657"
 # For websocket subscription of events
 ws_params = {"jsonrpc": "2.0", "method": "subscribe", "id": 0, "params": {"query": "tm.event = 'Tx'"}}
 
@@ -128,7 +128,7 @@ def clear_pending_buy():
 if __name__ == "__main__":
     websocket.enableTrace(True)
     if len(sys.argv) < 2:
-        host = "ws://localhost:16657/websocket"
+        host = "ws://chain-test-1:16657/websocket"
     else:
         host = sys.argv[1]
     ws = websocket.WebSocketApp(host, on_message=on_message, on_error=on_error, on_close=on_close)

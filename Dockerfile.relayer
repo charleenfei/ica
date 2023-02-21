@@ -1,0 +1,17 @@
+#FROM --platform=$BUILDPLATFORM golang:1.19-alpine3.16 AS build-env
+FROM golang:1.19-alpine3.16 AS build-env
+
+RUN apk add --no-cache git libc-dev bash gcc linux-headers make
+
+WORKDIR /src/app/
+
+ENV GOPATH=""
+ENV GOMODULE="on"
+
+RUN git clone https://github.com/cosmos/relayer.git \
+    && cd ./relayer && git checkout 921407ad5a6f52405a0d59b197eaa1b8b961ed72 \
+    && make build
+
+RUN cp /src/app/relayer/build/rly /usr/bin/
+
+RUN apk add bash

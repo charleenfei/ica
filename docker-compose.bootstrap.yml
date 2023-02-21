@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  build-icad:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: icad:local
+
+  build-relayer:
+    build:
+      context: .
+      dockerfile: Dockerfile.relayer
+    image: relayer:local
+
+  build-oracle:
+    build:
+      context: .
+      dockerfile: Dockerfile.oracle
+    image: oracle:local
+    depends_on:
+        - build-icad
+
+  init-chain:
+    image: icad:local
+    command: bash ./network/docker-init.sh
+    volumes:
+      - ./storage:/home/ubuntu/data
+
+  init-relayer:
+    image: relayer:local
+    command: bash ./network/relayer/interchain-acc-config/rly-init.sh
+    volumes:
+      - ./storage:/src/app/data
+      - ./network:/src/app/network
+
+  init-oracle:
+    image: icad:local
+    command: bash ./oracle/init_oracle.sh
+    volumes:
+      - ./storage:/home/ubuntu/data
+      - ./oracle:/home/ubuntu/oracle

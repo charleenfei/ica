@@ -118,7 +118,7 @@ def get_tx_command(request_id, decision, chain_id, chain_home, oracle_wallet):
     # print(" build tx command ", request_id, decision, chain_id, chain_home, oracle_wallet)
     return (
         f"icad tx nameservice cmp-host-callback {request_id} '{decision}' "
-        f"--chain-id {chain_id} --home {chain_home} --keyring-backend test --from {oracle_wallet} -y"
+        f"--chain-id {chain_id} --home {chain_home} --keyring-backend test --from {oracle_wallet} --node tcp://chain-test-2:26657 -y"
     )
 
 # utility to run arbitrary command
@@ -159,7 +159,7 @@ def clear_pending_buy():
 if __name__ == "__main__":
     websocket.enableTrace(True)
     if len(sys.argv) < 2:
-        host = "ws://localhost:26657/websocket"
+        host = "ws://chain-test-2:26657/websocket"
     else:
         host = sys.argv[1]
     ws = websocket.WebSocketApp(host, on_message=on_message, on_error=on_error, on_close=on_close)

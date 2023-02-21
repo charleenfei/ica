@@ -152,3 +152,39 @@ kill-dev:
 	@echo "Killing icad and removing previous data"
 	-@rm -rf ./data
 	-@killall icad 2>/dev/null
+
+###############################################################################
+###                                Docker                                   ###
+###############################################################################
+
+docker-build:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml build build-icad
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml build build-relayer
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml build build-oracle
+
+docker-reset:
+	docker-compose stop
+	rm -rf storage
+	docker system prune -f
+
+docker-init-chain:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml run init-chain
+
+docker-start-chain:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose up -d chain-test-1 chain-test-2
+
+docker-init-relayer:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml run init-relayer
+
+docker-start-relayer:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose up -d relayer
+
+docker-init-oracle:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml run init-oracle
+
+docker-start-oracle:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose up -d controller-oracle host-oracle
+
+docker-unitest:
+#	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose run -it chain-test-1 bash /network/unitest.sh
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose run chain-test-1 bash /network/unitest.sh

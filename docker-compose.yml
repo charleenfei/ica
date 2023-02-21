@@ -1,0 +1,69 @@
+version: "3"
+
+services:
+
+  chain-test-1:
+    image: icad:local
+    command: bash /network/start.sh
+    environment:
+      CHAINID: test-1
+      GRPCPORT: 8090
+      GRPCWEB: 8091
+    volumes:
+      - ./storage:/home/ubuntu/data
+      - ./network:/network
+      - ./oracle:/oracle
+    ports:
+      - "8090:8090"
+      - "8091:8091"
+      - "16656:16656"
+      - "16657:16657"
+      - "1316:1316"
+      - "8080:8080"
+
+  chain-test-2:
+    image: icad:local
+    command: bash /network/start.sh
+    environment:
+      CHAINID: test-2
+      GRPCPORT: 9090
+      GRPCWEB: 9091
+    volumes:
+      - ./storage:/home/ubuntu/data
+      - ./network:/network
+    ports:
+      - "9090:9090"
+      - "9091:9091"
+      - "26656:26656"
+      - "26657:26657"
+      - "1317:1317"
+      - "8081:8081"
+
+  relayer:
+    image: relayer:local
+    command: bash ./network/relayer/interchain-acc-config/rly-start.sh
+    volumes:
+      - ./storage:/src/app/data
+      - ./network:/src/app/network
+
+  controller-oracle:
+    image: oracle:local
+    command: bash /src/app/oracle/run_controller_oracle.sh
+    environment:
+      CMP_CONTROLLER_CHAIN_ID: test-1
+      CMP_CHAIN_WS: ws://chain-test-1:16657/websocket
+      CMP_CONTROLLER_CHAIN_HOME: /src/app/data/test-1
+    volumes:
+      - ./oracle:/src/app/oracle
+      - ./storage:/src/app/data
+
+  host-oracle:
+    image: oracle:local
+    command: bash /src/app/oracle/run_host_oracle.sh
+    environment:
+      CMP_HOST_CHAIN_ID: test-2
+      CMP_CHAIN_WS: ws://chain-test-2:26657/websocket
+      CMP_HOST_CHAIN_HOME: /src/app/data/test-2
+    volumes:
+      - ./oracle:/src/app/oracle
+      - ./storage:/src/app/data
