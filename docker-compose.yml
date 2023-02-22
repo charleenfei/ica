@@ -39,9 +39,34 @@ services:
       - "1317:1317"
       - "8081:8081"
 
+  chain-test-3:
+    image: icad:local
+    command: bash /network/start.sh
+    environment:
+      CHAINID: test-3
+      GRPCPORT: 7090
+      GRPCWEB: 7091
+    volumes:
+      - ./storage:/home/ubuntu/data
+      - ./network:/network
+    ports:
+      - "7090:7090"
+      - "7091:7091"
+      - "36656:36656"
+      - "36657:36657"
+      - "3316:3316"
+      - "8083:8083"
+
   relayer:
     image: relayer:local
     command: bash ./network/relayer/interchain-acc-config/rly-start.sh
+    volumes:
+      - ./storage:/src/app/data
+      - ./network:/src/app/network
+
+  relayer-2:
+    image: relayer:local
+    command: rly start test3-test2 -p events -b 100 --home /src/app/data/relayer
     volumes:
       - ./storage:/src/app/data
       - ./network:/src/app/network

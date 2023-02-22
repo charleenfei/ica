@@ -12,6 +12,7 @@ data
 .vscode
 vendor
 
-relayer/
+/relayer/
 tx.log
 storage
+/oracle/host-data.json
