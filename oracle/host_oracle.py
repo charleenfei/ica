@@ -67,11 +67,24 @@ def execute_cmp_logic(cmp_event):
         if result:
             host_cmp_callback(cmp_event[CmpHostId], "OK::" + reason)
 
-            data = json.load(open(data_path, "r"))
-            if not "last_price" in data:
-                data["last_price"] = {}
-            data["last_price"][cmp_event[CmpHostItem]] = cmp_event[CmpHostBid]
-            data_string = json.dumps(data, indent=4)
+            data = {}
+            data_string= ""
+
+            try:
+                with open(data_path, "r") as f:
+                    pass
+
+            except FileNotFoundError:
+                with open(data_path, "w") as writer:
+                    writer.write("{}")
+
+            with open(data_path, "r") as f:
+                data = json.load(f)
+                if not "last_price" in data:
+                    data["last_price"] = {}
+                data["last_price"][cmp_event[CmpHostItem]] = cmp_event[CmpHostBid]
+                data_string = json.dumps(data, indent=4)
+
             with open(data_path, "w") as writer:
                 writer.write(data_string)
             return

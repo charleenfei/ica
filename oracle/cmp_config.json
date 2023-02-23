@@ -1,5 +1,5 @@
 {
-    "banned": [".xyz", ".abc", ".region-y", ".country-x"],
+    "banned": [".xyz", ".abc", ".region-y", ".#"],
     "price_range":{
         ".com": [100,200],
         ".org": [10,20],
