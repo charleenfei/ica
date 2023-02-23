@@ -66,7 +66,7 @@ services:
 
   relayer-2:
     image: relayer:local
-    command: rly start test3-test2 -p events -b 100 --home /src/app/data/relayer
+    command: rly start test3-test2 -p events -b 100 --home /src/app/data/relayer --debug-addr localhost:7598
     volumes:
       - ./storage:/src/app/data
       - ./network:/src/app/network

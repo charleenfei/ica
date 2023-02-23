@@ -7,6 +7,8 @@ export $(cat data/oracle/docker.env | xargs)
 
 CMP_CONTROLLER_CHAIN_ID=test-1
 CMP_CONTROLLER_CHAIN_URL=tcp://chain-test-1:16657
+CMP_NEW_CONTROLLER_CHAIN_ID=test-3
+CMP_NEW_CONTROLLER_CHAIN_URL=tcp://chain-test-3:36657
 CMP_HOST_CHAIN_ID=test-2
 CMP_HOST_CHAIN_URL=tcp://chain-test-2:26657
 CONNECTION_ID=connection-0
@@ -194,13 +196,13 @@ echo
 echo "****** WORKFLOW C: Match buyer and seller ******"
 echo
 
-echo "[EXECUTING] Create an interchain account for $WALLET_2 and store its account address in variable $ICA_ADDR_2..."
-txhash=$(icad tx intertx register --from $WALLET_2 --connection-id ${CONNECTION_ID} --chain-id ${CMP_CONTROLLER_CHAIN_ID} --home ./data/${CMP_CONTROLLER_CHAIN_ID} --node ${CMP_CONTROLLER_CHAIN_URL} --keyring-backend test --timeout-height 1000 --broadcast-mode block -y --output json | jq -r '.txhash')
+echo "[EXECUTING] Create an interchain account for $WALLET_2 on chain ${CMP_NEW_CONTROLLER_CHAIN_ID} and store its account address in variable $ICA_ADDR_2..."
+txhash=$(icad tx intertx register --from $WALLET_2 --connection-id ${CONNECTION_ID} --chain-id ${CMP_NEW_CONTROLLER_CHAIN_ID} --home ./data/${CMP_NEW_CONTROLLER_CHAIN_ID} --node ${CMP_NEW_CONTROLLER_CHAIN_URL} --keyring-backend test --timeout-height 1000 --broadcast-mode block -y --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
 
 echo "[INFO] Query the address of the NEW interchain account..."
 sleep 10
-ICA_ADDR_2=$(icad query intertx interchainaccounts ${CONNECTION_ID} $WALLET_2 --home ./data/${CMP_CONTROLLER_CHAIN_ID} --node ${CMP_CONTROLLER_CHAIN_URL} --output json | jq -r '.interchain_account_address')
+ICA_ADDR_2=$(icad query intertx interchainaccounts ${CONNECTION_ID} $WALLET_2 --home ./data/${CMP_NEW_CONTROLLER_CHAIN_ID} --node ${CMP_NEW_CONTROLLER_CHAIN_URL} --output json | jq -r '.interchain_account_address')
 echo "[INFO] NEW interchain_account_address: ${ICA_ADDR_2}"
 
 echo "[EXECUTING] Fund the interchain accounts"
@@ -295,7 +297,7 @@ txhash=$(icad tx controller submit-tx \
     \"name\":\"testcontroller.com\",
     \"bid\":\"110\",
     \"metadata\":\"test_meta_data\"
-}" ${CONNECTION_ID} --from $WALLET_2 --chain-id ${CMP_CONTROLLER_CHAIN_ID} --home ./data/${CMP_CONTROLLER_CHAIN_ID} --node ${CMP_CONTROLLER_CHAIN_URL} --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
+}" ${CONNECTION_ID} --from $WALLET_2 --chain-id ${CMP_NEW_CONTROLLER_CHAIN_ID} --home ./data/${CMP_NEW_CONTROLLER_CHAIN_ID} --node ${CMP_NEW_CONTROLLER_CHAIN_URL} --keyring-backend test -y --broadcast-mode block --output json | jq -r '.txhash')
 echo "[INFO] txhash: ${txhash}"
 sleep 10
 

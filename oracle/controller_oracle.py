@@ -131,6 +131,10 @@ if __name__ == "__main__":
         host = "ws://chain-test-1:16657/websocket"
     else:
         host = sys.argv[1]
+
+    if host == "ws://chain-test-3:36657/websocket":
+        CONTROLLER_NODE = "tcp://chain-test-3:36657"
+
     ws = websocket.WebSocketApp(host, on_message=on_message, on_error=on_error, on_close=on_close)
     # disable verbose tracing
     websocket.enableTrace(False)
