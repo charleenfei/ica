@@ -10,6 +10,9 @@ from flask import Flask
 app = Flask(__name__, static_folder='main', static_url_path='')
 aliases = {}
 
+source = os.path.dirname(__file__)
+parent = os.path.join(source, '../')
+
 @app.route('/secret')
 def get_index():
     return 'Main page! \u0394 \N{GRINNING FACE} \N{WINKING FACE}'
@@ -36,11 +39,11 @@ def get_alias(address):
         return aliases[address]
     return address
 
-@app.route('/register/<address>/<name>')
-def get_register(address, name):
+@app.route('/register/<address>/<name>/<chain>')
+def get_register(address, name, chain):
     try:
-        icaBytes = subprocess.check_output(['bash', str(Path(os.getcwd()).parent.absolute()) + '/run/register', address])
-#        icaBytes = subprocess.getoutput('bash ' + str(Path(os.getcwd()).parent.absolute()) + '/run/register ' + address)
+        icaBytes = subprocess.check_output(['bash', str(Path(os.getcwd()).parent.absolute()) + '/run/register', address, chain])
+#        icaBytes = subprocess.getoutput('bash ' + str(Path(os.getcwd()).parent.absolute()) + '/run/register ' + address + ' ' + chain)
     except subprocess.CalledProcessError as exc:
         return str(exc.output) + '!!'
     else:
@@ -49,6 +52,14 @@ def get_register(address, name):
         #print (aliases)
         return ica
 #    return subprocess.check_output(['bash', str(Path(os.getcwd()).parent.absolute()) + '/run/register', address])
+
+@app.route('/run/<com>/<addr>/<chain>/<item>/<price>')
+def get_run(com, addr, chain, item, price):
+    command = 'bash ' + parent +'/run/' + com + ' ' + addr + ' ' + chain + ' ' + item + ' ' + price
+    print(command)
+    s = subprocess.getoutput(command)
+    print(s)
+    return s
 
 if __name__ == "__main__":
     app.run(debug=True, port=5555)

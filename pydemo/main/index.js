@@ -43,9 +43,10 @@ function loadOwns() {
     .then((data) => {
       owns.innerHTML = '';
       for (let own of data) {
+        let divNode = document.createElement('div');
         let subjectNode = document.createElement('span');
-        subjectNode.innerHTML = own.name + ': isowned by: '
-        ownsElement.appendChild(subjectNode);
+        subjectNode.innerHTML = own.name + ': is owned by: '
+        divNode.appendChild(subjectNode);
 
         let aliasNode = document.createElement('span');
         aliasNode.classList.add('brown');
@@ -54,8 +55,9 @@ function loadOwns() {
           .then((data) => {
             aliasNode.innerHTML = data;
           });
+        divNode.appendChild(aliasNode);
 
-        ownsElement.appendChild(aliasNode);
+        ownsElement.appendChild(divNode);
       }
     });
 

@@ -8,37 +8,39 @@ if [[ $1 = "--h" || $1 = "-h" || $1 = "--help" || -z $1 ]]; then
   exit 0
 fi
 
+CONT_ID=$(docker ps | grep test-1 | sed -e 's/\s.*$//')
+
 ADDRESS=$1
 CHAIN=$2
 ITEM=$3
 PRICE=$4
-NODE=tcp://localhost:16657
+NODE=tcp://chain-test-1:16657
 
 if [[ -z "${CHAIN}" ]]; then
   CHAIN=test-1
 fi
 
 if [[ "${CHAIN}" = "test-1" ]]; then
-  NODE=tcp://localhost:16657
+  NODE=tcp://chain-test-1:16657
 fi
 
 if [[ "${CHAIN}" = "test-3" ]]; then
-  NODE=tcp://localhost:36657
+  NODE=tcp://chain-test-3:36657
 fi
 
-ICA=$(icad query intertx interchainaccounts connection-0 $ADDRESS --home ./data/$CHAIN --node $NODE -o json 2> /dev/null | jq -r '.interchain_account_address') 
+ICA=$(docker exec $CONT_ID icad query intertx interchainaccounts connection-0 $ADDRESS --home ./data/$CHAIN --node $NODE -o json 2> /dev/null | jq -r '.interchain_account_address') 
 if [[ -z "$ICA" ]]; then
   echo "Error: No interchain account found"
   exit 1
 fi
 
-CMD="icad q nameservice show-pending-sell $ITEM -o json 2> /dev/null | jq -r '.pendingSell.name'"
+CMD="docker exec $CONT_ID icad q nameservice show-pending-sell $ITEM -o json 2> /dev/null | jq -r '.pendingSell.name'"
 if [[ -n "$($CMD)" ]]; then
   echo "Error: Item is already for sale"
   exit 1
 fi
 
-icad tx controller submit-tx "{
+docker exec $CONT_ID icad tx controller submit-tx "{
    \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpSell\",
    \"creator\": \"$ICA\",
    \"name\":\"$ITEM\",
