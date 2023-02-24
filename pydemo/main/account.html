@@ -10,8 +10,20 @@
   <body>
     <div>
       <h1> Account </h1>
-      Name: <input id='name' size='10'> Address: <input id='address' size='80'> <button onclick='register()'> Register </button>
+      Name: <input id='name' size='10'>
+      Address: <input id='address' size='80'>
+      Chain: <input id='chain' size='20'>
+      <button onclick='register()'>Register</button>
       <div id='info'></div>
+    </div>
+    <div>
+      <h1> Run </h1>
+      Command (buy/sell): <input id='r-com' size='30'><br>
+      Address: <input id='r-addr' size='80'><br>
+      Chain: <input id='r-chain' size='30'><br>
+      Item: <input id='r-item' size='30'><br>
+      Price <input id='r-price' size='30'><br>
+      <button onclick='run()'>Run</button>
     </div>
 
   <script src="account.js"></script>

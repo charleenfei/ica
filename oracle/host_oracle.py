@@ -104,6 +104,14 @@ def check_cmp_logic(cmp_event, cmp_config):
     bid = int(cmp_event[CmpHostBid])
     print(f"Checking Domain {domain_name}, bid {bid}")
 
+    try:
+        with open(PRICES_FILE, "r") as f:
+            pass
+
+    except FileNotFoundError:
+        with open(PRICES_FILE, "w") as writer:
+            writer.write("{\"default\": [50,500]}")
+
     prices_json = json.load(open(PRICES_FILE, "r"))
 
     # check banned / sanction
@@ -123,6 +131,10 @@ def check_cmp_logic(cmp_event, cmp_config):
 
     # Optional: extra logic with metadata
     # meta_data = cmp_event[CmpHostMetaData]
+
+    prices_json[domain_name] = [bid - 50, bid + 50]
+    with open(PRICES_FILE, "w") as writer:
+        json.dump(prices_json, writer)
 
     return True, ""
 

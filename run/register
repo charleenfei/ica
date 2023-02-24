@@ -11,23 +11,25 @@ fi
 
 cd $HOME/interopera/interchain-accounts-demo
 
+CONT_ID=$(docker ps | grep test-1 | sed -e 's/\s.*$//')
+
 ADDRESS=$1
 CHAIN=$2
-NODE=tcp://localhost:16657
+NODE=tcp://chain-test-1:16657
 
 if [[ -z "${CHAIN}" ]]; then
   CHAIN=test-1
 fi
 
 if [[ "${CHAIN}" = "test-1" ]]; then
-  NODE=tcp://localhost:16657
+  NODE=tcp://chain-test-1:16657
 fi
 
 if [[ "${CHAIN}" = "test-3" ]]; then
-  NODE=tcp://localhost:36657
+  NODE=tcp://chain-test-3:36657
 fi
 
-if icad tx intertx register --from $ADDRESS --connection-id connection-0 --chain-id $CHAIN --home ./data/$CHAIN --node $NODE --keyring-backend test --timeout-height 1000 -y 1> /dev/null 2>&1; then
+if docker exec $CONT_ID icad tx intertx register --from $ADDRESS --connection-id connection-0 --chain-id $CHAIN --home ./data/$CHAIN --node $NODE --keyring-backend test --timeout-height 1000 -y 1> /dev/null 2>&1; then
   :
 else
   echo "Error: Register tx failed" >&2
@@ -48,7 +50,7 @@ do
     break
   fi
 
-  ICA=$(icad query intertx interchainaccounts connection-0 $ADDRESS --home ./data/$CHAIN --node $NODE -o json 2> /dev/null | jq -r '.interchain_account_address') 
+  ICA=$(docker exec $CONT_ID icad query intertx interchainaccounts connection-0 $ADDRESS --home ./data/$CHAIN --node $NODE -o json 2> /dev/null | jq -r '.interchain_account_address') 
   if [[ -n "$ICA" ]]; then
     break
   fi
@@ -63,6 +65,6 @@ if [[ $i -eq 10 ]]; then
 else
   echo "Interchain account created: " >&2
   echo $ICA
-  icad tx bank send $WALLET_3 $ICA 100000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y 1> /dev/null 2>&1
+  docker exec $CONT_ID icad tx bank send $WALLET_3 $ICA 100000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y 1> /dev/null 2>&1
   exit 0
 fi
