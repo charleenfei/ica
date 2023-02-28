@@ -3,7 +3,7 @@
 :warning: **WARNING:** SDK modules on a chain are assumed to be trustworthy. For example, there are no checks to prevent an untrustworthy module from accessing the bank keeper.
 (Quoted from https://ibc.cosmos.network/main/apps/interchain-accounts/overview.html)
 
-## Overview 
+## Overview
 
 This demo follows this workflow
 
@@ -38,7 +38,7 @@ CMP_ORACLE_WALLET
 
 ### Workflows
 1. **Preparation**
-  
+
    + Open a new terminal
    + Setup account addresses in the shell env
 
@@ -73,7 +73,7 @@ CMP_ORACLE_WALLET
           \"metadata\":\"test_meta_data\"
       }" connection-0 --from $WALLET_1 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
       ```
-        + Check the relayer terminal, there is no crosschain transaction relayed, it is rejected at controller chain. 
+        + Check the relayer terminal, there is no crosschain transaction relayed, it is rejected at controller chain.
         + Check the list item on host chain, It shoule be empty
           ```sh
           icad q nameservice list-whois #(optional parameters) --chain-id test-2 --home ./data/test-2 --node tcp://localhost:26657
@@ -109,8 +109,13 @@ CMP_ORACLE_WALLET
        icad q nameservice list-whois
        ## testdomain.country-x won't show up
        ```
+   + Check the status :
+       ```sh
+        python3 scripts/query_status.py -r "testdomain.country-x:::$ICA_ADDR" -w $WALLET_1 -ica $ICA_ADDR
+        #Expected output: FAILED
+       ```
    + To unban `.country-x` domain, remove `.country-x` from the banned entries in the offchain file `oracle/cmp_config.json`
-   + Try buying the `.country-x` domain again, this time, it should be successful 
+   + Try buying the `.country-x` domain again, this time, it should be successful
        ```sh
        icad q nameservice list-whois
        ## testdomain.country-x should belong to interchain account of $WALLET_1
@@ -155,16 +160,6 @@ CMP_ORACLE_WALLET
        export ICA_ADDR_2=$(icad query intertx interchainaccounts connection-0 $WALLET_2 --home ./data/test-1 --node tcp://localhost:16657 -o json | jq -r '.interchain_account_address') && echo $ICA_ADDR_2
        ```
 
-   + Fund the interchain accounts
-       ```sh
-       icad tx bank send $WALLET_3 $ICA_ADDR 10000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y
-       icad tx bank send $WALLET_3 $ICA_ADDR_2 10000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y
-       ```
-       Now `ICA_ADDR` and `ICA_ADDR_2` each should have 10,000 stakes. Check with
-       ```sh
-       icad q bank balances $ICA_ADDR
-       icad q bank balances $ICA_ADDR_2
-       ```
    + `$WALLET_1` puts the name up for sale.
 
      First, check that there is no item for sale with `icad q nameservice list-pending-sell`
@@ -181,7 +176,40 @@ CMP_ORACLE_WALLET
        ```
      Then check again list of items for sale with `icad q nameservice list-pending-sell`. The name should show up for sale.
 
-   + Make sure `$WALLET_2` KYC is true in `oracle/cmp_config.json`. Then `$WALLET_2` can buy `testcontroller.com` from `$WALLET_1` with 110 stake:
+   + Buy with insufficient bank balance
+       Check balance `ICA_ADDR` and `ICA_ADDR_2`, they should have 0 stake
+       ```sh
+       icad q bank balances $ICA_ADDR
+       icad q bank balances $ICA_ADDR_2
+       ```
+   + Make sure `$WALLET_2` KYC is true in `oracle/cmp_config.json`. Then `$WALLET_2` can buy `testcontroller.com` from `$WALLET_1` with 110 stake, but it failed because of insufficient balance:
+     ```sh
+     icad tx controller submit-tx "{
+         \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
+         \"creator\": \"$ICA_ADDR_2\",
+         \"name\":\"testcontroller.com\",
+         \"bid\":\"110\",
+         \"metadata\":\"test\"
+     }" connection-0 --from $WALLET_2 --chain-id test-1 --home ./data/test-1 --node tcp://localhost:16657 --keyring-backend test -y
+
+   + Check the status :
+       ```sh
+        python3 scripts/query_status.py -r "testcontroller.com:::$ICA_ADDR_2" -w $WALLET_2 -ica $ICA_ADDR_2
+        #Expected output: Failed: Insufficient Balance
+       ```
+
+   + Fund the interchain accounts
+       ```sh
+       icad tx bank send $WALLET_3 $ICA_ADDR 10000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y
+       icad tx bank send $WALLET_3 $ICA_ADDR_2 10000stake --chain-id test-2 --home ./data/test-2 --keyring-backend test -y
+       ```
+       Now `ICA_ADDR` and `ICA_ADDR_2` each should have 10,000 stakes. Check with
+       ```sh
+       icad q bank balances $ICA_ADDR
+       icad q bank balances $ICA_ADDR_2
+       ```
+
+   + Then `$WALLET_2` can buy `testcontroller.com` from `$WALLET_1` with 110 stake:
      ```sh
      icad tx controller submit-tx "{
          \"@type\":\"/cosmos.interchainaccounts.nameservice.MsgCmpBuy\",
@@ -196,7 +224,7 @@ CMP_ORACLE_WALLET
      ```sh
      icad q nameservice list-pending-sell   # should be empty
      icad q nameservice list-pending-buy    # should be empty
-     icad q nameservice list-whois          # testcontroller.com should belong to $ICA_ADDR_2 
+     icad q nameservice list-whois          # testcontroller.com should belong to $ICA_ADDR_2
      #($WALLET_2 bought from $WALLET_1)
      icad q bank balances $ICA_ADDR         # ICA of $WALLET_1 should have 10110 stakes
      icad q bank balances $ICA_ADDR_2       # ICA of $WALLET_2 should have 9890 stakes
