@@ -2,7 +2,9 @@ package keeper
 
 import (
 	"context"
+	"fmt"
 	"strconv"
+	"time"
 
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 
@@ -19,8 +21,17 @@ func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.M
 	uniquePendingIndex := msg.Name + ":::" + buyer.String()
 	// Check if a pending buy exists in the store
 	_, isFound := k.GetPendingBuy(ctx, uniquePendingIndex)
+	t := time.Now() // current time to add to result message
 	if isFound {
-		return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "The same pending buy already exists")
+		newCmpHostResult := types.CmpHostResult{
+			Index:   uniquePendingIndex,
+			Result:  "FAILED: " + t.String() + " The same pending buy already exists",
+			Request: uniquePendingIndex,
+		}
+		// add the result to the result store
+		k.SetCmpHostResult(ctx, newCmpHostResult)
+		return nil, nil // dont return sdkerrors so that changes in SetCmpHostResult can be saved
+		// return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFunds, "The same pending buy already exists")
 	}
 
 	buyPrice, err := strconv.Atoi(msg.Bid)
@@ -37,17 +48,42 @@ func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.M
 		}
 
 		if buyPrice != sellPrice {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFee, "Bid price does not match sell price")
+			fmt.Println("Bid price does not match sell price")
+			newCmpHostResult := types.CmpHostResult{
+				Index:   uniquePendingIndex,
+				Result:  "FAILED: " + t.String() + "Bid price does not match sell price",
+				Request: uniquePendingIndex,
+			}
+			// add the result to the result store
+			k.SetCmpHostResult(ctx, newCmpHostResult)
+			return nil, nil // dont return sdkerrors so that changes in SetCmpHostResult can be saved
+			// return nil, sdkerrors.Wrap(sdkerrors.ErrInsufficientFee, "Bid price does not match sell price")
 		}
 
 		coins, err := sdk.ParseCoinsNormalized(pendingSell.Price + "stake")
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Cannot parse sell price: "+err.Error())
+			newCmpHostResult := types.CmpHostResult{
+				Index:   uniquePendingIndex,
+				Result:  "FAILED: " + t.String() + "Cannot parse sell price: " + err.Error(),
+				Request: uniquePendingIndex,
+			}
+			// add the result to the result store
+			k.SetCmpHostResult(ctx, newCmpHostResult)
+			return nil, nil // dont return sdkerrors so that changes in SetCmpHostResult can be saved
+			// return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Cannot parse sell price: "+err.Error())
 		}
 
 		err = k.bankKeeper.SendCoinsFromAccountToModule(ctx, buyer, types.ModuleName, coins)
 		if err != nil {
-			return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Could not send coins from buyer to module")
+			newCmpHostResult := types.CmpHostResult{
+				Index:   uniquePendingIndex,
+				Result:  "FAILED: " + t.String() + "Insufficient Balance",
+				Request: uniquePendingIndex,
+			}
+			// add the result to the result store
+			k.SetCmpHostResult(ctx, newCmpHostResult)
+			return nil, nil // dont return sdkerrors so that changes in SetCmpHostResult can be saved
+			// return nil, sdkerrors.Wrap(sdkerrors.ErrLogic, "Could not send coins from buyer to module")
 		}
 	}
 
