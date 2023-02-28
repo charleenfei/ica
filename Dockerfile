@@ -19,3 +19,6 @@ RUN go mod download
 RUN make build
 
 RUN cp ./build/icad /bin/icad
+
+RUN apt install -y python3 pip
+RUN pip3 install -r oracle/requirements.txt
