@@ -13,9 +13,9 @@ ENV GOMODULE="on"
 
 COPY . .
 
-#RUN rm -rf ./build
+RUN rm -rf ./build
 
-#RUN go mod download
-#RUN make build
+RUN go mod download
+RUN make build
 
 RUN cp ./build/icad /bin/icad
