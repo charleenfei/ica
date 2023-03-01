@@ -166,6 +166,7 @@ docker-reset:
 	docker-compose stop
 	rm -rf storage
 	docker system prune -f
+	git restore oracle/prices.json
 
 docker-init-chain:
 	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml run init-chain
