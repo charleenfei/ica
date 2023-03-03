@@ -92,3 +92,11 @@ services:
     volumes:
       - ./oracle:/src/app/oracle
       - ./storage:/src/app/data
+
+  web:
+    image: web:local
+    command: python3 server.py
+    ports:
+      - 5555:5555
+    volumes:
+      - ./pydemo:/src/app

@@ -11,4 +11,5 @@ make docker-init-relayer
 make docker-start-relayer
 make docker-init-oracle
 make docker-start-oracle
-make docker-unitest
+make docker-start-web
+# make docker-unitest

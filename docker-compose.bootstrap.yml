@@ -21,6 +21,11 @@ services:
     depends_on:
         - build-icad
 
+  build-web:
+    build:
+      context: ./pydemo
+    image: web:local
+
   init-chain:
     image: icad:local
     command: bash ./network/docker-init.sh

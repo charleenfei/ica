@@ -186,6 +186,12 @@ docker-init-oracle:
 docker-start-oracle:
 	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose up -d controller-oracle host-oracle
 
+docker-build-web:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose -f docker-compose.bootstrap.yml build build-web
+
+docker-start-web:
+	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose up -d web
+
 docker-unitest:
 #	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose run -it chain-test-1 bash /network/unitest.sh
 	env DOCKER_DEFAULT_PLATFORM=linux/amd64 OSFLAG=linux/amd64 docker-compose run chain-test-1 bash /network/unitest.sh
