@@ -16,7 +16,7 @@ function loadPrices() {
       pricesElement.innerHTML = "";
       for (const [key, value] of Object.entries(data)) {
         pricesElement.innerHTML =
-          "<tr>" + "<td class='w-100'>" + key + " " + value[0] + " ";
+          "<tr>" + "<td class='w-100'>" + key + " : " + value[0] + " - ";
         value[1] + "</td>" + "</tr>";
       }
     });
@@ -31,7 +31,7 @@ function loadSells() {
         "<tr>" +
           "<td class='w-100'>" +
           sell.name +
-          " on sale for " +
+          " : on sale for : " +
           sell.price +
           "</td>" +
           "</tr>";
@@ -49,7 +49,7 @@ function loadOwns() {
 
         let aliasNode1 = document.createElement("td");
         aliasNode1.classList.add("w50");
-        aliasNode1.innerHTML = own.name + ": is owned by:";
+        aliasNode1.innerHTML = own.name + " : is owned by : ";
         subjectNode.appendChild(aliasNode1);
 
         let aliasNode2 = document.createElement("td");

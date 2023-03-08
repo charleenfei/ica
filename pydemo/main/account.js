@@ -22,7 +22,7 @@ function register() {
       infoElement.innerHTML = '<tr><td>Name: ' + nameElement.value + "</td></tr>"  
       + '<tr><td>Address: ' + addressElement.value + "</td></tr>"
       + '<tr><td>Chain: ' + chainElement.value + "</td></tr>"
-      + '<tr><td>ICA address: ' + ica + "</td></tr>"
+      + '<tr><td>ICA Address: ' + ica + "</td></tr>"
     });
 }
 
