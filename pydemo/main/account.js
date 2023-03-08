@@ -16,14 +16,13 @@ function addChild(element, cont, cClass) {
 }
 
 function register() {
-  if (infoElement.innerHTML !== '') return;
   fetch('/register/' + addressElement.value +'/' + nameElement.value + '/' + chainElement.value)
     .then((response) => response.text())
     .then((ica) => {
-      addChild(infoElement, 'Name: ' + nameElement.value, 'info');
-      addChild(infoElement, 'Address: ' + addressElement.value, 'info');
-      addChild(infoElement, 'Chain: ' + chainElement.value, 'info');
-      addChild(infoElement, 'ICA address: ' + ica, 'info');
+      infoElement.innerHTML = '<tr><td>Name: ' + nameElement.value + "</td></tr>"  
+      + '<tr><td>Address: ' + addressElement.value + "</td></tr>"
+      + '<tr><td>Chain: ' + chainElement.value + "</td></tr>"
+      + '<tr><td>ICA address: ' + ica + "</td></tr>"
     });
 }
 

@@ -1,8 +1,9 @@
 body {
+  font-family: 'Roboto', sans-serif;
   background-color: lightblue;
 }
 
-.card {
+.card2 {
   border: solid black 1px;
   width: 600px;
   margin: 5px;
@@ -24,4 +25,13 @@ body {
 
 .brown {
   color: brown;
+}
+
+.image {
+  width:36px;
+  height: 30px;
+}
+
+.m-10 {
+  margin: 0 10rem;
 }
