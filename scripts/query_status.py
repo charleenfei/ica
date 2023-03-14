@@ -47,10 +47,11 @@ def on_message(ws, message):
             if CmpResultData in event:
                 # print ("event data ", event_attribute[0])
                 # parse the event data
-                head, _ = event_attribute[0].split("::::::")
-                request_id, request_data = head.split(REQUEST_DATA_SEPARATOR)
+                # head, _ = event_attribute[0].split("::::::")
+                head = event_attribute[0]
+                request_id, request_data, _ = head.split(REQUEST_DATA_SEPARATOR)
                 if request_id == REQUEST_ID:
-                    print("Query result: ", request_data)
+                    print("Query result: ", request_data )
                     match_event = True
         if match_event:
             ws.close()

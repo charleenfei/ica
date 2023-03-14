@@ -28,7 +28,7 @@ if [[ "${CHAIN}" = "test-3" ]]; then
   NODE=tcp://chain-test-3:36657
 fi
 
-ICA=$(docker exec $CONT_ID icad query intertx interchainaccounts connection-0 $ADDRESS --home ./data/$CHAIN --node $NODE -o json 2> /dev/null | jq -r '.interchain_account_address') 
+ICA=$(docker exec $CONT_ID icad query intertx interchainaccounts connection-0 $ADDRESS --home ./data/$CHAIN --node $NODE -o json 2> /dev/null | jq -r '.interchain_account_address')
 if [[ -z "$ICA" ]]; then
   echo "Error: No interchain account found"
   exit 1
@@ -46,4 +46,13 @@ echo "Buy transaction sent. Check the result in a few seconds." 1>/dev/null 2>&1
 
 sleep 5
 cd ..
-python3 scripts/query_status.py -r "$ITEM:::$ICA" -w $ADDRESS -ica $ICA -c $CHAIN
+
+RESULT=$(docker exec $CONT_ID icad q controller show-cmp-controller-result $ADDRESS --node $NODE)
+# if failed we dont run query status otherwise it failed (may be timeout cuz querying non-existing item)
+if [[ "$RESULT" == *"OK::"* ]]; then
+  echo "if $ITEM:::$ICA" -w $ADDRESS -ica $ICA -c $CHAIN
+  python3 scripts/query_status.py -r "$ITEM:::$ICA" -w $ADDRESS -ica $ICA -c $CHAIN
+else
+  echo "else $RESULT"
+fi
+
