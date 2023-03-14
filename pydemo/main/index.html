@@ -13,14 +13,22 @@
 </head>
 
 <body>
-  <section class="p-5 mb-4 bg-light rounded-3 shadow container col-6">
+  <section class="p-5 mb-4 bg-light rounded-3 shadow container col-8">
     <h2 class="text-center mb-3">Chain Monitor</h2>
     <div class="mb-5 mx-3">
       <div class="d-flex align-items-center  mb-2">
         <img src="./image/price.png" class="image pe-2" />
         <h3 class="m-0 p-0 text-start"> Prices </h3>
       </div>
-      <table id='prices' class="table shadow table-striped-columns w-100 table-hover">
+      <table class="table shadow table-striped-columns w-100 table-hover">
+        <thead>
+          <tr>
+            <th class="w-25">Domain</th>
+            <th>Price range</th>
+          </tr>
+        </thead>
+        <tbody id='prices'>
+        </tbody>
       </table>
     </div>
 
@@ -29,7 +37,15 @@
         <img src="./image/sell.png" class="image pe-2" />
         <h3 class="m-0 p-0"> Pending sells </h3>
       </div>
-      <table id='sells' class="table shadow table-striped-columns w-100 table-hover">
+      <table class="table shadow table-striped-columns w-100 table-hover">
+        <thead>
+          <tr>
+            <th class="w-25">Item</th>
+            <th>Sales price</th>
+          </tr>
+        </thead>
+        <tbody id='sells'>
+        </tbody>
       </table>
     </div>
 
@@ -39,7 +55,14 @@
         <h3 class="m-0 p-0"> Ownership </h3>
       </div>
       <table class="table shadow table-striped-columns w-100 table-hover">
-        <tbody id='owns'></tbody>
+        <tr>
+          <thead>
+            <th class="w-25">Item</th>
+            <th>Owner</th>
+          </thead>
+          <tbody id='owns'>
+          </tbody>
+        </tr>
       </table>
     </div>
 

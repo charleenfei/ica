@@ -4,6 +4,7 @@ import subprocess
 import os
 from pathlib import Path
 import sys
+import json
 
 from flask import Flask
 
@@ -38,6 +39,18 @@ def get_alias(address):
     if address in aliases:
         return aliases[address]
     return address
+
+@app.route('/balance/<address>')
+def get_balance(address):
+    balanceStr = subprocess.check_output(['bash', 'balance.sh', address])
+    balanceObj = json.loads(balanceStr)
+    res = ""
+    for balance in balanceObj["balances"]:
+        res += str(balance["amount"]) + " " + balance["denom"] + ","
+
+    if res == "":
+        res = "Empty!"
+    return res
 
 @app.route('/register/<address>/<name>/<chain>')
 def get_register(address, name, chain):

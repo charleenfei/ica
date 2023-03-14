@@ -1,6 +1,6 @@
 #!/bin/bash
 
-set -x
+# set -x
 
 if [[ $1 = "--h" || $1 = "-h" || $1 = "--help" || -z $1 ]]; then
   echo "Usage: $0 COSMOS_ADDRESS CHAIN_ID ITEM PRICE"
