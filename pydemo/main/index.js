@@ -107,4 +107,4 @@ function reload() {
   loadOracleResults();
 }
 
-setInterval(reload, 2000);
+//setInterval(reload, 2000);

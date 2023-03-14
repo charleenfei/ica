@@ -4,7 +4,7 @@ set -x
 set -e
 
 make docker-reset
-# make docker-build
+#make docker-build
 make docker-init-chain
 make docker-start-chain
 make docker-init-relayer

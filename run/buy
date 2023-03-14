@@ -40,6 +40,10 @@ docker exec $CONT_ID icad tx controller submit-tx "{
     \"name\":\"$ITEM\",
     \"bid\":\"$PRICE\",
     \"metadata\":\"test\"
-}" connection-0 --from $ADDRESS --chain-id $CHAIN --home ./data/$CHAIN --node $NODE --keyring-backend test -y
+}" connection-0 --from $ADDRESS --chain-id $CHAIN --home ./data/$CHAIN --node $NODE --keyring-backend test -y 1>/dev/null 2>&1
 
-echo "Buy transaction sent. Check the result in a few seconds."
+echo "Buy transaction sent. Check the result in a few seconds." 1>/dev/null 2>&1
+
+sleep 5
+cd ..
+python3 scripts/query_status.py -r "$ITEM:::$ICA" -w $ADDRESS -ica $ICA -c $CHAIN
