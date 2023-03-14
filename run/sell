@@ -28,7 +28,7 @@ if [[ "${CHAIN}" = "test-3" ]]; then
   NODE=tcp://chain-test-3:36657
 fi
 
-ICA=$(docker exec $CONT_ID icad query intertx interchainaccounts connection-0 $ADDRESS --home ./data/$CHAIN --node $NODE -o json 2> /dev/null | jq -r '.interchain_account_address') 
+ICA=$(docker exec $CONT_ID icad query intertx interchainaccounts connection-0 $ADDRESS --home ./data/$CHAIN --node $NODE -o json 2> /dev/null | jq -r '.interchain_account_address')
 if [[ -z "$ICA" ]]; then
   echo "Error: No interchain account found"
   exit 1
@@ -49,3 +49,6 @@ docker exec $CONT_ID icad tx controller submit-tx "{
 }" connection-0 --from $ADDRESS --chain-id $CHAIN --home ./data/$CHAIN --node $NODE --keyring-backend test -y
 
 echo "Sell transaction sent. Check the result in a few seconds."
+
+sleep 5
+docker exec $CONT_ID icad q controller show-cmp-controller-result $ADDRESS --node $NODE
