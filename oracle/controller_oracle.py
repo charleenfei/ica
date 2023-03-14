@@ -17,6 +17,7 @@ import sys
 import json
 import os
 import pprint
+import datetime
 from subprocess import check_output
 from shlex import quote
 
@@ -96,6 +97,8 @@ def run_sh(command):
 
 # construct command and callback to the host_cmp module handler on blockchain
 def controller_cmp_callback(request_id, decision):
+    date_string = str(int(datetime.datetime.now().timestamp()))
+    decision = decision + "::::" + date_string
     tx_command = get_tx_command(
         request_id,
         decision,

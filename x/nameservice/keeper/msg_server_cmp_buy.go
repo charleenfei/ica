@@ -14,18 +14,17 @@ import (
 
 func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.MsgCmpBuyResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
-
+	timestamp := strconv.FormatInt(time.Now().UTC().Unix(), 10)
 	// Convert owner and buyer address strings to sdk.AccAddress
 	// owner, _ := sdk.AccAddressFromBech32(whois.Owner)
 	buyer, _ := sdk.AccAddressFromBech32(msg.Creator)
 	uniquePendingIndex := msg.Name + ":::" + buyer.String()
 	// Check if a pending buy exists in the store
 	_, isFound := k.GetPendingBuy(ctx, uniquePendingIndex)
-	t := time.Now() // current time to add to result message
 	if isFound {
 		newCmpHostResult := types.CmpHostResult{
 			Index:   uniquePendingIndex,
-			Result:  "FAILED: " + t.String() + " The same pending buy already exists",
+			Result:  "REJECT::" + " The same pending buy already exists" + "::::" + timestamp,
 			Request: uniquePendingIndex,
 		}
 		// add the result to the result store
@@ -51,7 +50,7 @@ func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.M
 			fmt.Println("Bid price does not match sell price")
 			newCmpHostResult := types.CmpHostResult{
 				Index:   uniquePendingIndex,
-				Result:  "FAILED: " + t.String() + "Bid price does not match sell price",
+				Result:  "REJECT::" + "Bid price does not match sell price" + "::::" + timestamp,
 				Request: uniquePendingIndex,
 			}
 			// add the result to the result store
@@ -64,7 +63,7 @@ func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.M
 		if err != nil {
 			newCmpHostResult := types.CmpHostResult{
 				Index:   uniquePendingIndex,
-				Result:  "FAILED: " + t.String() + "Cannot parse sell price: " + err.Error(),
+				Result:  "REJECT::" + "Cannot parse sell price: " + err.Error() + "::::" + timestamp,
 				Request: uniquePendingIndex,
 			}
 			// add the result to the result store
@@ -77,7 +76,7 @@ func (k msgServer) CmpBuy(goCtx context.Context, msg *types.MsgCmpBuy) (*types.M
 		if err != nil {
 			newCmpHostResult := types.CmpHostResult{
 				Index:   uniquePendingIndex,
-				Result:  "FAILED: " + t.String() + "Insufficient Balance",
+				Result:  "REJECT::" + "Insufficient Balance" + "::::" + timestamp,
 				Request: uniquePendingIndex,
 			}
 			// add the result to the result store
