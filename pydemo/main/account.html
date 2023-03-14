@@ -25,35 +25,43 @@
       </div>
       <div class="row mb-2 align-items-center">
         <label for="address" class="col-lg-2 col-form-label py-0">Address:</label>
-        <input type="text" id="address" class="col-lg-9">
+        <input type="text" id="address" class="col-lg-9" autocomplete="on">
       </div>
       <div class="row mb-2 align-items-center">
         <label for="chain" class="col-lg-2 col-form-label py-0">Chain:</label>
         <input type="text" id="chain" class="col-lg-9">
       </div>
 
-      <button onclick='register()' class="btn btn-primary">Register</button>
-      <table id='info' class="table shadow table-striped-columns w-100 table-hover mt-3">
-      </table>
-
+      <button onclick='register()' type="button" class="btn btn-primary" data-bs-toggle="collapse" data-bs-target=".multicol" aria-expanded="false" aria-controls="info-section run-section">Register</button>
     </section>
-    <section>
+
+    <section id="info-section" class="collapse multicol">
+      <table id='info' class="table table-bordered border-success border-2 shadow table-striped-columns w-100 table-hover mt-3">
+        <tr>
+          <th class="w-25">Registered interchain account</th>
+          <td id="ica-txt"></td>
+        </tr>
+        <tr>
+          <th class="w-25">
+            Balance
+            <button type="button" class="btn btn-info btn-sm" onclick=loadBalance()>Reload</button>
+            <div id="spinner" class="visually-hidden spinner-border spinner-border-sm " role="status">
+            </div>
+          </th>
+          <td id="bal-txt"></td>
+        </tr>
+      </table>
+    </section>
+
+    <section id="run-section" class="collapse multicol">
       <div class="d-flex align-items-center justify-content-center my-5">
         <img src="./image/run.png" class="image pe-2" />
         <h2 class="m-0 p-0"> Run </h2>
       </div>
       </div>
       <div class="row mb-2 align-items-center">
-        <label for="r-com" class="col-lg-4 col-form-label py-0 fs-6">Command (buy/sell):</label>
-        <input type="text" id="r-com" class="col-lg-7">
-      </div>
-      <div class="row mb-2 align-items-center">
-        <label for="r-addr" class="col-lg-2 col-form-label py-0">Address: </label>
-        <input type="text" id="r-addr" class="col-lg-9">
-      </div>
-      <div class="row mb-2 align-items-center">
-        <label for="r-chain" class="col-lg-2 col-form-label py-0">Chain: </label>
-        <input type="text" id="r-chain" class="col-lg-9">
+        <label for="r-com" class="col-lg-2 col-form-label py-0 fs-6"> buy/sell?:</label>
+        <input type="text" id="r-com" class="col-lg-9">
       </div>
       <div class="row mb-2 align-items-center">
         <label for="r-item" class="col-lg-2 col-form-label py-0">Item: </label>
