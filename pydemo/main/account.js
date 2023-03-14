@@ -5,6 +5,7 @@ let chainElement = document.getElementById('chain');
 let rCom = document.getElementById('r-com');
 let rItem = document.getElementById('r-item');
 let rPrice = document.getElementById('r-price');
+let resultElement = document.getElementById('result');
 
 let icaTxt = document.getElementById('ica-txt');
 let balTxt = document.getElementById('bal-txt');
@@ -35,7 +36,17 @@ function loadBalance() {
 }
 
 function run() {
-  fetch('/run/' + rCom.value + '/' + addressElement.value + '/' + chainElement.value + '/' + rItem.value + '/' + rPrice.value);
+  fetch('/run/' + rCom.value + '/' + addressElement.value + '/' + chainElement.value + '/' + rItem.value + '/' + rPrice.value)
+    .then((response) => response.text())
+    .then((result) =>{
+      resultElement.innerHTML = result;
+      if (result.includes("OK")) {
+        resultElement.classList.add('text-success');
+      }
+      else {
+        resultElement.classList.add('text-danger');
+      }
+    });
 }
 
 //setInterval(reload, 2000);

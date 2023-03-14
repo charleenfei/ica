@@ -76,7 +76,8 @@ def get_run(com, addr, chain, item, price):
     print(command)
     s = subprocess.getoutput(command)
     print(s)
-    return s
+    lines = s.split("\n")
+    return lines[-1]
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', debug=True, port=5555)
