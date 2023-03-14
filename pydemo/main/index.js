@@ -1,6 +1,7 @@
 let pricesTable = document.getElementById("prices");
 let sellsTable = document.getElementById("sells");
 let ownsTable = document.getElementById("owns");
+let oracleResultsTable = document.getElementById("oracle-result");
 
 function addChild(element, cont, cClass) {
   let node = document.createElement("div");
@@ -65,10 +66,45 @@ function loadOwns() {
     });
 }
 
+function loadOracleResults() {
+  fetch("/oracle-result")
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      oracleResultsTable.innerHTML = "";
+      // reconstruct list & sort data by timestamp
+      var results = []
+      for (let sell of data) {
+        // sell.timestamp = new Date(sell.timestamp);
+        let result = sell.result.split("::::")[0];
+        let timeStr = sell.result.split("::::")[1] || ""; //handle undefined and wrong format string
+        let timestamp = parseInt(timeStr.replace("\n", "").replace("::", ""));
+        results.push({
+          request: sell.request,
+          result: result,
+          timestamp: timestamp
+        });
+      }
+      results.sort((a,b) => b.timestamp - a.timestamp);
+      for (let result of results) {
+        let row = oracleResultsTable.insertRow(-1);
+        let itemCell = row.insertCell(0);
+        itemCell.classList.add('w-25');
+        itemCell.innerHTML = result.request.slice(0,24) + "..." + result.request.slice(-8);
+        let resultCell = row.insertCell(1);
+        resultCell.innerHTML = result.result;
+        let timestampCell = row.insertCell(2);
+        let dateObject = new Date(result.timestamp*1000);
+        timestampCell.innerHTML = dateObject.toLocaleString();
+      }
+    });
+}
+
 function reload() {
   loadPrices();
   loadSells();
   loadOwns();
+  loadOracleResults();
 }
 
-//setInterval(reload, 2000);
+setInterval(reload, 2000);

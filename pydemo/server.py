@@ -33,6 +33,10 @@ def get_sells():
 def get_owns():
     return subprocess.check_output(['bash', 'owns.sh'])
 
+@app.route('/oracle-result')
+def get_oracle_results():
+    return subprocess.check_output(['bash', 'oracle_result.sh'])
+
 @app.route('/alias/<address>')
 def get_alias(address):
     print(aliases)

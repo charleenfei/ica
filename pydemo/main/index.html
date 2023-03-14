@@ -14,7 +14,7 @@
 
 <body>
   <section class="p-5 mb-4 bg-light rounded-3 shadow container col-8">
-    <h2 class="text-center mb-3">Chain Monitor</h2>
+    <h2 class="text-center mb-3">Exchange Monitor</h2>
     <div class="mb-5 mx-3">
       <div class="d-flex align-items-center  mb-2">
         <img src="./image/price.png" class="image pe-2" />
@@ -61,6 +61,23 @@
             <th>Owner</th>
           </thead>
           <tbody id='owns'>
+          </tbody>
+        </tr>
+      </table>
+    </div>
+
+    <div class="mb-5 mx-3">
+      <div class="d-flex align-items-center mb-2">
+        <img src="./image/run.png" class="image pe-2" />
+        <h3 class="m-0 p-0"> Latest CMP results </h3>
+      </div>
+      <table class="table shadow table-striped-columns w-100 table-hover">
+        <tr>
+          <thead>
+            <th class="w-25">Request Id</th>
+            <th>Result</th>
+          </thead>
+          <tbody id='oracle-result'>
           </tbody>
         </tr>
       </table>
